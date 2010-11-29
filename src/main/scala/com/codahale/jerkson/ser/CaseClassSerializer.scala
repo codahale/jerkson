@@ -10,7 +10,6 @@ class CaseClassSerializer extends JsonSerializer[Object] {
       field.setAccessible(true)
       json.writeFieldName(field.getName)
       val fieldValue = field.get(value)
-      println(fieldValue)
       if (fieldValue == null) {
         provider.getNullValueSerializer.serialize(null, json, provider)
       } else {
