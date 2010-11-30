@@ -3,14 +3,14 @@ package com.codahale.jerkson.ser
 import org.codehaus.jackson.JsonGenerator
 import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
 
-class MapSerializer extends JsonSerializer[Object] {
-  def serialize(value: Object, json: JsonGenerator, provider: SerializerProvider) = {
+class MapSerializer extends JsonSerializer[Map[_,_]] {
+  def serialize(value: Map[_, _], json: JsonGenerator, provider: SerializerProvider) = {
     json.writeStartObject()
-    for ((key, value) <- value.asInstanceOf[Map[_,_]]) {
+    for ((key, value) <- value) {
       if (key == null) {
         provider.getNullKeySerializer.serialize(null, json, provider)
       } else {
-        json.writeFieldName(key.asInstanceOf[String])
+        provider.getKeySerializer.serialize(key.asInstanceOf[Object], json, provider)
       }
 
       if (value == null) {

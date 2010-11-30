@@ -7,10 +7,10 @@ import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
  *
  * @author coda
  */
-class SeqSerializer extends JsonSerializer[Object] {
-  def serialize(value: Object, json: JsonGenerator, provider: SerializerProvider) = {
+class SeqSerializer extends JsonSerializer[Seq[_]] {
+  def serialize(value: Seq[_], json: JsonGenerator, provider: SerializerProvider) = {
     json.writeStartArray()
-    for (element <- value.asInstanceOf[Seq[_]]) {
+    for (element <- value) {
       if (element == null) {
         provider.getNullValueSerializer.serialize(null, json, provider)
       } else {

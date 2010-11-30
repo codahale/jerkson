@@ -4,8 +4,21 @@ import com.codahale.jerkson.Json._
 import com.codahale.simplespec.Spec
 import org.codehaus.jackson.JsonNode
 import org.codehaus.jackson.node.IntNode
+import com.codahale.jerkson.AST._
 
 object JsonParsingSpec extends Spec {
+  class `Parsing a JSON boolean` {
+    def `should be readable as a Boolean` {
+      parse[Boolean]("true") must beTrue
+      parse[Boolean]("false") must beFalse
+    }
+
+    def `should be readable as a JValue` {
+      parse[JValue]("true") must beEqualTo(JBoolean(true))
+      parse[JValue]("false") must beEqualTo(JBoolean(false))
+    }
+  }
+
   class `Parsing a JSON int` {
     def `should be readable as an Int` {
       parse[Int]("1") must beEqualTo(1)
@@ -17,6 +30,10 @@ object JsonParsingSpec extends Spec {
 
     def `should be readable as a Long` {
       parse[Long]("1") must beEqualTo(1L)
+    }
+
+    def `should be readable as a JValue` {
+      parse[JValue]("1") must beEqualTo(JInt(1))
     }
 
     // TODO: 11/29/10 <coda> -- add BigInt support
@@ -31,12 +48,20 @@ object JsonParsingSpec extends Spec {
       parse[Double]("1.1") must beEqualTo(1.1)
     }
 
+    def `should be readable as a JValue` {
+      parse[JValue]("1.1") must beEqualTo(JFloat(1.1))
+    }
+
     // TODO: 11/29/10 <coda> -- add BigDecimal support
   }
 
   class `Parsing a JSON string` {
     def `should be readable as a String` {
       parse[String]("\"woo\"") must beEqualTo("woo")
+    }
+
+    def `should be readable as a JValue` {
+      parse[JValue]("\"woo\"") must beEqualTo(JString("woo"))
     }
   }
 
@@ -47,6 +72,10 @@ object JsonParsingSpec extends Spec {
 
     def `should be readable as an Option[_]` {
       parse[Option[String]]("null") must beNone
+    }
+
+    def `should be readable as a JValue` {
+      parse[JValue]("null") must beEqualTo(JNull)
     }
 
     // REVIEW: 11/29/10 <coda> -- should this also produce empty seqs?
@@ -68,6 +97,13 @@ object JsonParsingSpec extends Spec {
     def `should be readable as a Vector[Int]` {
       parse[Vector[Int]]("[1,2,3,4]") must beEqualTo(Vector(1, 2, 3, 4))
     }
+
+    def `should be readable as a JValue` {
+      parse[JValue]("[1,2,3,4]") must beEqualTo(JArray(List(JInt(1),
+                                                            JInt(2),
+                                                            JInt(3),
+                                                            JInt(4))))
+    }
   }
 
   class `Parsing a JSON array of ints with nulls` {
@@ -83,6 +119,11 @@ object JsonParsingSpec extends Spec {
     def `should be readable as a Map[String, Int]` {
       parse[Map[String, Int]](""" {"one":1, "two": 2} """) must beEqualTo(Map("one" -> 1,
                                                                               "two" -> 2))
+    }
+
+    def `should be readable as a JValue` {
+      parse[JValue](""" {"one":1, "two": 2} """) must beEqualTo(JObject(List(JField("one", JInt(1)),
+                                                                             JField("two", JInt(2)))))
     }
   }
 

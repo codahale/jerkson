@@ -9,6 +9,7 @@ import java.io._
 import org.codehaus.jackson.{JsonEncoding, JsonGenerator, JsonParser => JacksonParser}
 import org.codehaus.jackson.map.`type`.TypeFactory
 import org.codehaus.jackson.`type`.JavaType
+import com.codahale.jerkson.AST.{JValue, JNull}
 
 object Json {
   private val deserializerFactory = new ScalaDeserializerFactory
@@ -90,21 +91,24 @@ object Json {
     generator.close()
   }
 
-  private def manifest2Type[A](manifest: Manifest[A]): JavaType = {
+  private[jerkson] def manifest2JavaType[A](manifest: Manifest[A]): JavaType = {
     if (manifest.erasure.isArray) {
       throw new IllegalArgumentException("can't handle arrays")
     }
     TypeFactory.parametricType(manifest.erasure,
                                manifest.typeArguments
-                                 .map{m => manifest2Type(m)}.toArray: _*)
+                                 .map{m => manifest2JavaType(m)}.toArray: _*)
   }
 
   private def parse[A](parser: JacksonParser, mf: Manifest[A]): A = {
     if (mf.erasure == classOf[Option[_]]) {
       // thanks for special-casing VALUE_NULL, guys
       Option(parse(parser, mf.typeArguments.head)).asInstanceOf[A]
+    } else if (mf.erasure == classOf[JValue]) {
+      val value: A = parser.getCodec.readValue(parser, manifest2JavaType(mf))
+      if (value == null) JNull.asInstanceOf[A] else value
     } else {
-      parser.getCodec.readValue(parser, manifest2Type(mf))
+      parser.getCodec.readValue(parser, manifest2JavaType(mf))
     }
   }
 }

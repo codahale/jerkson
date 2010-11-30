@@ -4,6 +4,7 @@ import org.codehaus.jackson.map.deser.BeanDeserializerFactory
 import org.codehaus.jackson.`type`.JavaType
 import org.codehaus.jackson.map.{DeserializerProvider, DeserializationConfig}
 import collection.mutable.Builder
+import com.codahale.jerkson.AST.JValue
 
 class ScalaDeserializerFactory extends BeanDeserializerFactory {
   override def createBeanDeserializer(config: DeserializationConfig, javaType: JavaType, provider: DeserializerProvider) = {
@@ -19,6 +20,8 @@ class ScalaDeserializerFactory extends BeanDeserializerFactory {
       createMapDeserializer(config, javaType, Map.newBuilder, provider)
     } else if (javaType.getRawClass == classOf[Option[_]]) {
       createOptionDeserializer(config, javaType, provider)
+    } else if (javaType.getRawClass == classOf[JValue]) {
+      new JValueDeserializer
     } else if (classOf[Product].isAssignableFrom(javaType.getRawClass)) {
       new CaseClassDeserializer(config, javaType, provider)
     } else super.createBeanDeserializer(config, javaType, provider)
