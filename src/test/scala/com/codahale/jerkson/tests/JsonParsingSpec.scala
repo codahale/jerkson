@@ -2,6 +2,7 @@ package com.codahale.jerkson.tests
 
 import com.codahale.jerkson.Json._
 import com.codahale.simplespec.Spec
+import org.codehaus.jackson.JsonNode
 
 object JsonParsingSpec extends Spec {
   class `Parsing a JSON int` {
@@ -89,6 +90,12 @@ object JsonParsingSpec extends Spec {
       parse[ClassWithOption](""" {"one": "1"} """) must beEqualTo(ClassWithOption("1", None))
 
       parse[ClassWithOption](""" {"one": "1", "two": "2"} """) must beEqualTo(ClassWithOption("1", Some("2")))
+    }
+  }
+
+  class `Parsing a JSON value as a JsonNode` {
+    def `should return a JsonNode` {
+      parse[JsonNode]("[1, null, 2.0]").toString must beEqualTo("[1,null,2.0]")
     }
   }
 }
