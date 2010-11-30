@@ -1,9 +1,9 @@
 package com.codahale.jerkson.tests
 
-import com.codahale.jerkson.JsonGenerator._
+import com.codahale.jerkson.Json._
 import com.codahale.simplespec.Spec
 
-object JsonGeneratorSpec extends Spec {
+object JsonGenerationSpec extends Spec {
   class `An Int` {
     def `should generate a JSON int` {
       generate(15) must beEqualTo("15")
