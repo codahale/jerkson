@@ -18,6 +18,8 @@ object JsonParsingSpec extends Spec {
     def `should be readable as a Long` {
       parse[Long]("1") must beEqualTo(1L)
     }
+
+    // TODO: 11/29/10 <coda> -- add BigInt support
   }
 
   class `Parsing a JSON float` {
@@ -28,6 +30,8 @@ object JsonParsingSpec extends Spec {
     def `should be readable as a Double` {
       parse[Double]("1.1") must beEqualTo(1.1)
     }
+
+    // TODO: 11/29/10 <coda> -- add BigDecimal support
   }
 
   class `Parsing a JSON string` {
@@ -44,6 +48,8 @@ object JsonParsingSpec extends Spec {
     def `should be readable as an Option[_]` {
       parse[Option[String]]("null") must beNone
     }
+
+    // REVIEW: 11/29/10 <coda> -- should this also produce empty seqs?
   }
 
   class `Parsing a JSON array of ints` {

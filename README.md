@@ -4,10 +4,9 @@ Jerkson
 *Jackson for Scala*
 
 
-Desired Features
-----------------
+TODO
+----
 
-* JSON->AST
-* AST->JSON
-* case class extraction
-* 
+* add BigInt support
+* add BigDecimal support
+* add JsonNode -> AST wrapper
