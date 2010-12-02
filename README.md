@@ -44,7 +44,7 @@ Parsing JSON
       println("New person: " + p)
     }
 
-For more examples, check out the [parsing specs](blob/master/src/test/scala/com/codahale/jerkson/tests/JsonParsingSpec.scala).
+For more examples, check out the [parsing specs](https://github.com/codahale/jerkson/blob/master/src/test/scala/com/codahale/jerkson/tests/JsonParsingSpec.scala).
 
 
 Generating JSON
@@ -56,7 +56,7 @@ Generating JSON
     // Generate JSON objects
     generate(Map("one"->1, "two"->"dos")) //=> {"one":1,"two":"dos"}
 
-For more examples, check out the [generating specs](blob/master/src/test/scala/com/codahale/jerkson/tests/JsonGeneratingSpec.scala).
+For more examples, check out the [generating specs](https://github.com/codahale/jerkson/blob/master/src/test/scala/com/codahale/jerkson/tests/JsonGenerationSpec.scala).
 
 
 License
