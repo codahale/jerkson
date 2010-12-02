@@ -1,5 +1,6 @@
 package com.codahale.jerkson
 
+import io.Source
 import deser.ScalaDeserializerFactory
 import ser.ScalaSerializerFactory
 import org.codehaus.jackson.map.deser.StdDeserializerProvider
@@ -57,6 +58,10 @@ object Json {
    */
   def parse[A](input: Array[Byte])(implicit mf: Manifest[A]): A = parse[A](factory.createJsonParser(input), mf)
 
+  /**
+   * Parse a JSON Source as a particular type.
+   */
+  def parse[A](input: Source)(implicit mf: Manifest[A]): A = parse[A](input.mkString)
 
   /**
    * Parse a JSON node as a particular type.
