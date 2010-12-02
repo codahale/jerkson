@@ -191,6 +191,14 @@ object JsonParsingSpec extends Spec {
                                       Person(4, "Louie")))
     }
   }
+
+  class `Parsing a int JSON node` {
+    val node = parse[JsonNode]("1")
+
+    def `should return an Int` {
+      parse[Int](node) must beEqualTo(1)
+    }
+  }
 }
 
 case class Person(id: Long, name: String) {

@@ -9,7 +9,8 @@ import java.io._
 import org.codehaus.jackson.map.`type`.TypeFactory
 import org.codehaus.jackson.`type`.JavaType
 import com.codahale.jerkson.AST.{JValue, JNull}
-import org.codehaus.jackson.{JsonToken, JsonEncoding, JsonGenerator, JsonParser => JacksonParser}
+import org.codehaus.jackson.{JsonNode, JsonToken, JsonEncoding, JsonGenerator, JsonParser => JacksonParser}
+import org.codehaus.jackson.node.TreeTraversingParser
 
 object Json {
   private val deserializerFactory = new ScalaDeserializerFactory
@@ -55,6 +56,15 @@ object Json {
    * Parse a JSON byte array as a particular type.
    */
   def parse[A](input: Array[Byte])(implicit mf: Manifest[A]): A = parse[A](factory.createJsonParser(input), mf)
+
+
+  /**
+   * Parse a JSON node as a particular type.
+   */
+  def parse[A](input: JsonNode)(implicit mf: Manifest[A]): A = {
+    val parser = new TreeTraversingParser(input, mapper)
+    parse(parser, mf)
+  }
 
   /**
    * Parse a streaming JSON array of particular types, passing each deserialized
