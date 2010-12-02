@@ -1,5 +1,24 @@
 import sbt._
-class Jerkson(info: ProjectInfo) extends DefaultProject(info) with IdeaProject {
+
+class Jerkson(info: ProjectInfo) extends DefaultProject(info)
+                                         with IdeaProject
+                                         with rsync.RsyncPublishing {
+  /**
+   * Publish the source as well as the class files.
+   */
+
+  override def packageSrcJar = defaultJarPath("-sources.jar")
+
+  val sourceArtifact = sbt.Artifact(artifactID, "src", "jar", Some("sources"), Nil, None)
+
+  override def packageToPublishActions = super.packageToPublishActions ++ Seq(packageSrc)
+
+  /**
+   * Publish via rsync.
+   */
+
+  def rsyncRepo = "codahale.com:/home/codahale/repo.codahale.com"
+
   /**
    * Repositories
    */
