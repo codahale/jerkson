@@ -108,6 +108,13 @@ object JsonParsingSpec extends Spec {
     }
   }
 
+  class `Caching a JSON array deserializer` {
+    def `should not cache Seq builders` {
+      parse[List[Int]]("[1,2,3,4]") must beEqualTo(List(1, 2, 3, 4))
+      parse[List[Int]]("[1,2,3,4]") must beEqualTo(List(1, 2, 3, 4))
+    }
+  }
+
   class `Parsing a JSON array of ints with nulls` {
     def `should be readable as a List[Option[Int]]` {
       parse[List[Option[Int]]]("[1,2,null,4]") must beEqualTo(List(Some(1),
@@ -126,6 +133,15 @@ object JsonParsingSpec extends Spec {
     def `should be readable as a JValue` {
       parse[JValue](""" {"one":1, "two": 2} """) must beEqualTo(JObject(List(JField("one", JInt(1)),
                                                                              JField("two", JInt(2)))))
+    }
+  }
+
+  class `Caching a JSON map deserializer` {
+    def `should not cache Map builders` {
+      parse[Map[String, Int]](""" {"one":1, "two": 2} """) must beEqualTo(Map("one" -> 1,
+                                                                              "two" -> 2))
+      parse[Map[String, Int]](""" {"one":1, "two": 2} """) must beEqualTo(Map("one" -> 1,
+                                                                              "two" -> 2))
     }
   }
 

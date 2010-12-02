@@ -5,14 +5,17 @@ import org.codehaus.jackson.{JsonToken, JsonParser}
 import org.codehaus.jackson.`type`.JavaType
 import org.codehaus.jackson.map.{JsonDeserializer, DeserializationContext}
 import org.codehaus.jackson.map.annotate.JsonCachable
+import collection.generic.HasNewBuilder
 
 @JsonCachable
-class SeqDeserializer(builder: Builder[Object, Object],
-                                  elementType: JavaType,
-                                  elementDeserializer: JsonDeserializer[Object])
+class SeqDeserializer(newBuilder: => Builder[Object, Object],
+                      elementType: JavaType,
+                      elementDeserializer: JsonDeserializer[Object])
   extends JsonDeserializer[Object] {
 
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
+    val builder = newBuilder
+
     if (jp.getCurrentToken() != JsonToken.START_ARRAY) {
       throw ctxt.mappingException(elementType.getRawClass)
     }

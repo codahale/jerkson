@@ -7,12 +7,14 @@ import collection.mutable.Builder
 import org.codehaus.jackson.map.annotate.JsonCachable
 
 @JsonCachable
-class MapDeserializer(builder: Builder[(Object, Object), Object],
-                           valueType: JavaType,
-                           valueDeserializer: JsonDeserializer[Object])
+class MapDeserializer(newBuilder: => Builder[(Object, Object), Object],
+                      valueType: JavaType,
+                      valueDeserializer: JsonDeserializer[Object])
   extends JsonDeserializer[Object] {
 
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
+    val builder = newBuilder
+
     if (jp.getCurrentToken == JsonToken.START_OBJECT) {
       jp.nextToken()
     }

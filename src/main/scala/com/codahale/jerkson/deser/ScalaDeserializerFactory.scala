@@ -27,9 +27,9 @@ class ScalaDeserializerFactory extends BeanDeserializerFactory {
     } else super.createBeanDeserializer(config, javaType, provider)
   }
 
-  private def createSeqDeserializer(config: DeserializationConfig, javaType: JavaType, builder: Builder[Object, Object], provider: DeserializerProvider) = {
+  private def createSeqDeserializer(config: DeserializationConfig, javaType: JavaType, newBuilder: => Builder[Object, Object], provider: DeserializerProvider) = {
     val elementType = javaType.containedType(0)
-    new SeqDeserializer(builder, elementType, provider.findTypedValueDeserializer(config, elementType))
+    new SeqDeserializer(newBuilder, elementType, provider.findTypedValueDeserializer(config, elementType))
   }
 
   private def createOptionDeserializer(config: DeserializationConfig, javaType: JavaType, provider: DeserializerProvider) = {
@@ -37,10 +37,10 @@ class ScalaDeserializerFactory extends BeanDeserializerFactory {
     new OptionDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType))
   }
 
-  private def createMapDeserializer(config: DeserializationConfig, javaType: JavaType, builder: Builder[(Object, Object), Object], provider: DeserializerProvider) = {
+  private def createMapDeserializer(config: DeserializationConfig, javaType: JavaType, newBuilder: => Builder[(Object, Object), Object], provider: DeserializerProvider) = {
     if (javaType.containedType(0).getRawClass == classOf[String]) {
       val valueType = javaType.containedType(1)
-      new MapDeserializer(builder, valueType, provider.findTypedValueDeserializer(config, valueType))
+      new MapDeserializer(newBuilder, valueType, provider.findTypedValueDeserializer(config, valueType))
     } else {
       null
     }
