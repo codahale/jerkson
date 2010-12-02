@@ -6,10 +6,10 @@ import org.codehaus.jackson.map.deser.StdDeserializerProvider
 import org.codehaus.jackson.map.{MappingJsonFactory, ObjectMapper}
 import java.net.URL
 import java.io._
-import org.codehaus.jackson.{JsonEncoding, JsonGenerator, JsonParser => JacksonParser}
 import org.codehaus.jackson.map.`type`.TypeFactory
 import org.codehaus.jackson.`type`.JavaType
 import com.codahale.jerkson.AST.{JValue, JNull}
+import org.codehaus.jackson.{JsonToken, JsonEncoding, JsonGenerator, JsonParser => JacksonParser}
 
 object Json {
   private val deserializerFactory = new ScalaDeserializerFactory
@@ -55,6 +55,22 @@ object Json {
    * Parse a JSON byte array as a particular type.
    */
   def parse[A](input: Array[Byte])(implicit mf: Manifest[A]): A = parse[A](factory.createJsonParser(input), mf)
+
+  /**
+   * Parse a streaming JSON array of particular types, passing each deserialized
+   * object to a callback method.
+   */
+  def parseStreamOf[A](input: InputStream)(callback: A => Unit)(implicit mf: Manifest[A]) {
+    val parser = factory.createJsonParser(input)
+
+    if (parser.nextToken() != JsonToken.START_ARRAY) {
+      throw new IllegalArgumentException("JSON stream is not an array")
+    }
+
+    while (parser.nextToken != JsonToken.END_ARRAY) {
+      callback(parse(parser, mf))
+    }
+  }
 
   /**
    * Generate JSON from the given object and return it as a string.

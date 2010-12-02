@@ -5,6 +5,8 @@ import com.codahale.simplespec.Spec
 import org.codehaus.jackson.JsonNode
 import org.codehaus.jackson.node.IntNode
 import com.codahale.jerkson.AST._
+import collection.mutable.ArrayBuffer
+import java.io.ByteArrayInputStream
 
 object JsonParsingSpec extends Spec {
   class `Parsing a JSON boolean` {
@@ -148,6 +150,29 @@ object JsonParsingSpec extends Spec {
   class `Parsing a JSON value as a JsonNode` {
     def `should return a JsonNode` {
       parse[JsonNode]("[1, null, 2.0]").toString must beEqualTo("[1,null,2.0]")
+    }
+  }
+
+  class `Parsing a stream of objects` {
+    val json = """[
+      {"id":1, "name": "Coda"},
+      {"id":2, "name": "Niki"},
+      {"id":3, "name": "Biscuit"},
+      {"id":4, "name": "Louie"}
+    ]"""
+
+    def `should fire a callback for each stream element` {
+      val input = new ByteArrayInputStream(json.getBytes)
+
+      val people = new ArrayBuffer[Person]
+      parseStreamOf[Person](input) { p =>
+        people += p
+      }
+
+      people.toSeq must beEqualTo(Seq(Person(1, "Coda"),
+                                      Person(2, "Niki"),
+                                      Person(3, "Biscuit"),
+                                      Person(4, "Louie")))
     }
   }
 }
