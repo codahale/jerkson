@@ -34,7 +34,6 @@ object JsonParsingSpec extends Spec {
   }
 
   class `Parsing invalid JSON` {
-    // TODO: 12/2/10 <coda> -- make these messages more informative
     def `should throw a ParsingException with an informative message` {
       parse[Person]("900") must throwA[ParsingException].like {
         case e: ParsingException => {
