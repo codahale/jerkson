@@ -5,7 +5,6 @@ import org.codehaus.jackson.{JsonToken, JsonParser}
 import org.codehaus.jackson.`type`.JavaType
 import org.codehaus.jackson.map.{JsonDeserializer, DeserializationContext}
 import org.codehaus.jackson.map.annotate.JsonCachable
-import collection.generic.HasNewBuilder
 
 @JsonCachable
 class SeqDeserializer(newBuilder: => Builder[Object, Object],

@@ -41,6 +41,14 @@ object JsonParsingSpec extends Spec {
           e.getMessage must beEqualTo("Invalid JSON.")
         }
       }
+
+      parse[Person]("{\"woo\": 1}") must throwA[ParsingException].like {
+        case e: ParsingException => {
+          e.getMessage must beEqualTo("Invalid JSON. Needed either [id, name] " +
+                                              "or [id, firstName, lastName], " +
+                                              "but found [woo].")
+        }
+      }
     }
   }
 

@@ -1,12 +1,13 @@
 package com.codahale.jerkson.deser
 
 import org.codehaus.jackson.`type`.JavaType
-import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer, DeserializerProvider, DeserializationConfig}
 import com.thoughtworks.paranamer.{BytecodeReadingParanamer, CachingParanamer}
 import org.codehaus.jackson.map.`type`.TypeFactory
 import org.codehaus.jackson.node.{NullNode, TreeTraversingParser}
 import collection.mutable.ArrayBuffer
-import org.codehaus.jackson.{JsonToken, JsonParser}
+import org.codehaus.jackson.map._
+import com.codahale.jerkson.Json
+import org.codehaus.jackson.{JsonNode, JsonToken, JsonParser}
 
 object CaseClassDeserializer {
   val paranamer = new CachingParanamer(new BytecodeReadingParanamer)
@@ -17,7 +18,7 @@ class CaseClassDeserializer(config: DeserializationConfig,
                             provider: DeserializerProvider) extends JsonDeserializer[Object] {
   import CaseClassDeserializer._
 
-  val constructors = javaType.getRawClass.getConstructors.view.map { constructor =>
+  val constructors = javaType.getRawClass.getConstructors.map { constructor =>
     val names = paranamer.lookupParameterNames(constructor).toSeq
     val types = constructor.getGenericParameterTypes.toSeq
     names.zip(types) -> constructor
@@ -59,6 +60,16 @@ class CaseClassDeserializer(config: DeserializationConfig,
       }
     }
 
-    throw ctxt.mappingException(javaType.getRawClass)
+    throw new JsonMappingException(errorMessage(node))
+  }
+
+  private def errorMessage(node: JsonNode) = {
+    val names = constructors.map { case (params, _) => params.map { case (name, _) => name }.mkString("[", ", ", "]") }
+    val options = names match {
+      case Seq(name) => name
+      case l => l.mkString("either ", " or ", "")
+    }
+    val existing = Json.parse[Map[String, JsonNode]](node).keys.mkString("[", ", ", "]")
+    "Invalid JSON. Needed %s, but found %s.".format(options, existing)
   }
 }
