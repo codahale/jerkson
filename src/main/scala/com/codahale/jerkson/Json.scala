@@ -143,7 +143,7 @@ object Json {
         parser.getCodec.readValue(parser, manifest2JavaType(mf))
       }
     } catch {
-      case e: JsonProcessingException => throw new ParsingException(e)
+      case e: JsonProcessingException => throw ParsingException(e)
     }
   }
 }

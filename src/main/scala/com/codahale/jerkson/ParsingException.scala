@@ -5,17 +5,24 @@ import org.codehaus.jackson.map.JsonMappingException
 import org.codehaus.jackson.{JsonParseException, JsonProcessingException}
 
 object ParsingException {
-  def format(cause: JsonProcessingException) = cause match {
-    case e: JsonMappingException => {
-      "Invalid JSON."
+  def apply(cause: JsonProcessingException): ParsingException = {
+    val message = cause match {
+      case e: JsonMappingException => {
+        if (e.getMessage.contains("deserialize instance of")) {
+          "Invalid JSON."
+        } else {
+          e.getMessage
+        }
+      }
+      case e: JsonParseException => {
+        val fake = new JsonParseException("", e.getLocation)
+        val msg = e.getMessage.replace(fake.getMessage, "").replaceAll(""" (\(from.*\))""", "")
+        "Malformed JSON. %s at character offset %d.".format(msg, e.getLocation.getCharOffset)
+      }
     }
-    case e: JsonParseException => {
-      val fake = new JsonParseException("", e.getLocation)
-      val msg = e.getMessage.replace(fake.getMessage, "").replaceAll(""" (\(from.*\))""", "")
-      "Malformed JSON. %s at character offset %d.".format(msg, e.getLocation.getCharOffset)
-    }
+    new ParsingException(message, cause)
   }
 }
 
-class ParsingException(cause: JsonProcessingException)
-        extends IOException(ParsingException.format(cause))
+class ParsingException(message: String, cause: JsonProcessingException)
+        extends IOException(message, cause)
