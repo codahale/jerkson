@@ -99,7 +99,9 @@ object JsonParsingSpec extends Spec {
       parse[JValue]("1.1") must beEqualTo(JFloat(1.1))
     }
 
-    // TODO: 11/29/10 <coda> -- add BigDecimal support
+    def `should be readable as a BigDecimal` {
+      parse[BigDecimal]("1.1") must beEqualTo(BigDecimal(1.1))
+    }
   }
 
   class `Parsing a JSON string` {

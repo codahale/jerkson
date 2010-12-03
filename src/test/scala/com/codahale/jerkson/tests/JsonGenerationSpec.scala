@@ -47,6 +47,12 @@ object JsonGenerationSpec extends Spec {
     }
   }
 
+  class `A BigDecimal` {
+    def `should generate a JSON float` {
+      generate(BigDecimal(15.5)) must beEqualTo("15.5")
+    }
+  }
+
   class `A String` {
     def `should generate a JSON string` {
       generate("woo") must beEqualTo("\"woo\"")
