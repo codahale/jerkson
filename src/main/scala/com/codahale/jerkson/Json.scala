@@ -10,8 +10,8 @@ import java.io._
 import org.codehaus.jackson.map.`type`.TypeFactory
 import org.codehaus.jackson.`type`.JavaType
 import com.codahale.jerkson.AST.{JValue, JNull}
-import org.codehaus.jackson.{JsonNode, JsonToken, JsonEncoding, JsonGenerator, JsonParser => JacksonParser}
 import org.codehaus.jackson.node.TreeTraversingParser
+import org.codehaus.jackson.{JsonProcessingException, JsonNode, JsonToken, JsonEncoding, JsonGenerator, JsonParser => JacksonParser}
 
 object Json {
   private val deserializerFactory = new ScalaDeserializerFactory
@@ -132,14 +132,18 @@ object Json {
   }
 
   private def parse[A](parser: JacksonParser, mf: Manifest[A]): A = {
-    if (mf.erasure == classOf[Option[_]]) {
-      // thanks for special-casing VALUE_NULL, guys
-      Option(parse(parser, mf.typeArguments.head)).asInstanceOf[A]
-    } else if (mf.erasure == classOf[JValue]) {
-      val value: A = parser.getCodec.readValue(parser, manifest2JavaType(mf))
-      if (value == null) JNull.asInstanceOf[A] else value
-    } else {
-      parser.getCodec.readValue(parser, manifest2JavaType(mf))
+    try {
+      if (mf.erasure == classOf[Option[_]]) {
+        // thanks for special-casing VALUE_NULL, guys
+        Option(parse(parser, mf.typeArguments.head)).asInstanceOf[A]
+      } else if (mf.erasure == classOf[JValue]) {
+        val value: A = parser.getCodec.readValue(parser, manifest2JavaType(mf))
+        if (value == null) JNull.asInstanceOf[A] else value
+      } else {
+        parser.getCodec.readValue(parser, manifest2JavaType(mf))
+      }
+    } catch {
+      case e: JsonProcessingException => throw new ParsingException(e)
     }
   }
 }

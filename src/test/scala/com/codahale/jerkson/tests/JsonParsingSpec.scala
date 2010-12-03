@@ -7,8 +7,43 @@ import org.codehaus.jackson.node.IntNode
 import com.codahale.jerkson.AST._
 import collection.mutable.ArrayBuffer
 import java.io.ByteArrayInputStream
+import com.codahale.jerkson.ParsingException
 
 object JsonParsingSpec extends Spec {
+  class `Parsing malformed JSON` {
+    def `should throw a ParsingException with an informative message` {
+      parse[Boolean]("jjf8;09") must throwA[ParsingException].like {
+        case e: ParsingException => {
+          e.getMessage must beEqualTo(
+            "Malformed JSON. Unexpected character ('j' (code 106)): expected a " +
+                    "valid value (number, String, array, object, 'true', 'false' " +
+                    "or 'null') at character offset 0."
+          )
+        }
+      }
+
+      parse[Person]("{\"ye\":1") must throwA[ParsingException].like {
+        case e: ParsingException => {
+          e.getMessage must beEqualTo(
+            "Malformed JSON. Unexpected end-of-input: expected close marker for " +
+                    "OBJECT at character offset 20."
+          )
+        }
+      }
+    }
+  }
+
+  class `Parsing invalid JSON` {
+    // TODO: 12/2/10 <coda> -- make these messages more informative
+    def `should throw a ParsingException with an informative message` {
+      parse[Person]("900") must throwA[ParsingException].like {
+        case e: ParsingException => {
+          e.getMessage must beEqualTo("Invalid JSON.")
+        }
+      }
+    }
+  }
+
   class `Parsing a JSON boolean` {
     def `should be readable as a Boolean` {
       parse[Boolean]("true") must beTrue
