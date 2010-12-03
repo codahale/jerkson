@@ -22,6 +22,8 @@ class ScalaDeserializerFactory extends BeanDeserializerFactory {
       createOptionDeserializer(config, javaType, provider)
     } else if (javaType.getRawClass == classOf[JValue]) {
       new JValueDeserializer
+    } else if (javaType.getRawClass == classOf[BigInt]) {
+      new BigIntDeserializer
     } else if (classOf[Product].isAssignableFrom(javaType.getRawClass)) {
       new CaseClassDeserializer(config, javaType, provider)
     } else super.createBeanDeserializer(config, javaType, provider)

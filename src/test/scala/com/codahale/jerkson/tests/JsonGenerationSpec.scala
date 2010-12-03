@@ -23,6 +23,12 @@ object JsonGenerationSpec extends Spec {
     }
   }
 
+  class `A BigInt` {
+    def `should generate a JSON int` {
+      generate(BigInt(15)) must beEqualTo("15")
+    }
+  }
+
   class `A Float` {
     def `should generate a JSON float` {
       generate(15.1F) must beEqualTo("15.1")

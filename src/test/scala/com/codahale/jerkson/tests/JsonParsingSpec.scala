@@ -81,7 +81,9 @@ object JsonParsingSpec extends Spec {
       parse[JValue]("1") must beEqualTo(JInt(1))
     }
 
-    // TODO: 11/29/10 <coda> -- add BigInt support
+    def `should be readable as a BigInt` {
+      parse[BigInt]("1") must beEqualTo(BigInt(1))
+    }
   }
 
   class `Parsing a JSON float` {
