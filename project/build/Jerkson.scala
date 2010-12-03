@@ -1,28 +1,27 @@
 import sbt._
 
 class Jerkson(info: ProjectInfo) extends DefaultProject(info)
-                                         with IdeaProject
-                                         with rsync.RsyncPublishing {
+                                         with IdeaProject {
   /**
    * Publish the source as well as the class files.
    */
-
   override def packageSrcJar = defaultJarPath("-sources.jar")
-
-  val sourceArtifact = sbt.Artifact(artifactID, "src", "jar", Some("sources"), Nil, None)
-
+  val sourceArtifact = Artifact.sources(artifactID)
   override def packageToPublishActions = super.packageToPublishActions ++ Seq(packageSrc)
 
   /**
-   * Publish via rsync.
+   * Publish via Ivy.
    */
 
-  def rsyncRepo = "codahale.com:/home/codahale/repo.codahale.com"
+  lazy val publishTo = Resolver.sftp("Personal Repo",
+                                     "codahale.com",
+                                     "/home/codahale/repo.codahale.com/") as ("codahale")
+  override def managedStyle = ManagedStyle.Maven
 
   /**
    * Repositories
    */
-  val codasRepo = "Coda's Repo" at "http://repo.codahale.com"
+  val doNotPublishToMe = "Coda's Repo" at "http://repo.codahale.com/"
 
   /**
    * Dependencies
