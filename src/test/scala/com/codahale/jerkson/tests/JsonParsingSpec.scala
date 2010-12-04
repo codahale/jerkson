@@ -236,6 +236,16 @@ object JsonParsingSpec extends Spec {
                                       Person(3, "Biscuit"),
                                       Person(4, "Louie")))
     }
+
+    def `should return an iterator of stream elements` {
+      val input = new ByteArrayInputStream(json.getBytes)
+
+      val people = new ArrayBuffer[Person]
+      stream[Person](input).toList must beEqualTo(List(Person(1, "Coda"),
+                                                       Person(2, "Niki"),
+                                                       Person(3, "Biscuit"),
+                                                       Person(4, "Louie")))
+    }
   }
 
   class `Parsing a int JSON node` {
