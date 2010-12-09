@@ -18,7 +18,7 @@ class ScalaSerializerFactory extends BeanSerializerFactory {
     } else if (classOf[JValue].isAssignableFrom(beanDesc.getBeanClass)) {
       new JValueSerializer
     } else if (classOf[Product].isAssignableFrom(beanDesc.getBeanClass)) {
-      new CaseClassSerializer
+      new CaseClassSerializer(beanDesc.getBeanClass)
     } else {
       super.constructBeanSerializer(config, beanDesc)
     }
