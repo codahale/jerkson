@@ -158,6 +158,12 @@ object JsonGenerationSpec extends Spec {
     }
   }
 
+  class `A case class with an overloaded field` {
+    def `should use the single-arity version` {
+      generate(CaseClassWithOverloadedField(1)) must beEqualTo("""{"id":1}""")
+    }
+  }
+
   class `A JObject` {
     def `should generate a JSON object with matching field values` {
       generate(JObject(List(JField("id", JInt(1)),
@@ -173,4 +179,8 @@ case class CaseClassWithLazyVal(id: Long) {
 case class CaseClassWithIgnoredField(id: Long) {
   @JsonIgnore
   val uncomfortable = "Bad Touch"
+}
+
+case class CaseClassWithOverloadedField(id: Long) {
+  def id(prefix: String): String = prefix + id
 }

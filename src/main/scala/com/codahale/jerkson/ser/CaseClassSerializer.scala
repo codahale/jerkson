@@ -13,12 +13,13 @@ class CaseClassSerializer extends JsonSerializer[Product] {
       f.getAnnotation(classOf[JsonIgnore]) != null || f.getName.contains("$")
     }
 
-    val methods = value.getClass.getDeclaredMethods.map { m => m.getName -> m }.toMap
-
+    val methods = value.getClass.getDeclaredMethods
+                        .filter { _.getParameterTypes.isEmpty }
+                        .map {m => m.getName -> m}.toMap
+    
     for (field <- nonIgnoredFields) {
       methods.get(field.getName) match {
-        case Some(method) if method.getParameterTypes.isEmpty =>
-          serializeMethod(method, json, value, provider)
+        case Some(method) => serializeMethod(method, json, value, provider)
         case None => serializeField(field, json, value, provider)
       }
     }
