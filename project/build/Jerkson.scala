@@ -21,12 +21,12 @@ class Jerkson(info: ProjectInfo) extends DefaultProject(info)
   /**
    * Repositories
    */
-  val doNotPublishToMe = "Coda's Repo" at "http://repo.codahale.com/"
+  val codaRepo = "Coda's Repo" at "http://repo.codahale.com/"
 
   /**
    * Dependencies
    */
-  val jacksonVersion = "1.6.2"
+  val jacksonVersion = "1.6.3"
   val jacksonCore = "org.codehaus.jackson" % "jackson-core-asl" % jacksonVersion withSources()
   val jacksonMapper = "org.codehaus.jackson" % "jackson-mapper-asl" % jacksonVersion withSources ()
   val paranamer = "com.thoughtworks.paranamer" % "paranamer" % "2.3" withSources()

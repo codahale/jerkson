@@ -3,6 +3,7 @@ package com.codahale.jerkson.tests
 import com.codahale.jerkson.AST._
 import com.codahale.jerkson.Json._
 import com.codahale.simplespec.Spec
+import org.codehaus.jackson.annotate.JsonIgnore
 
 object JsonGenerationSpec extends Spec {
   class `An Int` {
@@ -145,10 +146,41 @@ object JsonGenerationSpec extends Spec {
     }
   }
 
+  class `A case class with lazy fields` {
+    def `should generate a JSON object with those fields evaluated` {
+      generate(CaseClassWithLazyVal(1)) must beEqualTo("""{"id":1,"woo":"yeah"}""")
+    }
+  }
+
+  class `A case class with ignored fields` {
+    def `should generate a JSON object without those fields` {
+      generate(CaseClassWithIgnoredField(1)) must beEqualTo("""{"id":1}""")
+    }
+  }
+
+  class `A case class with an overloaded field` {
+    def `should use the single-arity version` {
+      generate(CaseClassWithOverloadedField(1)) must beEqualTo("""{"id":1}""")
+    }
+  }
+
   class `A JObject` {
     def `should generate a JSON object with matching field values` {
       generate(JObject(List(JField("id", JInt(1)),
                             JField("name", JString("Coda"))))) must beEqualTo("""{"id":1,"name":"Coda"}""")
     }
   }
+}
+
+case class CaseClassWithLazyVal(id: Long) {
+  lazy val woo = "yeah"
+}
+
+case class CaseClassWithIgnoredField(id: Long) {
+  @JsonIgnore
+  val uncomfortable = "Bad Touch"
+}
+
+case class CaseClassWithOverloadedField(id: Long) {
+  def id(prefix: String): String = prefix + id
 }

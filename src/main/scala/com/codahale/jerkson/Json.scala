@@ -11,7 +11,7 @@ import org.codehaus.jackson.map.`type`.TypeFactory
 import org.codehaus.jackson.`type`.JavaType
 import com.codahale.jerkson.AST.{JValue, JNull}
 import org.codehaus.jackson.node.TreeTraversingParser
-import org.codehaus.jackson.{JsonProcessingException, JsonNode, JsonToken, JsonEncoding, JsonGenerator, JsonParser => JacksonParser}
+import org.codehaus.jackson.{JsonProcessingException, JsonNode, JsonEncoding, JsonGenerator, JsonParser => JacksonParser}
 
 object Json {
   private val deserializerFactory = new ScalaDeserializerFactory
@@ -72,19 +72,21 @@ object Json {
   }
 
   /**
+   * Parse a streaming JSON array of particular types, returning an iterator
+   * of the elements of the stream.
+   */
+  def stream[A](input: InputStream)(implicit mf: Manifest[A]): Iterator[A] = {
+    val parser = factory.createJsonParser(input)
+    new StreamingIterator[A](parser, mf)
+  }
+
+  /**
    * Parse a streaming JSON array of particular types, passing each deserialized
    * object to a callback method.
    */
+  @deprecated("Use Json.stream instead")
   def parseStreamOf[A](input: InputStream)(callback: A => Unit)(implicit mf: Manifest[A]) {
-    val parser = factory.createJsonParser(input)
-
-    if (parser.nextToken() != JsonToken.START_ARRAY) {
-      throw new IllegalArgumentException("JSON stream is not an array")
-    }
-
-    while (parser.nextToken != JsonToken.END_ARRAY) {
-      callback(parse(parser, mf))
-    }
+    stream[A](input)(mf).foreach(callback)
   }
 
   /**
@@ -131,7 +133,7 @@ object Json {
                                  .map{m => manifest2JavaType(m)}.toArray: _*)
   }
 
-  private def parse[A](parser: JacksonParser, mf: Manifest[A]): A = {
+  private[jerkson] def parse[A](parser: JacksonParser, mf: Manifest[A]): A = {
     try {
       if (mf.erasure == classOf[Option[_]]) {
         // thanks for special-casing VALUE_NULL, guys

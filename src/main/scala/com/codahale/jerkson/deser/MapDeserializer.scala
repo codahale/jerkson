@@ -3,17 +3,18 @@ package com.codahale.jerkson.deser
 import org.codehaus.jackson.`type`.JavaType
 import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer}
 import org.codehaus.jackson.{JsonToken, JsonParser}
-import collection.mutable.Builder
 import org.codehaus.jackson.map.annotate.JsonCachable
+import collection.generic.{MapFactory, GenericCompanion}
+import collection.MapLike
 
 @JsonCachable
-class MapDeserializer(newBuilder: => Builder[(Object, Object), Object],
-                      valueType: JavaType,
-                      valueDeserializer: JsonDeserializer[Object])
+class MapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]]](companion: MapFactory[CC],
+                                                                          valueType: JavaType,
+                                                                          valueDeserializer: JsonDeserializer[Object])
   extends JsonDeserializer[Object] {
 
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
-    val builder = newBuilder
+    val builder = companion.newBuilder[String, Object]
 
     if (jp.getCurrentToken == JsonToken.START_OBJECT) {
       jp.nextToken()
