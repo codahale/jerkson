@@ -11,7 +11,7 @@ Requirements
 ------------
 
 * Scala 2.8.0 or 2.8.1
-* Jackson 1.6.2
+* Jackson 1.6.3
 * Paranamer 2.3
 
 
@@ -22,7 +22,7 @@ In your [simple-build-tool](http://code.google.com/p/simple-build-tool/) project
 file, add Jerkson as a dependency:
     
     val codaRepo = "Coda Hale's Repository" at "http://repo.codahale.com/"
-    val jerkson = "com.codahale" %% "jerkson" % "0.1.0" withSources()
+    val jerkson = "com.codahale" %% "jerkson" % "0.1.1" withSources()
 
 
 Parsing JSON
@@ -41,7 +41,7 @@ Parsing JSON
     parse[Person]("""{"id":1,"name":"Coda"}""") //=> Person(1,"Coda")
     
     // Parse streaming arrays of things
-    parseStreamOf[Person](inputStream) { p =>
+    stream[Person](inputStream).foreach { p =>
       println("New person: " + p)
     }
 
