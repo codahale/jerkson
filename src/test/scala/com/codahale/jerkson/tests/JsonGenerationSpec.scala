@@ -170,6 +170,18 @@ object JsonGenerationSpec extends Spec {
                             JField("name", JString("Coda"))))) must beEqualTo("""{"id":1,"name":"Coda"}""")
     }
   }
+
+  class `A Left[String]` {
+    def `should generate a JSON string` {
+      generate(Left("woo")) must beEqualTo("\"woo\"")
+    }
+  }
+
+  class `A Right[String]` {
+    def `should generate a JSON string` {
+      generate(Right("woo")) must beEqualTo("\"woo\"")
+    }
+  }
 }
 
 case class CaseClassWithLazyVal(id: Long) {
