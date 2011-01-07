@@ -17,6 +17,8 @@ class ScalaSerializerFactory extends BeanSerializerFactory {
       new MapSerializer
     } else if (classOf[JValue].isAssignableFrom(beanDesc.getBeanClass)) {
       new JValueSerializer
+    } else if (classOf[Either[_,_]].isAssignableFrom(beanDesc.getBeanClass)) {
+      new EitherSerializer
     } else if (classOf[Product].isAssignableFrom(beanDesc.getBeanClass)) {
       new CaseClassSerializer(beanDesc.getBeanClass)
     } else {

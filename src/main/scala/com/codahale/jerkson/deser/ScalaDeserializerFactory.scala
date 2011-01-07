@@ -27,6 +27,8 @@ class ScalaDeserializerFactory extends BeanDeserializerFactory {
       new BigIntDeserializer
     } else if (javaType.getRawClass == classOf[BigDecimal]) {
       new BigDecimalDeserializer
+    } else if (javaType.getRawClass == classOf[Either[_,_]]) {
+      new EitherDeserializer(config, javaType, provider)
     } else if (classOf[Product].isAssignableFrom(javaType.getRawClass)) {
       new CaseClassDeserializer(config, javaType, provider)
     } else super.createBeanDeserializer(config, javaType, provider)
