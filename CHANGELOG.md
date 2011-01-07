@@ -1,3 +1,10 @@
+v0.1.2: Jan 07 2011
+===================
+
+* Upgraded to [Jackson 1.7.0](http://jackson.codehaus.org/1.7.0/release-notes/VERSION).
+* Added support for `Either[A, B]` instances.
+* Internal refactoring of `Json`.
+
 v0.1.1: Dec 09 2010
 ===================
 

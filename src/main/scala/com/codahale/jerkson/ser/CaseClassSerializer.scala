@@ -2,51 +2,30 @@ package com.codahale.jerkson.ser
 
 import org.codehaus.jackson.JsonGenerator
 import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
-import java.lang.reflect.{Method, Field}
 import org.codehaus.jackson.annotate.JsonIgnore
 
-class CaseClassSerializer extends JsonSerializer[Product] {
-  def serialize(value: Product, json: JsonGenerator, provider: SerializerProvider) {
+class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[A] {
+  private val nonIgnoredFields = klass.getDeclaredFields.filterNot { f =>
+    f.getAnnotation(classOf[JsonIgnore]) != null || f.getName.contains("$")
+  }
+
+  private val methods = klass.getDeclaredMethods
+                                .filter { _.getParameterTypes.isEmpty }
+                                .map { m => m.getName -> m }.toMap
+  
+  def serialize(value: A, json: JsonGenerator, provider: SerializerProvider) {
     json.writeStartObject()
-
-    val nonIgnoredFields = value.getClass.getDeclaredFields.filterNot { f =>
-      f.getAnnotation(classOf[JsonIgnore]) != null || f.getName.contains("$")
-    }
-
-    val methods = value.getClass.getDeclaredMethods
-                        .filter { _.getParameterTypes.isEmpty }
-                        .map {m => m.getName -> m}.toMap
-    
     for (field <- nonIgnoredFields) {
-      methods.get(field.getName) match {
-        case Some(method) => serializeMethod(method, json, value, provider)
-        case None => serializeField(field, json, value, provider)
+      val methodOpt = methods.get(field.getName)
+      json.writeFieldName(methodOpt.map { _.getName }.getOrElse(field.getName))
+      val fieldValue: Object = methodOpt.map { _.invoke(value) }.getOrElse(field.get(value))
+      if (fieldValue == null) {
+        provider.getNullValueSerializer.serialize(null, json, provider)
+      } else {
+        val serializer = provider.findValueSerializer(fieldValue.getClass)
+        serializer.serialize(fieldValue, json, provider)
       }
     }
     json.writeEndObject()
-  }
-
-  private def serializeMethod(method: Method, json: JsonGenerator, value: Product, provider: SerializerProvider): Unit = {
-    method.setAccessible(true)
-    json.writeFieldName(method.getName)
-    val methodValue: Object = method.invoke(value)
-    if (methodValue == null) {
-      provider.getNullValueSerializer.serialize(null, json, provider)
-    } else {
-      val serializer = provider.findValueSerializer(methodValue.getClass)
-      serializer.serialize(methodValue, json, provider)
-    }
-  }
-
-  private def serializeField(field: Field, json: JsonGenerator, value: Product, provider: SerializerProvider): Unit = {
-    field.setAccessible(true)
-    json.writeFieldName(field.getName)
-    val fieldValue: Object = field.get(value)
-    if (fieldValue == null) {
-      provider.getNullValueSerializer.serialize(null, json, provider)
-    } else {
-      val serializer = provider.findValueSerializer(fieldValue.getClass)
-      serializer.serialize(fieldValue, json, provider)
-    }
   }
 }
