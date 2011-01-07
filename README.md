@@ -11,7 +11,7 @@ Requirements
 ------------
 
 * Scala 2.8.0 or 2.8.1
-* Jackson 1.6.3
+* Jackson 1.7.0
 * Paranamer 2.3
 
 
