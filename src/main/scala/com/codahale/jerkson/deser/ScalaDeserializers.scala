@@ -1,14 +1,19 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.map.deser.BeanDeserializerFactory
 import org.codehaus.jackson.`type`.JavaType
-import org.codehaus.jackson.map.{DeserializerProvider, DeserializationConfig}
-import com.codahale.jerkson.AST.JValue
-import collection.MapLike
+import org.codehaus.jackson.map._
 import collection.generic.{MapFactory, GenericCompanion}
+import collection.MapLike
+import com.codahale.jerkson.AST.JValue
 
-class ScalaDeserializerFactory extends BeanDeserializerFactory {
-  override def createBeanDeserializer(config: DeserializationConfig, javaType: JavaType, provider: DeserializerProvider) = {
+/**
+ *
+ * @author coda
+ */
+class ScalaDeserializers extends Deserializers.None {
+  override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
+                            provider: DeserializerProvider, beanDesc: BeanDescription,
+                            property: BeanProperty) = {
     if (javaType.getRawClass == classOf[List[_]]) {
       createSeqDeserializer(config, javaType, List, provider)
     } else if (javaType.getRawClass == classOf[Seq[_]]) {
@@ -31,7 +36,7 @@ class ScalaDeserializerFactory extends BeanDeserializerFactory {
       new EitherDeserializer(config, javaType, provider)
     } else if (classOf[Product].isAssignableFrom(javaType.getRawClass)) {
       new CaseClassDeserializer(config, javaType, provider)
-    } else super.createBeanDeserializer(config, javaType, provider)
+    } else null
   }
 
   private def createSeqDeserializer[CC[X] <: Traversable[X]](config: DeserializationConfig,

@@ -1,9 +1,6 @@
 package com.codahale.jerkson
 
 import io.Source
-import deser.ScalaDeserializerFactory
-import ser.ScalaSerializerFactory
-import org.codehaus.jackson.map.deser.StdDeserializerProvider
 import org.codehaus.jackson.map.{MappingJsonFactory, ObjectMapper}
 import java.net.URL
 import java.io._
@@ -14,12 +11,8 @@ import org.codehaus.jackson.node.TreeTraversingParser
 import org.codehaus.jackson.{JsonProcessingException, JsonNode, JsonEncoding, JsonGenerator, JsonParser => JacksonParser}
 
 object Json {
-  private val deserializerFactory = new ScalaDeserializerFactory
-  private val serializerFactory = new ScalaSerializerFactory
-
   private val mapper = new ObjectMapper
-  mapper.setSerializerFactory(serializerFactory)
-  mapper.setDeserializerProvider(new StdDeserializerProvider(deserializerFactory))
+  mapper.registerModule(new ScalaModule)
   
   private val factory = new MappingJsonFactory(mapper)
   factory.enable(JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT)
