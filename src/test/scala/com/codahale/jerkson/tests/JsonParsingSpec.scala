@@ -255,6 +255,18 @@ object JsonParsingSpec extends Spec {
       parse[Int](node) must beEqualTo(1)
     }
   }
+
+  class `Parsing a JSON int as an Either[Int, String]` {
+    def `should return a Left` {
+      parse[Either[Int, String]]("1") must beEqualTo(Left(1))
+    }
+  }
+
+  class `Parsing a JSON string as an Either[Int, String]` {
+    def `should return a Right` {
+      parse[Either[Int, String]]("\"woo\"") must beEqualTo(Right("woo"))
+    }
+  }
 }
 
 case class Person(id: Long, name: String) {
