@@ -10,7 +10,7 @@ brings Scala's ease-of-use to Jackson's features.
 Requirements
 ------------
 
-* Scala 2.8.0 or 2.8.1
+* Scala 2.8.1
 * Jackson 1.7.0
 * Paranamer 2.3
 
