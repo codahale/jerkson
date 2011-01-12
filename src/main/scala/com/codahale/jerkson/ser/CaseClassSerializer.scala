@@ -25,6 +25,7 @@ class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[
         val serializer = provider.findValueSerializer(fieldValue.getClass)
         serializer.serialize(fieldValue, json, provider)
       }
+      json.flush()
     }
     json.writeEndObject()
   }

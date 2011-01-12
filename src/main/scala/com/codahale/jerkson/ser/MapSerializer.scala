@@ -20,6 +20,7 @@ class MapSerializer extends JsonSerializer[Map[_,_]] {
         val serializer = provider.findValueSerializer(obj.getClass)
         serializer.serialize(obj, json, provider)
       }
+      json.flush()
     }
     json.writeEndObject()
   }

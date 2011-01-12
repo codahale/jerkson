@@ -18,6 +18,7 @@ class SeqSerializer extends JsonSerializer[Seq[_]] {
         val serializer = provider.findValueSerializer(obj.getClass)
         serializer.serialize(obj, json, provider)
       }
+      json.flush()
     }
     json.writeEndArray()
   }
