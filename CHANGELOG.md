@@ -1,3 +1,8 @@
+v0.1.3: Jan 12 2010
+===================
+
+* Quick fix for potential buffer overrun errors in huge case classes (JACKSON-462).
+
 v0.1.2: Jan 07 2011
 ===================
 
