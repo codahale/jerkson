@@ -24,5 +24,5 @@ object ParsingException {
   }
 }
 
-class ParsingException(message: String, cause: JsonProcessingException)
+class ParsingException(message: String, cause: Throwable)
         extends IOException(message, cause)
