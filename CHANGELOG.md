@@ -1,4 +1,10 @@
-v0.1.3: Jan 12 2010
+v0.1.4: Jan 17 2011
+===================
+
+* Upgraded to Jackson 1.7.1, which fixes the buffer overruns
+* Handle empty JSON documents w/o resorting to `EOFException`
+
+v0.1.3: Jan 12 2011
 ===================
 
 * Quick fix for potential buffer overrun errors in huge case classes (JACKSON-462).

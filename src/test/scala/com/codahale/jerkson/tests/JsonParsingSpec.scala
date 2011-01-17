@@ -51,6 +51,17 @@ object JsonParsingSpec extends Spec {
     }
   }
 
+  class `Parsing an empty document` {
+    def `should throw a ParsingException with an informative message` {
+      val input = new ByteArrayInputStream(Array.empty)
+      parse[Person](input) must throwA[ParsingException].like {
+        case e: ParsingException => {
+          e.getMessage must beEqualTo("JSON document ended unexpectedly.")
+        }
+      }
+    }
+  }
+
   class `Parsing a JSON boolean` {
     def `should be readable as a Boolean` {
       parse[Boolean]("true") must beTrue

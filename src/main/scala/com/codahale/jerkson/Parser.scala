@@ -1,11 +1,11 @@
 package com.codahale.jerkson
 
 import io.Source
-import java.io.{Reader, File, InputStream}
 import java.net.URL
 import com.codahale.jerkson.AST.{JValue, JNull}
 import org.codehaus.jackson.{JsonNode, JsonParser, JsonProcessingException}
 import org.codehaus.jackson.node.TreeTraversingParser
+import java.io.{EOFException, Reader, File, InputStream}
 
 trait Parser extends Factory {
   /**
@@ -82,6 +82,7 @@ trait Parser extends Factory {
       }
     } catch {
       case e: JsonProcessingException => throw ParsingException(e)
+      case e: EOFException => throw new ParsingException("JSON document ended unexpectedly.", e)
     }
   }
 }

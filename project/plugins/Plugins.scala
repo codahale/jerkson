@@ -5,5 +5,5 @@ class Plugins(info: ProjectInfo) extends PluginDefinition(info) {
   val sbtIdea = "com.github.mpeltonen" % "sbt-idea-plugin" % "0.2.0"
 
   val codaRepo = "Coda Hale's Repository" at "http://repo.codahale.com/"
-  val mavenSBT = "com.codahale" % "maven-sbt" % "0.1.0-SNAPSHOT"
+  val mavenSBT = "com.codahale" % "maven-sbt" % "0.1.0"
 }
