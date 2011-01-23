@@ -6,9 +6,9 @@ object AST {
     
     def valueAs[A] : A = value.asInstanceOf[A]
     
-    def \(fieldName : String) : Option[JValue] = None
+    def \(fieldName : String) : JValue = JNull
     
-    def apply(idx : Int) : Option[JValue] = None
+    def apply(idx : Int) : JValue = JNull
     
     def \\(fieldName : String) : Seq[JValue] = Nil
   }
@@ -28,11 +28,11 @@ object AST {
   case class JArray(elements: List[JValue]) extends JValue {
     def value = null
     
-    override def apply(index : Int) : Option[JValue] = {
+    override def apply(index : Int) : JValue = {
       try {
-        Some(elements(index))
+        elements(index)
       } catch {
-        case _ => None
+        case _ => JNull
       }
     }
   }
@@ -42,12 +42,12 @@ object AST {
   case class JObject(fields: List[JField]) extends JValue {
     def value = null
     
-    override def \(fieldName : String) : Option[JValue] = {
+    override def \(fieldName : String) : JValue = {
       fields.find { case JField(name, _) =>
         name == fieldName
       }.map { case JField(_, value) =>
         value
-      }
+      }.getOrElse(JNull)
     }
     
     override def \\(fieldName : String) : Seq[JValue] = {

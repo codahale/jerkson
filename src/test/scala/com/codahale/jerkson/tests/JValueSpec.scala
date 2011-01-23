@@ -9,29 +9,29 @@ import AST._
 object JValueSpec extends Spec {
   class `selecting single nodes` {
     def `should return None with primitives` {
-      parse[JValue]("8") \ "blah" must beNone
+      parse[JValue]("8") \ "blah" must be(JNull)
     }
     
     def `should return None on nonexistant fields` {
-      parse[JValue]("{\"butt\": \"poop\"}") \ "anus" must beNone
+      parse[JValue]("{\"butt\": \"poop\"}") \ "anus" must be(JNull)
     }
     
     def `should return a JValue with an existing field` {
-      parse[JValue]("{\"butt\": \"poop\"}") \ "butt" must beSome(JString("poop"))
+      parse[JValue]("{\"butt\": \"poop\"}") \ "butt" must beEqualTo(JString("poop"))
     }
   }
   
   class `selecting array members` {
     def `should return  None with primitives` {
-      parse[JValue]("\"derp\"").apply(0) must beNone
+      parse[JValue]("\"derp\"").apply(0) must be(JNull)
     }
     
     def `should return None on out of bounds` {
-      parse[JValue]("[0, 1, 2, 3]").apply(4) must beNone
+      parse[JValue]("[0, 1, 2, 3]").apply(4) must be(JNull)
     }
     
     def `should return a JValue` {
-      parse[JValue]("[0, 1, 2, 3]").apply(2) must beSome(JInt(2))
+      parse[JValue]("[0, 1, 2, 3]").apply(2) must beEqualTo(JInt(2))
     }
   }
   
