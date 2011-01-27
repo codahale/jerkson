@@ -193,6 +193,22 @@ object JsonParsingSpec extends Spec {
     }
   }
 
+  class `Parsing a JSON object with an empty object field value` {
+    def `should be readable as a Map[String, Map[String, Int]]` {
+      parse[Map[String, Map[String, Int]]](""" {"a": {"b": 1}, "c":{}} """) must beEqualTo(
+        Map("a" -> Map("b" -> 1), "c" -> Map.empty[String, Int]))
+    }
+
+    def `should be readable as a case class` {
+      parse[Team](""" {"name":"suck", "leader": {}} """) must beEqualTo(Team("suck", None))
+    }
+
+    def `should be readable as a JValue` {
+      parse[JValue](""" {"a": {"b": 1}, "c":{}} """) must beEqualTo(
+        JObject(List(JField("a", JObject(List(JField("b", JInt(1))))), JField("c", JObject(List.empty[JField])))))
+    }
+  }
+
   class `Caching a JSON map deserializer` {
     def `should not cache Map builders` {
       parse[Map[String, Int]](""" {"one":1, "two": 2} """) must beEqualTo(Map("one" -> 1,
@@ -213,6 +229,12 @@ object JsonParsingSpec extends Spec {
       parse[ClassWithOption](""" {"one": "1"} """) must beEqualTo(ClassWithOption("1", None))
 
       parse[ClassWithOption](""" {"one": "1", "two": "2"} """) must beEqualTo(ClassWithOption("1", Some("2")))
+    }
+
+    def `should handle nested classes` {
+      parse[Team](""" {"name":"awesome", "leader": {"id":1, "name": "Coda"}} """) must beEqualTo(Team("awesome", Some(Person(1, "Coda"))))
+
+      parse[Team](""" {"name":"lame"} """) must beEqualTo(Team("lame", None))
     }
 
     def `should handle JsonNode parameters` {
@@ -283,6 +305,8 @@ object JsonParsingSpec extends Spec {
 case class Person(id: Long, name: String) {
   def this(id: Long, firstName: String, lastName: String) = this(id, firstName + " " + lastName)
 }
+
+case class Team(name: String, leader: Option[Person])
 
 case class ClassWithOption(one: String, two: Option[String])
 

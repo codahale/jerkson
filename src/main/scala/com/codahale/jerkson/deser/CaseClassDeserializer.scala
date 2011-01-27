@@ -30,6 +30,10 @@ class CaseClassDeserializer(config: DeserializationConfig,
       jp.nextToken()
     }
 
+    if (jp.getCurrentToken == JsonToken.END_OBJECT) {
+      return null
+    }
+
     if (jp.getCurrentToken() != JsonToken.FIELD_NAME) {
       throw ctxt.mappingException(javaType.getRawClass)
     }

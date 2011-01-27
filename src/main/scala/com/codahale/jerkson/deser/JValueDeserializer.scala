@@ -23,7 +23,8 @@ class JValueDeserializer extends JsonDeserializer[Object] {
       }
       case JsonToken.START_OBJECT => {
         jp.nextToken()
-        deserialize(jp, ctxt)
+        if (jp.getCurrentToken == JsonToken.END_OBJECT) JObject(List.empty[JField])
+        else deserialize(jp, ctxt)
       }
       case JsonToken.FIELD_NAME => {
         val fields = new ArrayBuffer[JField]
