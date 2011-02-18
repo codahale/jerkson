@@ -105,8 +105,8 @@ object JsonGenerationSpec extends Spec {
   }
 
   class `A None` {
-    def `should not generate anything` {
-      generate(None) must beEqualTo("")
+    def `should generate a JSON null` {
+      generate(None) must beEqualTo("null")
     }
   }
 
