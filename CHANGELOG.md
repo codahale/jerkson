@@ -1,3 +1,8 @@
+v0.1.5: Feb 18 2011
+===================
+
+* Added ability to actually serialize `Option` instances. (h/t Alex Cruise)
+
 v0.1.4: Jan 17 2011
 ===================
 

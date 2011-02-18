@@ -98,6 +98,18 @@ object JsonGenerationSpec extends Spec {
     }
   }
 
+  class `A Some[Int]` {
+    def `should generate a JSON int` {
+      generate(Some(12)) must beEqualTo("12")
+    }
+  }
+
+  class `A None` {
+    def `should not generate anything` {
+      generate(None) must beEqualTo("")
+    }
+  }
+
   class `A Seq[Int]` {
     def `should generate a JSON array of ints` {
       generate(Seq(1, 2, 3)) must beEqualTo("[1,2,3]")
