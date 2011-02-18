@@ -176,6 +176,18 @@ object JsonGenerationSpec extends Spec {
     }
   }
 
+  class `A case class with inherited mutable properties` {
+    def `should be serialized with the inherited properties` {
+      generate(CaseClassWithInheritedMutable("hello")) must beEqualTo("""{"pokeMe":0,"s":"hello"}""")
+    }
+  }
+
+  class `A case class with an Option` {
+    def `should not barf` {
+      generate(CaseClassWithOption(Some("what"))) must beEqualTo("""{"maybe":"what"}""")
+    }
+  }
+
   class `A JObject` {
     def `should generate a JSON object with matching field values` {
       generate(JObject(List(JField("id", JInt(1)),
@@ -208,3 +220,11 @@ case class CaseClassWithIgnoredField(id: Long) {
 case class CaseClassWithOverloadedField(id: Long) {
   def id(prefix: String): String = prefix + id
 }
+
+abstract class InheritedMutable {
+  var pokeMe: Int = 0
+}
+
+case class CaseClassWithInheritedMutable(s: String) extends InheritedMutable
+
+case class CaseClassWithOption(maybe: Option[String])

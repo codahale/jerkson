@@ -3,13 +3,30 @@ package com.codahale.jerkson.ser
 import org.codehaus.jackson.JsonGenerator
 import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
 import org.codehaus.jackson.annotate.JsonIgnore
+import java.lang.reflect.Field
 
 class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[A] {
-  private val nonIgnoredFields = klass.getDeclaredFields.filterNot { f =>
-    f.getAnnotation(classOf[JsonIgnore]) != null || f.getName.contains("$")
+  val PRODUCT = classOf[Product]
+  val OBJECT  = classOf[AnyRef]
+
+  private val nonIgnoredFields = {
+    def collectFields(clazz: Class[_], gotSoFar: Vector[Field]): Vector[Field] = {
+      clazz match {
+        case null | PRODUCT | OBJECT => // TODO others?
+          gotSoFar
+
+        case someOtherClass =>
+          val fields = someOtherClass.getDeclaredFields.filterNot { f =>
+            f.getAnnotation(classOf[JsonIgnore]) != null || f.getName.contains("$")
+          }
+          collectFields(someOtherClass.getSuperclass, Vector(fields: _*) ++ gotSoFar)
+      }
+    }
+
+    collectFields(klass, Vector()).toArray
   }
 
-  private val methods = klass.getDeclaredMethods
+  private val methods = klass.getMethods
                                 .filter { _.getParameterTypes.isEmpty }
                                 .map { m => m.getName -> m }.toMap
   
