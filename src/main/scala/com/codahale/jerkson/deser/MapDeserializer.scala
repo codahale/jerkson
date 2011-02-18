@@ -20,17 +20,19 @@ class MapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]]](compan
       jp.nextToken()
     }
 
-    if (jp.getCurrentToken() != JsonToken.FIELD_NAME) {
-      throw ctxt.mappingException(valueType.getRawClass)
-    }
+    if (jp.getCurrentToken != JsonToken.END_OBJECT) {
+      // Dead Maps tell no fields
+      if (jp.getCurrentToken() != JsonToken.FIELD_NAME) {
+        throw ctxt.mappingException(valueType.getRawClass)
+      }
 
-    while (jp.getCurrentToken() != JsonToken.END_OBJECT) {
-      val name = jp.getCurrentName
-      jp.nextToken()
-      builder += ((name, valueDeserializer.deserialize(jp, ctxt)))
-      jp.nextToken()
+      while (jp.getCurrentToken() != JsonToken.END_OBJECT) {
+        val name = jp.getCurrentName
+        jp.nextToken()
+        builder += ((name, valueDeserializer.deserialize(jp, ctxt)))
+        jp.nextToken()
+      }
     }
-
     builder.result
   }
 }

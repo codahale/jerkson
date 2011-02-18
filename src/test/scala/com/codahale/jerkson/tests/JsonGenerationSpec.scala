@@ -105,8 +105,8 @@ object JsonGenerationSpec extends Spec {
   }
 
   class `A None` {
-    def `should not generate anything` {
-      generate(None) must beEqualTo("")
+    def `should generate a JSON null` {
+      generate(None) must beEqualTo("null")
     }
   }
 
@@ -188,13 +188,6 @@ object JsonGenerationSpec extends Spec {
     }
   }
 
-  class `A case class with a None` {
-    def `should not barf` {
-      generate(CaseClassWithOption(None)) must beEqualTo("""{}""")
-    }
-  }
-
-
   class `A JObject` {
     def `should generate a JSON object with matching field values` {
       generate(JObject(List(JField("id", JInt(1)),
@@ -211,6 +204,12 @@ object JsonGenerationSpec extends Spec {
   class `A Right[String]` {
     def `should generate a JSON string` {
       generate(Right("woo")) must beEqualTo("\"woo\"")
+    }
+  }
+
+  class `An empty Map` {
+    def `should generate the right stuff` {
+      generate(CaseClassWithMap("one",Map())) must beEqualTo("""{"one":"one","two":{}}""")
     }
   }
 }
@@ -235,3 +234,5 @@ abstract class InheritedMutable {
 case class CaseClassWithInheritedMutable(s: String) extends InheritedMutable
 
 case class CaseClassWithOption(maybe: Option[String])
+
+case class CaseClassWithMap(one: String, two: Map[String,String])

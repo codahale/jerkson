@@ -35,16 +35,13 @@ class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[
     json.writeStartObject()
     for (field <- nonIgnoredFields) {
       val methodOpt = methods.get(field.getName)
+      json.writeFieldName(methodOpt.map { _.getName }.getOrElse(field.getName))
       val fieldValue: Object = methodOpt.map { _.invoke(value) }.getOrElse(field.get(value))
-
-      if (!(OPTION.isAssignableFrom(field.getType) && fieldValue == None)) {
-        json.writeFieldName(methodOpt.map { _.getName }.getOrElse(field.getName))
-        if (fieldValue == null) {
-          provider.getNullValueSerializer.serialize(null, json, provider)
-        } else {
-          val serializer = provider.findValueSerializer(fieldValue.getClass)
-          serializer.serialize(fieldValue, json, provider)
-        }
+      if (fieldValue == null) {
+        provider.getNullValueSerializer.serialize(null, json, provider)
+      } else {
+        val serializer = provider.findValueSerializer(fieldValue.getClass)
+        serializer.serialize(fieldValue, json, provider)
       }
       json.flush()
     }

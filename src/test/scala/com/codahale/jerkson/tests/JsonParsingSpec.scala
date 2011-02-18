@@ -8,6 +8,7 @@ import com.codahale.jerkson.AST._
 import collection.mutable.ArrayBuffer
 import java.io.ByteArrayInputStream
 import com.codahale.jerkson.ParsingException
+import collection.immutable.HashMap
 
 object JsonParsingSpec extends Spec {
   class `Parsing malformed JSON` {
@@ -278,6 +279,24 @@ object JsonParsingSpec extends Spec {
       parse[Either[Int, String]]("\"woo\"") must beEqualTo(Right("woo"))
     }
   }
+
+  class `Empty maps are people too` {
+    def `should parse correctly` {
+      parse[HashMap[Any,Any]]("""{}""") must beEqualTo(Map())
+    }
+  }
+
+  class `Empty maps as case class parameters` {
+    def `should parse the hell out of it` {
+      parse[ClassWithMap](
+      """
+      {
+        "one":"hello",
+        "two":{}
+      }
+      """) must beEqualTo(ClassWithMap("hello",Map()))
+    }
+  }
 }
 
 case class Person(id: Long, name: String) {
@@ -287,3 +306,5 @@ case class Person(id: Long, name: String) {
 case class ClassWithOption(one: String, two: Option[String])
 
 case class ClassWithJsonNode(one: String, two: JsonNode)
+
+case class ClassWithMap(one: String, two: Map[String,String])
