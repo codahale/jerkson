@@ -182,11 +182,18 @@ object JsonGenerationSpec extends Spec {
     }
   }
 
-  class `A case class with an Option` {
-    def `should not barf` {
+  class `A case class with a Some` {
+    def `should output the bare value` {
       generate(CaseClassWithOption(Some("what"))) must beEqualTo("""{"maybe":"what"}""")
     }
   }
+
+  class `A case class with a None` {
+    def `should not barf` {
+      generate(CaseClassWithOption(None)) must beEqualTo("""{}""")
+    }
+  }
+
 
   class `A JObject` {
     def `should generate a JSON object with matching field values` {

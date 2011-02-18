@@ -8,6 +8,7 @@ import java.lang.reflect.Field
 class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[A] {
   val PRODUCT = classOf[Product]
   val OBJECT  = classOf[AnyRef]
+  val OPTION  = classOf[Option[_]]
 
   private val nonIgnoredFields = {
     def collectFields(clazz: Class[_], gotSoFar: Vector[Field]): Vector[Field] = {
@@ -34,13 +35,16 @@ class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[
     json.writeStartObject()
     for (field <- nonIgnoredFields) {
       val methodOpt = methods.get(field.getName)
-      json.writeFieldName(methodOpt.map { _.getName }.getOrElse(field.getName))
       val fieldValue: Object = methodOpt.map { _.invoke(value) }.getOrElse(field.get(value))
-      if (fieldValue == null) {
-        provider.getNullValueSerializer.serialize(null, json, provider)
-      } else {
-        val serializer = provider.findValueSerializer(fieldValue.getClass)
-        serializer.serialize(fieldValue, json, provider)
+
+      if (!(OPTION.isAssignableFrom(field.getType) && fieldValue == None)) {
+        json.writeFieldName(methodOpt.map { _.getName }.getOrElse(field.getName))
+        if (fieldValue == null) {
+          provider.getNullValueSerializer.serialize(null, json, provider)
+        } else {
+          val serializer = provider.findValueSerializer(fieldValue.getClass)
+          serializer.serialize(fieldValue, json, provider)
+        }
       }
       json.flush()
     }
