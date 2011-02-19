@@ -4,7 +4,7 @@ import org.codehaus.jackson.`type`.JavaType
 import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer}
 import org.codehaus.jackson.{JsonToken, JsonParser}
 import org.codehaus.jackson.map.annotate.JsonCachable
-import collection.generic.{MapFactory, GenericCompanion}
+import collection.generic.MapFactory
 import collection.MapLike
 
 @JsonCachable
@@ -18,10 +18,6 @@ class MapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]]](compan
 
     if (jp.getCurrentToken == JsonToken.START_OBJECT) {
       jp.nextToken()
-    }
-
-    if (jp.getCurrentToken() != JsonToken.FIELD_NAME) {
-      throw ctxt.mappingException(valueType.getRawClass)
     }
 
     while (jp.getCurrentToken() != JsonToken.END_OBJECT) {
