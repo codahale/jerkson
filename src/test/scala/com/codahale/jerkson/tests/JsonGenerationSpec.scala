@@ -3,7 +3,7 @@ package com.codahale.jerkson.tests
 import com.codahale.jerkson.AST._
 import com.codahale.jerkson.Json._
 import com.codahale.simplespec.Spec
-import org.codehaus.jackson.annotate.JsonIgnore
+import org.codehaus.jackson.annotate.{JsonIgnoreProperties, JsonIgnore}
 
 object JsonGenerationSpec extends Spec {
   class `An Int` {
@@ -170,6 +170,13 @@ object JsonGenerationSpec extends Spec {
     }
   }
 
+  class `A case class with JsonIgnoredProperties` {
+    def `should generate a JSON object without those fields` {
+      generate(CaseClassWithJsonIgnoreProperties(1)) must beEqualTo("""{"id":1}""")
+    }
+  }
+
+
   class `A case class with an overloaded field` {
     def `should use the single-arity version` {
       generate(CaseClassWithOverloadedField(1)) must beEqualTo("""{"id":1}""")
@@ -185,6 +192,12 @@ object JsonGenerationSpec extends Spec {
   class `A case class with a Some` {
     def `should output the bare value` {
       generate(CaseClassWithOption(Some("what"))) must beEqualTo("""{"maybe":"what"}""")
+    }
+  }
+
+  class `A case class with an evil Some(null)` {
+    def `should not barf` {
+      generate(CaseClassWithOption(Some(null))) must beEqualTo("""{"maybe":null}""")
     }
   }
 
@@ -220,6 +233,11 @@ case class CaseClassWithLazyVal(id: Long) {
 
 case class CaseClassWithIgnoredField(id: Long) {
   @JsonIgnore
+  val uncomfortable = "Bad Touch"
+}
+
+@JsonIgnoreProperties(Array("uncomfortable"))
+case class CaseClassWithJsonIgnoreProperties(id: Long) {
   val uncomfortable = "Bad Touch"
 }
 

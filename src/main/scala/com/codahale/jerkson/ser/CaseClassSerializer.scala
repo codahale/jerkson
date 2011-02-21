@@ -2,13 +2,22 @@ package com.codahale.jerkson.ser
 
 import org.codehaus.jackson.JsonGenerator
 import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
-import org.codehaus.jackson.annotate.JsonIgnore
 import java.lang.reflect.Field
+import org.codehaus.jackson.annotate.{JsonIgnoreProperties, JsonIgnore}
 
-class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[A] {
+object CaseClassSerializer {
   val PRODUCT = classOf[Product]
   val OBJECT  = classOf[AnyRef]
   val OPTION  = classOf[Option[_]]
+
+  def classIgnoredProperties(someOtherClass: Class[_]): Set[String] = {
+    Option(someOtherClass.getAnnotation(classOf[JsonIgnoreProperties])).map(_.value).flatten.toSet
+  }
+}
+
+class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[A] {
+  import CaseClassSerializer._
+  private[this] val thisClassIgnoredProperties = classIgnoredProperties(klass)
 
   private val nonIgnoredFields = {
     def collectFields(clazz: Class[_], gotSoFar: Vector[Field]): Vector[Field] = {
@@ -17,9 +26,13 @@ class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[
           gotSoFar
 
         case someOtherClass =>
+          val classIgnore = thisClassIgnoredProperties ++ classIgnoredProperties(someOtherClass)
+
           val fields = someOtherClass.getDeclaredFields.filterNot { f =>
-            f.getAnnotation(classOf[JsonIgnore]) != null || f.getName.contains("$")
+            val fieldName = f.getName
+            classIgnore.contains(fieldName) || f.getAnnotation(classOf[JsonIgnore]) != null || fieldName.contains("$")
           }
+
           collectFields(someOtherClass.getSuperclass, Vector(fields: _*) ++ gotSoFar)
       }
     }

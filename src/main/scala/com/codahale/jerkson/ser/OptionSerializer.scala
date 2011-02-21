@@ -8,8 +8,12 @@ class OptionSerializer extends JsonSerializer[Option[_]] {
                 provider: SerializerProvider) = {
     if (value.isDefined) {
       val obj = value.get.asInstanceOf[Object]
-      val serializer = provider.findValueSerializer(obj.getClass)
-      serializer.serialize(obj, json, provider)
+      if (obj == null)
+        json.writeNull()
+      else {
+        val serializer = provider.findValueSerializer(obj.getClass)
+        serializer.serialize(obj, json, provider)
+      }
     } else {
       json.writeNull()
     }
