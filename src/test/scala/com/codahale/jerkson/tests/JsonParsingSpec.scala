@@ -170,6 +170,12 @@ object JsonParsingSpec extends Spec {
     }
   }
 
+  class `Parsing an empty JSON object` {
+    def `should be readable as a Map[String, String]` {
+      parse[Map[String, String]]("{}") must beEqualTo(Map())
+    }
+  }
+
   class `Parsing a JSON object with int field values` {
     def `should be readable as a Map[String, Int]` {
       parse[Map[String, Int]](""" {"one":1, "two": 2} """) must beEqualTo(Map("one" -> 1,
