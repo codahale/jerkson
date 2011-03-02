@@ -22,6 +22,8 @@ class ScalaDeserializers extends Deserializers.None {
       createSeqDeserializer(config, javaType, Vector, provider, property)
     } else if (javaType.getRawClass == classOf[IndexedSeq[_]]) {
       createSeqDeserializer(config, javaType, IndexedSeq, provider, property)
+    } else if (javaType.getRawClass == classOf[Set[_]]) {
+      createSeqDeserializer(config, javaType, Set, provider, property)
     } else if (javaType.getRawClass == classOf[Map[_, _]]) {
       createMapDeserializer(config, javaType, Map, provider, property)
     } else if (javaType.getRawClass == classOf[Option[_]]) {
