@@ -167,6 +167,10 @@ object JsonParsingSpec extends Spec {
     def `should be readable as a Set[Int]` {
       parse[Set[Int]]("[1,2,3,4]") must beEqualTo(Set(1, 2, 3, 4))
     }
+
+    def `should be readable as an Iterator[Int]` {
+      parse[Iterator[Int]]("[1,2,3,4]").toSeq must beEqualTo(Seq(1, 2, 3, 4))
+    }
   }
 
   class `Caching a JSON array deserializer` {

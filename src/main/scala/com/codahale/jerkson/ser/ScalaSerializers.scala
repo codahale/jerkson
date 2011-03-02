@@ -16,6 +16,8 @@ class ScalaSerializers extends Serializers {
       new MapSerializer
     } else if (classOf[Iterable[_]].isAssignableFrom(beanDesc.getBeanClass)) {
         new IterableSerializer
+    } else if (classOf[Iterator[_]].isAssignableFrom(beanDesc.getBeanClass)) {
+      new IteratorSerializer
     } else if (classOf[JValue].isAssignableFrom(beanDesc.getBeanClass)) {
       new JValueSerializer
     } else if (classOf[Either[_,_]].isAssignableFrom(beanDesc.getBeanClass)) {
