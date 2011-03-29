@@ -63,13 +63,27 @@ class ByteCode(val bytes: Array[Byte], val pos: Int, val length: Int) {
 
   def toLong = fold(0L) {(x, b) => (x << 8) + (b & 0xFF)}
 
+  private val utf8: Array[Byte] => Array[Char] = {
+    // scala 2.8.1
+    try {
+      val m1 = io.Codec.getClass.getDeclaredMethod("toUTF8", classOf[Array[Byte]]);
+      {f => m1.invoke(io.Codec, f).asInstanceOf[Array[Char]]}
+    } catch {
+      case e: NoSuchMethodException => {
+        // scala 2.9.0.RC1
+        val m2 = io.Codec.getClass.getDeclaredMethod("fromUTF8", classOf[Array[Byte]]);
+        {f => m2.invoke(io.Codec, f).asInstanceOf[Array[Char]]}
+      }
+    }
+  }
+
   /**
    * Transforms array subsequence of the current buffer into the UTF8 String and
    * stores and array of bytes for the decompiler
    */
-  def fromUTF8StringAndBytes = {
+  def fromUTF8StringAndBytes: StringBytesPair = {
     val chunk: Array[Byte] = bytes drop pos take length
-    StringBytesPair(io.Codec.fromUTF8(chunk).mkString, chunk)
+    StringBytesPair(utf8(chunk).mkString, chunk)
   }
 
   def byte(i: Int) = bytes(pos) & 0xFF
