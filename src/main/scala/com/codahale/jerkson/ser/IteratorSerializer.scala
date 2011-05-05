@@ -3,12 +3,9 @@ package com.codahale.jerkson.ser
 import org.codehaus.jackson.JsonGenerator
 import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
 
-/**
- *
- * @author coda
- */
-class SeqSerializer extends JsonSerializer[Seq[_]] {
-  def serialize(value: Seq[_], json: JsonGenerator, provider: SerializerProvider) = {
+class IteratorSerializer extends JsonSerializer[Iterator[_]] {
+  def serialize(value: Iterator[_], json: JsonGenerator,
+                provider: SerializerProvider) = {
     json.writeStartArray()
     for (element <- value) {
       if (element == null) {

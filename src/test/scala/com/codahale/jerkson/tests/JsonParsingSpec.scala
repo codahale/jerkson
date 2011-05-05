@@ -163,6 +163,14 @@ object JsonParsingSpec extends Spec {
                                                             JInt(3),
                                                             JInt(4))))
     }
+
+    def `should be readable as a Set[Int]` {
+      parse[Set[Int]]("[1,2,3,4]") must beEqualTo(Set(1, 2, 3, 4))
+    }
+
+    def `should be readable as an Iterator[Int]` {
+      parse[Iterator[Int]]("[1,2,3,4]").toSeq must beEqualTo(Seq(1, 2, 3, 4))
+    }
   }
 
   class `Caching a JSON array deserializer` {
@@ -178,6 +186,12 @@ object JsonParsingSpec extends Spec {
                                                                    Some(2),
                                                                    None,
                                                                    Some(4)))
+    }
+  }
+
+  class `Parsing an empty JSON object` {
+    def `should be readable as a Map` {
+      parse[Map[String, Int]]("{}") must beEqualTo(Map.empty)
     }
   }
 

@@ -134,6 +134,18 @@ object JsonGenerationSpec extends Spec {
     }
   }
 
+  class `A Set[Int]` {
+    def `should generate a JSON array of ints` {
+      generate(Set(1)) must beEqualTo("[1]")
+    }
+  }
+
+  class `An Iterator[Int]` {
+    def `should generate a JSON array of ints` {
+      generate(Seq(1, 2, 3).iterator) must beEqualTo("[1,2,3]")
+    }
+  }
+
   class `A JArray of JInts` {
     def `should generate a JSON array of ints` {
       generate(JArray(List(JInt(1), JInt(2), JInt(3)))) must beEqualTo("[1,2,3]")
