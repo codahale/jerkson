@@ -14,7 +14,7 @@ class EitherSerializer extends JsonSerializer[Either[_, _]] {
       case Right(o) => o.asInstanceOf[Object]
     }
 
-    val serializer = provider.findValueSerializer(obj.getClass)
+    val serializer = provider.findValueSerializer(obj.getClass, null)
     serializer.serialize(obj, json, provider)
   }
 }

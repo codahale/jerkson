@@ -12,7 +12,7 @@ class IteratorSerializer extends JsonSerializer[Iterator[_]] {
         provider.getNullValueSerializer.serialize(null, json, provider)
       } else {
         val obj = element.asInstanceOf[Object]
-        val serializer = provider.findValueSerializer(obj.getClass)
+        val serializer = provider.findValueSerializer(obj.getClass, null)
         serializer.serialize(obj, json, provider)
       }
     }

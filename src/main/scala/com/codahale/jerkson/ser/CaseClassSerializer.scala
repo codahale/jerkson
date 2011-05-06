@@ -23,7 +23,7 @@ class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[
         if (fieldValue == null) {
           provider.getNullValueSerializer.serialize(null, json, provider)
         } else {
-          val serializer = provider.findValueSerializer(fieldValue.getClass)
+          val serializer = provider.findValueSerializer(fieldValue.getClass, null)
           serializer.serialize(fieldValue, json, provider)
         }
       }
