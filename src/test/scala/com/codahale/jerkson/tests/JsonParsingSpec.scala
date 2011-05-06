@@ -193,6 +193,10 @@ object JsonParsingSpec extends Spec {
     def `should be readable as a Map` {
       parse[Map[String, Int]]("{}") must beEqualTo(Map.empty)
     }
+
+    def `should be readable as a case class with a single Option[_] value` {
+      parse[CaseClassWithOption]("{}") must beEqualTo(CaseClassWithOption(None))
+    }
   }
 
   class `Parsing a JSON object with int field values` {

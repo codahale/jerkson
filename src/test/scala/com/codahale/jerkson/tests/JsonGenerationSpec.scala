@@ -188,6 +188,18 @@ object JsonGenerationSpec extends Spec {
     }
   }
 
+  class `A case class with a Some(x) field` {
+    def `should generate a field` {
+      generate(CaseClassWithOption(Some("what"))) must beEqualTo("""{"value":"what"}""")
+    }
+  }
+
+  class `A case class with a None field` {
+    def `should generate a field` {
+      generate(CaseClassWithOption(None)) must beEqualTo("""{}""")
+    }
+  }
+
   class `A JObject` {
     def `should generate a JSON object with matching field values` {
       generate(JObject(List(JField("id", JInt(1)),
@@ -220,3 +232,5 @@ case class CaseClassWithIgnoredField(id: Long) {
 case class CaseClassWithOverloadedField(id: Long) {
   def id(prefix: String): String = prefix + id
 }
+
+case class CaseClassWithOption(value: Option[String])
