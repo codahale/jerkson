@@ -30,7 +30,7 @@ class JerksonProject(info: ProjectInfo) extends DefaultProject(info)
   /**
    * Test Dependencies
    */
-  val specs = "org.scala-tools.testing" %% "specs" % "1.6.6" % "test"
-  val simplespec = "com.codahale" %% "simplespec" % "0.2.0" % "test"
-  val mockito = "org.mockito" % "mockito-all" % "1.8.4" % "test"
+  val specs2 = "org.specs2" %% "specs2" % "1.2" % "test"
+  def specs2Framework = new TestFramework("org.specs2.runner.SpecsFramework")
+  override def testFrameworks = super.testFrameworks ++ Seq(specs2Framework)
 }
