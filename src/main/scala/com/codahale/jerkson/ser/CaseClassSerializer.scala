@@ -27,7 +27,6 @@ class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[
           serializer.serialize(fieldValue, json, provider)
         }
       }
-      json.flush()
     }
     json.writeEndObject()
   }
