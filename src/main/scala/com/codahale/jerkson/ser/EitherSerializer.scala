@@ -8,7 +8,7 @@ import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
  * @author coda
  */
 class EitherSerializer extends JsonSerializer[Either[_, _]] {
-  def serialize(value: Either[_, _], json: JsonGenerator, provider: SerializerProvider) = {
+  def serialize(value: Either[_, _], json: JsonGenerator, provider: SerializerProvider) {
     val obj: Object = value match {
       case Left(o) => o.asInstanceOf[Object]
       case Right(o) => o.asInstanceOf[Object]

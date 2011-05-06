@@ -5,7 +5,7 @@ import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
 import org.codehaus.jackson.map.`type`.TypeFactory
 
 class MapSerializer extends JsonSerializer[Map[_,_]] {
-  def serialize(value: Map[_, _], json: JsonGenerator, provider: SerializerProvider) = {
+  def serialize(value: Map[_, _], json: JsonGenerator, provider: SerializerProvider) {
     json.writeStartObject()
     for ((key, value) <- value) {
       if (key == null) {

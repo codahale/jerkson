@@ -5,7 +5,7 @@ import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
 
 class IteratorSerializer extends JsonSerializer[Iterator[_]] {
   def serialize(value: Iterator[_], json: JsonGenerator,
-                provider: SerializerProvider) = {
+                provider: SerializerProvider) {
     json.writeStartArray()
     for (element <- value) {
       if (element == null) {
