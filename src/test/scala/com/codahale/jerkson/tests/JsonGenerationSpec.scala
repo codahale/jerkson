@@ -2,207 +2,219 @@ package com.codahale.jerkson.tests
 
 import com.codahale.jerkson.AST._
 import com.codahale.jerkson.Json._
-import com.codahale.simplespec.Spec
 import org.codehaus.jackson.annotate.JsonIgnore
+import org.specs2.mutable.Specification
 
-object JsonGenerationSpec extends Spec {
-  class `An Int` {
-    def `should generate a JSON int` {
+class JsonGenerationSpec extends Specification {
+  "An Int" should {
+    "generate a JSON int" in {
       generate(15) must beEqualTo("15")
     }
   }
 
-  class `A JInt` {
-    def `should generate a JSON int` {
+  "A JInt" should {
+    "generate a JSON int" in {
       generate(JInt(15)) must beEqualTo("15")
     }
   }
 
-  class `A Long` {
-    def `should generate a JSON int` {
+  "A Long" should {
+    "generate a JSON int" in {
       generate(15L) must beEqualTo("15")
     }
   }
 
-  class `A BigInt` {
-    def `should generate a JSON int` {
+  "A BigInt" should {
+    "generate a JSON int" in {
       generate(BigInt(15)) must beEqualTo("15")
     }
   }
 
-  class `A Float` {
-    def `should generate a JSON float` {
+  "A Float" should {
+    "generate a JSON float" in {
       generate(15.1F) must beEqualTo("15.1")
     }
   }
 
-  class `A JFloat` {
-    def `should generate a JSON int` {
+  "A JFloat" should {
+    "generate a JSON int" in {
       generate(JFloat(15.1)) must beEqualTo("15.1")
     }
   }
 
-  class `A Double` {
-    def `should generate a JSON float` {
+  "A Double" should {
+    "generate a JSON float" in {
       generate(15.1) must beEqualTo("15.1")
     }
   }
 
-  class `A BigDecimal` {
-    def `should generate a JSON float` {
+  "A BigDecimal" should {
+    "generate a JSON float" in {
       generate(BigDecimal(15.5)) must beEqualTo("15.5")
     }
   }
 
-  class `A String` {
-    def `should generate a JSON string` {
+  "A String" should {
+    "generate a JSON string" in {
       generate("woo") must beEqualTo("\"woo\"")
     }
   }
 
-  class `A JString` {
-    def `should generate a JSON string` {
+  "A JString" should {
+    "generate a JSON string" in {
       generate(JString("woo")) must beEqualTo("\"woo\"")
     }
   }
 
-  class `A null Object` {
-    def `should generate a JSON null` {
+  "A null Object" should {
+    "generate a JSON null" in {
       generate[Object](null) must beEqualTo("null")
     }
   }
 
-  class `A JNull` {
-    def `should generate a JSON null` {
+  "A JNull" should {
+    "generate a JSON null" in {
       generate(JNull) must beEqualTo("null")
     }
   }
 
-  class `A Boolean` {
-    def `should generate a JSON true` {
+  "A Boolean" should {
+    "generate a JSON true" in {
       generate(true) must beEqualTo("true")
     }
 
-    def `should generate a JSON false` {
+    "generate a JSON false" in {
       generate(false) must beEqualTo("false")
     }
   }
 
-  class `A JBoolean` {
-    def `should generate a JSON true` {
+  "A JBoolean" should {
+    "generate a JSON true" in {
       generate(JBoolean(true)) must beEqualTo("true")
     }
 
-    def `should generate a JSON false` {
+    "generate a JSON false" in {
       generate(JBoolean(false)) must beEqualTo("false")
     }
   }
 
-  class `A Some[Int]` {
-    def `should generate a JSON int` {
+  "A Some[Int]" should {
+    "generate a JSON int" in {
       generate(Some(12)) must beEqualTo("12")
     }
   }
 
-  class `A None` {
-    def `should generate a JSON null` {
+  "A None" should {
+    "generate a JSON null" in {
       generate(None) must beEqualTo("null")
     }
   }
 
-  class `A Seq[Int]` {
-    def `should generate a JSON array of ints` {
+  "A Seq[Int]" should {
+    "generate a JSON array of ints" in {
       generate(Seq(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
   }
 
-  class `A List[Int]` {
-    def `should generate a JSON array of ints` {
+  "A List[Int]" should {
+    "generate a JSON array of ints" in {
       generate(List(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
   }
 
-  class `A IndexedSeq[Int]` {
-    def `should generate a JSON array of ints` {
+  "A IndexedSeq[Int]" should {
+    "generate a JSON array of ints" in {
       generate(IndexedSeq(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
   }
 
-  class `A Vector[Int]` {
-    def `should generate a JSON array of ints` {
+  "A Vector[Int]" should {
+    "generate a JSON array of ints" in {
       generate(Vector(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
   }
 
-  class `A Set[Int]` {
-    def `should generate a JSON array of ints` {
+  "A Set[Int]" should {
+    "generate a JSON array of ints" in {
       generate(Set(1)) must beEqualTo("[1]")
     }
   }
 
-  class `An Iterator[Int]` {
-    def `should generate a JSON array of ints` {
+  "An Iterator[Int]" should {
+    "generate a JSON array of ints" in {
       generate(Seq(1, 2, 3).iterator) must beEqualTo("[1,2,3]")
     }
   }
 
-  class `A JArray of JInts` {
-    def `should generate a JSON array of ints` {
+  "A JArray of JInts" should {
+    "generate a JSON array of ints" in {
       generate(JArray(List(JInt(1), JInt(2), JInt(3)))) must beEqualTo("[1,2,3]")
     }
   }
 
-  class `A Map[String, Int]` {
-    def `should generate a JSON object with int field values` {
+  "A Map[String, Int]" should {
+    "generate a JSON object with int field values" in {
       generate(Map("one" -> 1, "two" -> 2)) must beEqualTo("""{"one":1,"two":2}""")
     }
   }
 
-  class `A Map[String, Any]` {
-    def `should generate a JSON object with mixed field values` {
+  "A Map[String, Any]" should {
+    "generate a JSON object with mixed field values" in {
       generate(Map("one" -> 1, "two" -> "2")) must beEqualTo("""{"one":1,"two":"2"}""")
     }
   }
 
-  class `A case class` {
-    def `should generate a JSON object with matching field values` {
+  "A case class" should {
+    "generate a JSON object with matching field values" in {
       generate(Person(1, "Coda")) must beEqualTo("""{"id":1,"name":"Coda"}""")
     }
   }
 
-  class `A case class with lazy fields` {
-    def `should generate a JSON object with those fields evaluated` {
+  "A case class with lazy fields" should {
+    "generate a JSON object with those fields evaluated" in {
       generate(CaseClassWithLazyVal(1)) must beEqualTo("""{"id":1,"woo":"yeah"}""")
     }
   }
 
-  class `A case class with ignored fields` {
-    def `should generate a JSON object without those fields` {
+  "A case class with ignored fields" should {
+    "generate a JSON object without those fields" in {
       generate(CaseClassWithIgnoredField(1)) must beEqualTo("""{"id":1}""")
     }
   }
 
-  class `A case class with an overloaded field` {
-    def `should use the single-arity version` {
+  "A case class with an overloaded field" should {
+    "use the single-arity version" in {
       generate(CaseClassWithOverloadedField(1)) must beEqualTo("""{"id":1}""")
     }
   }
 
-  class `A JObject` {
-    def `should generate a JSON object with matching field values` {
+  "A case class with a Some(x) field" should {
+    "generate a field" in {
+      generate(CaseClassWithOption(Some("what"))) must beEqualTo("""{"value":"what"}""")
+    }
+  }
+
+  "A case class with a None field" should {
+    "generate a field" in {
+      generate(CaseClassWithOption(None)) must beEqualTo("""{}""")
+    }
+  }
+
+  "A JObject" should {
+    "generate a JSON object with matching field values" in {
       generate(JObject(List(JField("id", JInt(1)),
                             JField("name", JString("Coda"))))) must beEqualTo("""{"id":1,"name":"Coda"}""")
     }
   }
 
-  class `A Left[String]` {
-    def `should generate a JSON string` {
+  "A Left[String]" should {
+    "generate a JSON string" in {
       generate(Left("woo")) must beEqualTo("\"woo\"")
     }
   }
 
-  class `A Right[String]` {
-    def `should generate a JSON string` {
+  "A Right[String]" should {
+    "generate a JSON string" in {
       generate(Right("woo")) must beEqualTo("\"woo\"")
     }
   }
@@ -220,3 +232,5 @@ case class CaseClassWithIgnoredField(id: Long) {
 case class CaseClassWithOverloadedField(id: Long) {
   def id(prefix: String): String = prefix + id
 }
+
+case class CaseClassWithOption(value: Option[String])

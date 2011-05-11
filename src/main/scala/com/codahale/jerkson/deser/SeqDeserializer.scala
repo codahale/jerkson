@@ -15,7 +15,7 @@ class SeqDeserializer[+CC[X] <: Traversable[X]](companion: GenericCompanion[CC],
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
     val builder = companion.newBuilder[Object]
 
-    if (jp.getCurrentToken() != JsonToken.START_ARRAY) {
+    if (jp.getCurrentToken != JsonToken.START_ARRAY) {
       throw ctxt.mappingException(elementType.getRawClass)
     }
 
@@ -23,6 +23,6 @@ class SeqDeserializer[+CC[X] <: Traversable[X]](companion: GenericCompanion[CC],
       builder += elementDeserializer.deserialize(jp, ctxt).asInstanceOf[Object]
     }
 
-    builder.result
+    builder.result()
   }
 }

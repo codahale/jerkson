@@ -1,3 +1,18 @@
+v0.1.8: May 05 2011
+===================
+
+* Upgraded to Jackson 1.7.6.
+* Added selectors to `JValue` and friends.
+* Extracted out the `Json` trait for extensibility.
+* Added support for `Iterator` and `Set` instances.
+* Fixed deserialization of empty `Map`s.
+
+
+v0.1.7: Mar 31 2011
+===================
+
+* Upgraded to Jackson 1.7.4.
+
 v0.1.6: Feb 18 2011
 ===================
 

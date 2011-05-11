@@ -1,8 +1,8 @@
 import sbt._
 
-class Jerkson(info: ProjectInfo) extends DefaultProject(info)
-                                         with IdeaProject
-                                         with maven.MavenDependencies {
+class JerksonProject(info: ProjectInfo) extends DefaultProject(info)
+                                                with IdeaProject
+                                                with maven.MavenDependencies {
   /**
    * Publish the source as well as the class files.
    */
@@ -22,7 +22,7 @@ class Jerkson(info: ProjectInfo) extends DefaultProject(info)
   /**
    * Dependencies
    */
-  val jacksonVersion = "1.7.4"
+  val jacksonVersion = "1.7.6"
   val jacksonCore = "org.codehaus.jackson" % "jackson-core-asl" % jacksonVersion
   val jacksonMapper = "org.codehaus.jackson" % "jackson-mapper-asl" % jacksonVersion
   val paranamer = "com.thoughtworks.paranamer" % "paranamer" % "2.3"
@@ -30,6 +30,7 @@ class Jerkson(info: ProjectInfo) extends DefaultProject(info)
   /**
    * Test Dependencies
    */
-  val simplespec = "com.codahale" % "simplespec_2.8.1" % "0.2.0" % "test"
-  val mockito = "org.mockito" % "mockito-all" % "1.8.4" % "test"
+  val specs2 = "org.specs2" %% "specs2" % "1.2" % "test"
+  def specs2Framework = new TestFramework("org.specs2.runner.SpecsFramework")
+  override def testFrameworks = super.testFrameworks ++ Seq(specs2Framework)
 }

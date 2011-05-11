@@ -20,13 +20,13 @@ class MapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]]](compan
       jp.nextToken()
     }
 
-    while (jp.getCurrentToken() != JsonToken.END_OBJECT) {
+    while (jp.getCurrentToken != JsonToken.END_OBJECT) {
       val name = jp.getCurrentName
       jp.nextToken()
       builder += ((name, valueDeserializer.deserialize(jp, ctxt)))
       jp.nextToken()
     }
 
-    builder.result
+    builder.result()
   }
 }

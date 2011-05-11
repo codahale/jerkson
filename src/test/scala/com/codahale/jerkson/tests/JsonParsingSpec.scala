@@ -1,17 +1,17 @@
 package com.codahale.jerkson.tests
 
 import com.codahale.jerkson.Json._
-import com.codahale.simplespec.Spec
 import org.codehaus.jackson.JsonNode
 import org.codehaus.jackson.node.IntNode
 import com.codahale.jerkson.AST._
 import collection.mutable.ArrayBuffer
 import java.io.ByteArrayInputStream
 import com.codahale.jerkson.ParsingException
+import org.specs2.mutable.Specification
 
-object JsonParsingSpec extends Spec {
-  class `Parsing malformed JSON` {
-    def `should throw a ParsingException with an informative message` {
+class JsonParsingSpec extends Specification {
+  "Parsing malformed JSON" should {
+    "throw a ParsingException with an informative message" in {
       parse[Boolean]("jjf8;09") must throwA[ParsingException].like {
         case e: ParsingException => {
           e.getMessage must beEqualTo(
@@ -33,8 +33,8 @@ object JsonParsingSpec extends Spec {
     }
   }
 
-  class `Parsing invalid JSON` {
-    def `should throw a ParsingException with an informative message` {
+  "Parsing invalid JSON" should {
+    "throw a ParsingException with an informative message" in {
       parse[Person]("900") must throwA[ParsingException].like {
         case e: ParsingException => {
           e.getMessage must beEqualTo("Invalid JSON.")
@@ -50,8 +50,8 @@ object JsonParsingSpec extends Spec {
     }
   }
 
-  class `Parsing an empty document` {
-    def `should throw a ParsingException with an informative message` {
+  "Parsing an empty document" should {
+    "throw a ParsingException with an informative message" in {
       val input = new ByteArrayInputStream(Array.empty)
       parse[Person](input) must throwA[ParsingException].like {
         case e: ParsingException => {
@@ -61,126 +61,126 @@ object JsonParsingSpec extends Spec {
     }
   }
 
-  class `Parsing a JSON boolean` {
-    def `should be readable as a Boolean` {
+  "Parsing a JSON boolean" should {
+    "be readable as a Boolean" in {
       parse[Boolean]("true") must beTrue
       parse[Boolean]("false") must beFalse
     }
 
-    def `should be readable as a JValue` {
+    "be readable as a JValue" in {
       parse[JValue]("true") must beEqualTo(JBoolean(true))
       parse[JValue]("false") must beEqualTo(JBoolean(false))
     }
   }
 
-  class `Parsing a JSON int` {
-    def `should be readable as an Int` {
+  "Parsing a JSON int" should {
+    "be readable as an Int" in {
       parse[Int]("1") must beEqualTo(1)
     }
 
-    def `should be readable as an Option[Int]` {
+    "be readable as an Option[Int]" in {
       parse[Option[Int]]("1") must beSome(1)
     }
 
-    def `should be readable as a Long` {
+    "be readable as a Long" in {
       parse[Long]("1") must beEqualTo(1L)
     }
 
-    def `should be readable as a JValue` {
+    "be readable as a JValue" in {
       parse[JValue]("1") must beEqualTo(JInt(1))
     }
 
-    def `should be readable as a BigInt` {
+    "be readable as a BigInt" in {
       parse[BigInt]("1") must beEqualTo(BigInt(1))
     }
   }
 
-  class `Parsing a JSON float` {
-    def `should be readable as a Float` {
+  "Parsing a JSON float" should {
+    "be readable as a Float" in {
       parse[Float]("1.1") must beEqualTo(1.1F)
     }
 
-    def `should be readable as a Double` {
+    "be readable as a Double" in {
       parse[Double]("1.1") must beEqualTo(1.1)
     }
 
-    def `should be readable as a JValue` {
+    "be readable as a JValue" in {
       parse[JValue]("1.1") must beEqualTo(JFloat(1.1))
     }
 
-    def `should be readable as a BigDecimal` {
+    "be readable as a BigDecimal" in {
       parse[BigDecimal]("1.1") must beEqualTo(BigDecimal(1.1))
     }
   }
 
-  class `Parsing a JSON string` {
-    def `should be readable as a String` {
+  "Parsing a JSON string" should {
+    "be readable as a String" in {
       parse[String]("\"woo\"") must beEqualTo("woo")
     }
 
-    def `should be readable as a JValue` {
+    "be readable as a JValue" in {
       parse[JValue]("\"woo\"") must beEqualTo(JString("woo"))
     }
   }
 
-  class `Parsing a JSON null` {
-    def `should be readable as a null Object` {
+  "Parsing a JSON null" should {
+    "be readable as a null Object" in {
       parse[String]("null") must beNull
     }
 
-    def `should be readable as an Option[_]` {
+    "be readable as an Option[_]" in {
       parse[Option[String]]("null") must beNone
     }
 
-    def `should be readable as a JValue` {
+    "be readable as a JValue" in {
       parse[JValue]("null") must beEqualTo(JNull)
     }
 
     // REVIEW: 11/29/10 <coda> -- should this also produce empty seqs?
   }
 
-  class `Parsing a JSON array of ints` {
-    def `should be readable as a Seq[Int]` {
+  "Parsing a JSON array of ints" should {
+    "be readable as a Seq[Int]" in {
       parse[Seq[Int]]("[1,2,3,4]") must beEqualTo(Seq(1, 2, 3, 4))
     }
 
-    def `should be readable as a IndexedSeq[Int]` {
+    "be readable as a IndexedSeq[Int]" in {
       parse[IndexedSeq[Int]]("[1,2,3,4]") must beEqualTo(IndexedSeq(1, 2, 3, 4))
     }
 
-    def `should be readable as a List[Int]` {
+    "be readable as a List[Int]" in {
       parse[List[Int]]("[1,2,3,4]") must beEqualTo(List(1, 2, 3, 4))
     }
 
-    def `should be readable as a Vector[Int]` {
+    "be readable as a Vector[Int]" in {
       parse[Vector[Int]]("[1,2,3,4]") must beEqualTo(Vector(1, 2, 3, 4))
     }
 
-    def `should be readable as a JValue` {
+    "be readable as a JValue" in {
       parse[JValue]("[1,2,3,4]") must beEqualTo(JArray(List(JInt(1),
                                                             JInt(2),
                                                             JInt(3),
                                                             JInt(4))))
     }
 
-    def `should be readable as a Set[Int]` {
+    "be readable as a Set[Int]" in {
       parse[Set[Int]]("[1,2,3,4]") must beEqualTo(Set(1, 2, 3, 4))
     }
 
-    def `should be readable as an Iterator[Int]` {
+    "be readable as an Iterator[Int]" in {
       parse[Iterator[Int]]("[1,2,3,4]").toSeq must beEqualTo(Seq(1, 2, 3, 4))
     }
   }
 
-  class `Caching a JSON array deserializer` {
-    def `should not cache Seq builders` {
+  "Caching a JSON array deserializer" should {
+    "not cache Seq builders" in {
       parse[List[Int]]("[1,2,3,4]") must beEqualTo(List(1, 2, 3, 4))
       parse[List[Int]]("[1,2,3,4]") must beEqualTo(List(1, 2, 3, 4))
     }
   }
 
-  class `Parsing a JSON array of ints with nulls` {
-    def `should be readable as a List[Option[Int]]` {
+  "Parsing a JSON array of ints with nulls" should {
+    "be readable as a List[Option[Int]]" in {
       parse[List[Option[Int]]]("[1,2,null,4]") must beEqualTo(List(Some(1),
                                                                    Some(2),
                                                                    None,
@@ -188,26 +188,30 @@ object JsonParsingSpec extends Spec {
     }
   }
 
-  class `Parsing an empty JSON object` {
-    def `should be readable as a Map` {
+  "Parsing an empty JSON object" should {
+    "be readable as a Map" in {
       parse[Map[String, Int]]("{}") must beEqualTo(Map.empty)
+    }
+
+    "be readable as a case class with a single Option[_] value" in {
+      parse[CaseClassWithOption]("{}") must beEqualTo(CaseClassWithOption(None))
     }
   }
 
-  class `Parsing a JSON object with int field values` {
-    def `should be readable as a Map[String, Int]` {
+  "Parsing a JSON object with int field values" should {
+    "be readable as a Map[String, Int]" in {
       parse[Map[String, Int]](""" {"one":1, "two": 2} """) must beEqualTo(Map("one" -> 1,
                                                                               "two" -> 2))
     }
 
-    def `should be readable as a JValue` {
+    "be readable as a JValue" in {
       parse[JValue](""" {"one":1, "two": 2} """) must beEqualTo(JObject(List(JField("one", JInt(1)),
                                                                              JField("two", JInt(2)))))
     }
   }
 
-  class `Caching a JSON map deserializer` {
-    def `should not cache Map builders` {
+  "Caching a JSON map deserializer" should {
+    "not cache Map builders" in {
       parse[Map[String, Int]](""" {"one":1, "two": 2} """) must beEqualTo(Map("one" -> 1,
                                                                               "two" -> 2))
       parse[Map[String, Int]](""" {"one":1, "two": 2} """) must beEqualTo(Map("one" -> 1,
@@ -215,25 +219,25 @@ object JsonParsingSpec extends Spec {
     }
   }
 
-  class `Parsing a JSON object as a case class` {
-    def `should handle missing Option members` {
+  "Parsing a JSON object as a case class" should {
+    "handle missing Option members" in {
       parse[ClassWithOption](""" {"one": "1"} """) must beEqualTo(ClassWithOption("1", None))
 
       parse[ClassWithOption](""" {"one": "1", "two": "2"} """) must beEqualTo(ClassWithOption("1", Some("2")))
     }
 
-    def `should handle JsonNode parameters` {
+    "handle JsonNode parameters" in {
       parse[ClassWithJsonNode](""" {"one": "1", "two": 2} """) must beEqualTo(ClassWithJsonNode("1", new IntNode(2)))
     }
   }
 
-  class `Parsing a JSON value as a JsonNode` {
-    def `should return a JsonNode` {
+  "Parsing a JSON value as a JsonNode" should {
+    "return a JsonNode" in {
       parse[JsonNode]("[1, null, 2.0]").toString must beEqualTo("[1,null,2.0]")
     }
   }
 
-  class `Parsing a stream of objects` {
+  "Parsing a stream of objects" should {
     val json = """[
       {"id":1, "name": "Coda"},
       {"id":2, "name": "Niki"},
@@ -241,7 +245,7 @@ object JsonParsingSpec extends Spec {
       {"id":4, "name": "Louie"}
     ]"""
 
-    def `should fire a callback for each stream element` {
+    "fire a callback for each stream element" in {
       val input = new ByteArrayInputStream(json.getBytes)
 
       val people = new ArrayBuffer[Person]
@@ -255,7 +259,7 @@ object JsonParsingSpec extends Spec {
                                       Person(4, "Louie")))
     }
 
-    def `should return an iterator of stream elements` {
+    "return an iterator of stream elements" in {
       val input = new ByteArrayInputStream(json.getBytes)
 
       val people = new ArrayBuffer[Person]
@@ -266,29 +270,29 @@ object JsonParsingSpec extends Spec {
     }
   }
 
-  class `Parsing a int JSON node` {
+  "Parsing a int JSON node" should {
     val node = parse[JsonNode]("1")
 
-    def `should return an Int` {
+    "return an Int" in {
       parse[Int](node) must beEqualTo(1)
     }
   }
 
-  class `Parsing a JSON int as an Either[Int, String]` {
-    def `should return a Left` {
+  "Parsing a JSON int as an Either[Int, String]" should {
+    "return a Left" in {
       parse[Either[Int, String]]("1") must beEqualTo(Left(1))
     }
   }
 
-  class `Parsing a JSON string as an Either[Int, String]` {
-    def `should return a Right` {
+  "Parsing a JSON string as an Either[Int, String]" should {
+    "return a Right" in {
       parse[Either[Int, String]]("\"woo\"") must beEqualTo(Right("woo"))
     }
   }
 
   class `Parsing a JSON object as a case class with Map arguments` {
     def `should use the Scala signature to detect map value types` {
-      parse[ClassWithMap]("""{"properties": {"yay": 400}}""") must beEqualTo(ClassWithMap(Map("yay" -> 400)))
+      parse[ClassWithMap]("""{"properties": {"yay": 400}}""") must beEqualTo(ClassWithMap(Map("yay" -> 400L)))
     }
   }
 }
