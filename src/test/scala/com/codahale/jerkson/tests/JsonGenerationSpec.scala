@@ -3,218 +3,218 @@ package com.codahale.jerkson.tests
 import com.codahale.jerkson.AST._
 import com.codahale.jerkson.Json._
 import org.codehaus.jackson.annotate.JsonIgnore
-import org.specs2.mutable.Specification
+import com.codahale.simplespec.Spec
 
-class JsonGenerationSpec extends Specification {
-  "An Int" should {
-    "generate a JSON int" in {
+object JsonGenerationSpec extends Spec {
+  class `An Int` {
+    def `should generate a JSON int` = {
       generate(15) must beEqualTo("15")
     }
   }
 
-  "A JInt" should {
-    "generate a JSON int" in {
+  class `A JInt` {
+    def `should generate a JSON int` = {
       generate(JInt(15)) must beEqualTo("15")
     }
   }
 
-  "A Long" should {
-    "generate a JSON int" in {
+  class `A Long` {
+    def `should generate a JSON int` = {
       generate(15L) must beEqualTo("15")
     }
   }
 
-  "A BigInt" should {
-    "generate a JSON int" in {
+  class `A BigInt` {
+    def `should generate a JSON int` = {
       generate(BigInt(15)) must beEqualTo("15")
     }
   }
 
-  "A Float" should {
-    "generate a JSON float" in {
+  class `A Float` {
+    def `should generate a JSON float` = {
       generate(15.1F) must beEqualTo("15.1")
     }
   }
 
-  "A JFloat" should {
-    "generate a JSON int" in {
+  class `A JFloat` {
+    def `should generate a JSON int` = {
       generate(JFloat(15.1)) must beEqualTo("15.1")
     }
   }
 
-  "A Double" should {
-    "generate a JSON float" in {
+  class `A Double` {
+    def `should generate a JSON float` = {
       generate(15.1) must beEqualTo("15.1")
     }
   }
 
-  "A BigDecimal" should {
-    "generate a JSON float" in {
+  class `A BigDecimal` {
+    def `should generate a JSON float` = {
       generate(BigDecimal(15.5)) must beEqualTo("15.5")
     }
   }
 
-  "A String" should {
-    "generate a JSON string" in {
+  class `A String` {
+    def `should generate a JSON string` = {
       generate("woo") must beEqualTo("\"woo\"")
     }
   }
 
-  "A JString" should {
-    "generate a JSON string" in {
+  class `A JString` {
+    def `should generate a JSON string` = {
       generate(JString("woo")) must beEqualTo("\"woo\"")
     }
   }
 
-  "A null Object" should {
-    "generate a JSON null" in {
+  class `A null Object` {
+    def `should generate a JSON null` = {
       generate[Object](null) must beEqualTo("null")
     }
   }
 
-  "A JNull" should {
-    "generate a JSON null" in {
+  class `A JNull` {
+    def `should generate a JSON null` = {
       generate(JNull) must beEqualTo("null")
     }
   }
 
-  "A Boolean" should {
-    "generate a JSON true" in {
+  class `A Boolean` {
+    def `should generate a JSON true` = {
       generate(true) must beEqualTo("true")
     }
 
-    "generate a JSON false" in {
+    def `should generate a JSON false` = {
       generate(false) must beEqualTo("false")
     }
   }
 
-  "A JBoolean" should {
-    "generate a JSON true" in {
+  class `A JBoolean` {
+    def `should generate a JSON true` = {
       generate(JBoolean(true)) must beEqualTo("true")
     }
 
-    "generate a JSON false" in {
+    def `should generate a JSON false` = {
       generate(JBoolean(false)) must beEqualTo("false")
     }
   }
 
-  "A Some[Int]" should {
-    "generate a JSON int" in {
+  class `A Some[Int]` {
+    def `should generate a JSON int` = {
       generate(Some(12)) must beEqualTo("12")
     }
   }
 
-  "A None" should {
-    "generate a JSON null" in {
+  class `A None` {
+    def `should generate a JSON null` = {
       generate(None) must beEqualTo("null")
     }
   }
 
-  "A Seq[Int]" should {
-    "generate a JSON array of ints" in {
+  class `A Seq[Int]` {
+    def `should generate a JSON array of ints` = {
       generate(Seq(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
   }
 
-  "A List[Int]" should {
-    "generate a JSON array of ints" in {
+  class `A List[Int]` {
+    def `should generate a JSON array of ints` = {
       generate(List(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
   }
 
-  "A IndexedSeq[Int]" should {
-    "generate a JSON array of ints" in {
+  class `A IndexedSeq[Int]` {
+    def `should generate a JSON array of ints` = {
       generate(IndexedSeq(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
   }
 
-  "A Vector[Int]" should {
-    "generate a JSON array of ints" in {
+  class `A Vector[Int]` {
+    def `should generate a JSON array of ints` = {
       generate(Vector(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
   }
 
-  "A Set[Int]" should {
-    "generate a JSON array of ints" in {
+  class `A Set[Int]` {
+    def `should generate a JSON array of ints` = {
       generate(Set(1)) must beEqualTo("[1]")
     }
   }
 
-  "An Iterator[Int]" should {
-    "generate a JSON array of ints" in {
+  class `An Iterator[Int]` {
+    def `should generate a JSON array of ints` = {
       generate(Seq(1, 2, 3).iterator) must beEqualTo("[1,2,3]")
     }
   }
 
-  "A JArray of JInts" should {
-    "generate a JSON array of ints" in {
+  class `A JArray of JInts` {
+    def `should generate a JSON array of ints` = {
       generate(JArray(List(JInt(1), JInt(2), JInt(3)))) must beEqualTo("[1,2,3]")
     }
   }
 
-  "A Map[String, Int]" should {
-    "generate a JSON object with int field values" in {
+  class `A Map[String, Int]` {
+    def `should generate a JSON object with int field values` = {
       generate(Map("one" -> 1, "two" -> 2)) must beEqualTo("""{"one":1,"two":2}""")
     }
   }
 
-  "A Map[String, Any]" should {
-    "generate a JSON object with mixed field values" in {
+  class `A Map[String, Any]` {
+    def `should generate a JSON object with mixed field values` = {
       generate(Map("one" -> 1, "two" -> "2")) must beEqualTo("""{"one":1,"two":"2"}""")
     }
   }
 
-  "A case class" should {
-    "generate a JSON object with matching field values" in {
+  class `A case class` {
+    def `should generate a JSON object with matching field values` = {
       generate(Person(1, "Coda")) must beEqualTo("""{"id":1,"name":"Coda"}""")
     }
   }
 
-  "A case class with lazy fields" should {
-    "generate a JSON object with those fields evaluated" in {
+  class `A case class with lazy fields` {
+    def `should generate a JSON object with those fields evaluated` = {
       generate(CaseClassWithLazyVal(1)) must beEqualTo("""{"id":1,"woo":"yeah"}""")
     }
   }
 
-  "A case class with ignored fields" should {
-    "generate a JSON object without those fields" in {
+  class `A case class with ignored fields` {
+    def `should generate a JSON object without those fields` = {
       generate(CaseClassWithIgnoredField(1)) must beEqualTo("""{"id":1}""")
     }
   }
 
-  "A case class with an overloaded field" should {
-    "use the single-arity version" in {
+  class `A case class with an overloaded field` {
+    def `should use the single-arity version` = {
       generate(CaseClassWithOverloadedField(1)) must beEqualTo("""{"id":1}""")
     }
   }
 
-  "A case class with a Some(x) field" should {
-    "generate a field" in {
+  class `A case class with a Some(x) field` {
+    def `should generate a field` = {
       generate(CaseClassWithOption(Some("what"))) must beEqualTo("""{"value":"what"}""")
     }
   }
 
-  "A case class with a None field" should {
-    "generate a field" in {
+  class `A case class with a None field` {
+    def `should generate a field` = {
       generate(CaseClassWithOption(None)) must beEqualTo("""{}""")
     }
   }
 
-  "A JObject" should {
-    "generate a JSON object with matching field values" in {
+  class `A JObject` {
+    def `should generate a JSON object with matching field values` = {
       generate(JObject(List(JField("id", JInt(1)),
                             JField("name", JString("Coda"))))) must beEqualTo("""{"id":1,"name":"Coda"}""")
     }
   }
 
-  "A Left[String]" should {
-    "generate a JSON string" in {
+  class `A Left[String]` {
+    def `should generate a JSON string` = {
       generate(Left("woo")) must beEqualTo("\"woo\"")
     }
   }
 
-  "A Right[String]" should {
-    "generate a JSON string" in {
+  class `A Right[String]` {
+    def `should generate a JSON string` = {
       generate(Right("woo")) must beEqualTo("\"woo\"")
     }
   }

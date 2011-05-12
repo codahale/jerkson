@@ -1,48 +1,48 @@
 package com.codahale.jerkson.tests
 
-import org.specs2.mutable.Specification
 import com.codahale.jerkson.Json._
 import com.codahale.jerkson.AST._
+import com.codahale.simplespec.Spec
 
-class JValueSpec extends Specification {
-  "Selecting single nodes" should {
-    "return None with primitives" in {
+object JValueSpec extends Spec {
+  class `Selecting single nodes` {
+    def `should return None with primitives` = {
       parse[JValue]("8") \ "blah" must be(JNull)
     }
     
-    "return None on nonexistant fields" in {
+    def `should return None on nonexistant fields` = {
       parse[JValue]("{\"butt\": \"poop\"}") \ "anus" must be(JNull)
     }
     
-    "return a JValue with an existing field" in {
+    def `should return a JValue with an existing field` = {
       parse[JValue]("{\"butt\": \"poop\"}") \ "butt" must beEqualTo(JString("poop"))
     }
   }
   
-  "Selecting array members" should {
-    "return  None with primitives" in {
+  class `Selecting array members` {
+    def `should return  None with primitives` = {
       parse[JValue]("\"derp\"").apply(0) must be(JNull)
     }
     
-    "return None on out of bounds" in {
+    def `should return None on out of bounds` = {
       parse[JValue]("[0, 1, 2, 3]").apply(4) must be(JNull)
     }
     
-    "return a JValue" in {
+    def `should return a JValue` = {
       parse[JValue]("[0, 1, 2, 3]").apply(2) must beEqualTo(JInt(2))
     }
   }
   
-  "Deep selecting" should {
-    "return None with primitives" in {
+  class `Deep selecting` {
+    def `should return None with primitives` = {
       parse[JValue]("0.234") \\ "herp" must be(Nil)
     }
     
-    "return None on nothing found" in {
+    def `should return None on nothing found` = {
       parse[JValue]("{\"butt\": {\"anus\" : \"poopoo\"}}") \\ "anus" must beEqualTo(Seq(JString("poopoo")))
     }
     
-    "return multiple leaf nodes" in {
+    def `should return multiple leaf nodes` = {
       parse[JValue]("{\"butt\": {\"anus\" : \"poopoo\"}, \"rectum\": {\"anus\" : \"dookie\"}}") \\ "anus" must beEqualTo(Seq(JString("poopoo"),JString("dookie")))
     }
   }
