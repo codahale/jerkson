@@ -1,3 +1,13 @@
+v0.2.0: May 12 2011
+===================
+
+* Now cross-built for Scala 2.9.0.
+* Changed to parse the embedded Scala signature in case classes by using an
+  embedded version of `scalap`. No longer depends on Paranamer.
+* Serializing a case class with a `None` field now elides the entire field
+  instead of serializing the `Option[A]` as `null`.
+* Removed explicit flushes to output.
+
 v0.1.8: May 05 2011
 ===================
 

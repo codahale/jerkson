@@ -14,7 +14,7 @@ class ScalaModule extends Module {
   def version = new Version(0, 2, 0, "")
   def getModuleName = "jerkson"
 
-  def setupModule(context: SetupContext) = {
+  def setupModule(context: SetupContext) {
     context.addDeserializers(new ScalaDeserializers)
     context.addSerializers(new ScalaSerializers)
   }

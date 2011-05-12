@@ -9,7 +9,7 @@ class IteratorDeserializer(elementType: JavaType,
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
     val builder = Seq.newBuilder[Object]
 
-    if (jp.getCurrentToken() != JsonToken.START_ARRAY) {
+    if (jp.getCurrentToken != JsonToken.START_ARRAY) {
       throw ctxt.mappingException(elementType.getRawClass)
     }
 
@@ -17,6 +17,6 @@ class IteratorDeserializer(elementType: JavaType,
       builder += elementDeserializer.deserialize(jp, ctxt).asInstanceOf[Object]
     }
 
-    builder.result.iterator
+    builder.result().iterator
   }
 }

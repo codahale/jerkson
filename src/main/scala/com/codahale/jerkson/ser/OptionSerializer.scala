@@ -5,10 +5,10 @@ import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
 
 class OptionSerializer extends JsonSerializer[Option[_]] {
   def serialize(value: Option[_], json: JsonGenerator,
-                provider: SerializerProvider) = {
+                provider: SerializerProvider) {
     if (value.isDefined) {
       val obj = value.get.asInstanceOf[Object]
-      val serializer = provider.findValueSerializer(obj.getClass)
+      val serializer = provider.findValueSerializer(obj.getClass, null)
       serializer.serialize(obj, json, provider)
     } else {
       json.writeNull()
