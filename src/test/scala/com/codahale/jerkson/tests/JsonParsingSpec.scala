@@ -290,8 +290,8 @@ object JsonParsingSpec extends Spec {
     }
   }
 
-  "Parsing a JSON object as a case class with Map arguments" should {
-    "use the Scala signature to detect map value types" in {
+  class `Parsing a JSON object as a case class with Map arguments` {
+    def `should use the Scala signature to detect map value types` = {
       parse[ClassWithMap]("""{"properties": {"yay": 400}}""") must beEqualTo(ClassWithMap(Map("yay" -> 400L)))
     }
   }
