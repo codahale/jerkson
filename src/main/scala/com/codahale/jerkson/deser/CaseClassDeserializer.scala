@@ -1,7 +1,6 @@
 package com.codahale.jerkson.deser
 
 import org.codehaus.jackson.`type`.JavaType
-import com.thoughtworks.paranamer.{BytecodeReadingParanamer, CachingParanamer}
 import org.codehaus.jackson.node.{NullNode, TreeTraversingParser}
 import collection.mutable.ArrayBuffer
 import org.codehaus.jackson.map._
@@ -9,18 +8,12 @@ import com.codahale.jerkson.Json
 import org.codehaus.jackson.{JsonNode, JsonToken, JsonParser}
 import com.codahale.jerkson.util._
 
-object CaseClassDeserializer {
-  val paranamer = new CachingParanamer(new BytecodeReadingParanamer)
-}
-
 class CaseClassDeserializer(config: DeserializationConfig,
                             javaType: JavaType,
                             provider: DeserializerProvider) extends JsonDeserializer[Object] {
-  import CaseClassDeserializer._
-
   require(javaType.getRawClass.getConstructors.length == 1, "Case classes must only have one constructor.")
   private val constructor = javaType.getRawClass.getConstructors.head
-  private val params = paranamer.lookupParameterNames(constructor).zip(CaseClassSigParser.parse(javaType.getRawClass)).toArray
+  private val params = CaseClassSigParser.parse(javaType.getRawClass).toArray
 
   def deserialize(jp: JsonParser, ctxt: DeserializationContext): Object = {
     if (jp.getCurrentToken == JsonToken.START_OBJECT) {
@@ -35,14 +28,14 @@ class CaseClassDeserializer(config: DeserializationConfig,
     val node = jp.readValueAsTree
 
     val values = new ArrayBuffer[AnyRef]
-    for ((name, javaType) <- params) {
-      val field = node.get(name)
+    for ((paramName, paramType) <- params) {
+      val field = node.get(paramName)
       val tp = new TreeTraversingParser(if (field == null) NullNode.getInstance else field, jp.getCodec)
-      val value = if (javaType.getRawClass == classOf[Option[_]]) {
+      val value = if (paramType.getRawClass == classOf[Option[_]]) {
         // thanks again for special-casing VALUE_NULL
-        Option(tp.getCodec.readValue[Object](tp, javaType.containedType(0)))
+        Option(tp.getCodec.readValue[Object](tp, paramType.containedType(0)))
       } else {
-        tp.getCodec.readValue[Object](tp, javaType)
+        tp.getCodec.readValue[Object](tp, paramType)
       }
 
       if (field != null || value != null) {

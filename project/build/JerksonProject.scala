@@ -25,7 +25,6 @@ class JerksonProject(info: ProjectInfo) extends DefaultProject(info)
   val jacksonVersion = "1.7.6"
   val jacksonCore = "org.codehaus.jackson" % "jackson-core-asl" % jacksonVersion
   val jacksonMapper = "org.codehaus.jackson" % "jackson-mapper-asl" % jacksonVersion
-  val paranamer = "com.thoughtworks.paranamer" % "paranamer" % "2.3"
 
   /**
    * Test Dependencies

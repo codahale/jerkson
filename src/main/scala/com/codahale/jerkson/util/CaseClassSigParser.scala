@@ -63,7 +63,7 @@ object CaseClassSigParser {
       .flatMap {
         case (ms, idx) => {
           ms.infoType match {
-            case NullaryMethodType(t: TypeRefType) => Some(typeRef2JavaType(t))
+            case NullaryMethodType(t: TypeRefType) => Some(ms.name -> typeRef2JavaType(t))
             case _ => None
           }
         }
