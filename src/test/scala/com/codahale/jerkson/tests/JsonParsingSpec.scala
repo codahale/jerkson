@@ -238,7 +238,7 @@ object JsonParsingSpec extends Spec {
   }
 
   class `Parsing a stream of objects` {
-    val json = """[
+    private val json = """[
       {"id":1, "name": "Coda"},
       {"id":2, "name": "Niki"},
       {"id":3, "name": "Biscuit"},
@@ -270,8 +270,8 @@ object JsonParsingSpec extends Spec {
     }
   }
 
-  class `Parsing a int JSON node` {
-    val node = parse[JsonNode]("1")
+  class `Parsing an int JSON node` {
+    private val node = parse[JsonNode]("1")
 
     def `should return an Int` = {
       parse[Int](node) must beEqualTo(1)
