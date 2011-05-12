@@ -43,8 +43,7 @@ object JsonParsingSpec extends Spec {
 
       parse[Person]("{\"woo\": 1}") must throwA[ParsingException].like {
         case e: ParsingException => {
-          e.getMessage must beEqualTo("Invalid JSON. Needed either [id, name] " +
-                                              "or [id, firstName, lastName], " +
+          e.getMessage must beEqualTo("Invalid JSON. Needed [id, name], " +
                                               "but found [woo].")
         }
       }
@@ -219,14 +218,8 @@ object JsonParsingSpec extends Spec {
                                                                               "two" -> 2))
     }
   }
-
+  
   class `Parsing a JSON object as a case class` {
-    def `should use all available constructors` = {
-      parse[Person](""" {"id":1, "name": "Coda"} """) must beEqualTo(Person(1, "Coda"))
-
-      parse[Person](""" {"id":1, "firstName": "Coda", "lastName": "Hale"} """) must beEqualTo(Person(1, "Coda Hale"))
-    }
-
     def `should handle missing Option members` = {
       parse[ClassWithOption](""" {"one": "1"} """) must beEqualTo(ClassWithOption("1", None))
 
@@ -296,12 +289,18 @@ object JsonParsingSpec extends Spec {
       parse[Either[Int, String]]("\"woo\"") must beEqualTo(Right("woo"))
     }
   }
+
+  "Parsing a JSON object as a case class with Map arguments" should {
+    "use the Scala signature to detect map value types" in {
+      parse[ClassWithMap]("""{"properties": {"yay": 400}}""") must beEqualTo(ClassWithMap(Map("yay" -> 400L)))
+    }
+  }
 }
 
-case class Person(id: Long, name: String) {
-  def this(id: Long, firstName: String, lastName: String) = this(id, firstName + " " + lastName)
-}
+case class Person(id: Long, name: String)
 
 case class ClassWithOption(one: String, two: Option[String])
 
 case class ClassWithJsonNode(one: String, two: JsonNode)
+
+case class ClassWithMap(properties: Map[String, Long])
