@@ -21,7 +21,7 @@ In your [simple-build-tool](http://code.google.com/p/simple-build-tool/) project
 file, add Jerkson as a dependency:
     
     val codaRepo = "Coda Hale's Repository" at "http://repo.codahale.com/"
-    val jerkson = "com.codahale" %% "jerkson" % "0.2.0"
+    val jerkson = "com.codahale" %% "jerkson" % "0.2.1"
 
 
 Parsing JSON
