@@ -1,3 +1,9 @@
+v0.2.1: May 12 2011
+===================
+
+* Fixed bug in parsing case classes with `List[A]` members (and anything else
+  which is typed in the `scala` package.
+
 v0.2.0: May 12 2011
 ===================
 
