@@ -295,6 +295,20 @@ object JsonParsingSpec extends Spec {
       parse[ClassWithMap]("""{"properties": {"yay": 400}}""") must beEqualTo(ClassWithMap(Map("yay" -> 400L)))
     }
   }
+
+  class `Parsing a JSON object with an array of strings` {
+    def `should parse as a List[String] member of a case class` = {
+      parse[ClassWithList]("""{"roles":["badass","beardo"]}""") must beEqualTo(ClassWithList(List("badass", "beardo")))
+    }
+
+    def `should parse as a Seq[String] member of a case class` = {
+      parse[ClassWithSeq]("""{"roles":["badass","beardo"]}""") must beEqualTo(ClassWithSeq(Seq("badass", "beardo")))
+    }
+
+    def `should parse as an IndexedSeq[String] member of a case class` = {
+      parse[ClassWithIndexedSeq]("""{"roles":["badass","beardo"]}""") must beEqualTo(ClassWithIndexedSeq(IndexedSeq("badass", "beardo")))
+    }
+  }
 }
 
 case class Person(id: Long, name: String)
@@ -304,3 +318,9 @@ case class ClassWithOption(one: String, two: Option[String])
 case class ClassWithJsonNode(one: String, two: JsonNode)
 
 case class ClassWithMap(properties: Map[String, Long])
+
+case class ClassWithList(roles: List[String])
+
+case class ClassWithSeq(roles: Seq[String])
+
+case class ClassWithIndexedSeq(roles: IndexedSeq[String])
