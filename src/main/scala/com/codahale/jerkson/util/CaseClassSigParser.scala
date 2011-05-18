@@ -93,7 +93,7 @@ object CaseClassSigParser {
     case "scala.package.List" => classOf[List[_]]
     case "scala.package.Seq" => classOf[Seq[_]]
     case "scala.package.Sequence" => classOf[Seq[_]]
-    case "scala.package.Collection" => classOf[Iterable[_]]
+    case "scala.package.Collection" => classOf[Seq[_]]
     case "scala.package.IndexedSeq" => classOf[IndexedSeq[_]]
     case "scala.package.RandomAccessSeq" => classOf[IndexedSeq[_]]
     case "scala.package.Iterable" => classOf[Iterable[_]]
@@ -105,6 +105,12 @@ object CaseClassSigParser {
     case "scala.package.Character" => classOf[java.lang.Character]
     case "scala.Long" => classOf[java.lang.Long]
     case "scala.Int" => classOf[java.lang.Integer]
+    case "scala.Boolean" => classOf[java.lang.Boolean]
+    case "scala.Short" => classOf[java.lang.Short]
+    case "scala.Byte" => classOf[java.lang.Byte]
+    case "scala.Float" => classOf[java.lang.Float]
+    case "scala.Double" => classOf[java.lang.Double]
+    case "scala.Char" => classOf[java.lang.Character]
     case name => Class.forName(name)
   }
 }

@@ -11,7 +11,7 @@ Requirements
 ------------
 
 * Scala 2.8.1 or 2.9.0
-* Jackson 1.7.6
+* Jackson 1.7.7
 
 
 Setting Up Your Project
@@ -21,7 +21,7 @@ In your [simple-build-tool](http://code.google.com/p/simple-build-tool/) project
 file, add Jerkson as a dependency:
     
     val codaRepo = "Coda Hale's Repository" at "http://repo.codahale.com/"
-    val jerkson = "com.codahale" %% "jerkson" % "0.2.1"
+    val jerkson = "com.codahale" %% "jerkson" % "0.2.2"
 
 
 Parsing JSON

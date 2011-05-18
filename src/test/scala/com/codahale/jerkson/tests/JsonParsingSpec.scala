@@ -229,6 +229,59 @@ object JsonParsingSpec extends Spec {
     def `should handle JsonNode parameters` = {
       parse[ClassWithJsonNode](""" {"one": "1", "two": 2} """) must beEqualTo(ClassWithJsonNode("1", new IntNode(2)))
     }
+
+    def `should handle all built-in types` = {
+      val json = """
+{
+  "map": {
+    "one": "two"
+  },
+  "set": [1, 2, 3],
+  "string": "woo",
+  "list": [4, 5, 6],
+  "seq": [7, 8, 9],
+  "sequence": [10, 11, 12],
+  "collection": [13, 14, 15],
+  "indexedSeq": [16, 17, 18],
+  "randomAccessSeq": [19, 20, 21],
+  "vector": [22, 23, 24],
+  "bigDecimal": 12.0,
+  "bigInt": 13,
+  "int": 1,
+  "long": 2,
+  "char": "x",
+  "bool": false,
+  "short": 14,
+  "byte": 15,
+  "float": 34.5,
+  "double": 44.9
+}
+"""
+      parse[ClassWithAllTypes](json) must beEqualTo(
+        ClassWithAllTypes(
+          map = Map("one" -> "two"),
+          set = Set(1, 2, 3),
+          string = "woo",
+          list = List(4, 5, 6),
+          seq = Seq(7, 8, 9),
+          sequence = Seq(10, 11, 12),
+          collection = Iterable(13, 14, 15),
+          indexedSeq = IndexedSeq(16, 17, 18),
+          randomAccessSeq = IndexedSeq(19, 20, 21),
+          vector = Vector(22, 23, 24),
+          bigDecimal = BigDecimal("12.0"),
+          bigInt = BigInt("13"),
+          int = 1,
+          long = 2L,
+          char = 'x',
+          bool = false,
+          short = 14,
+          byte = 15,
+          float = 34.5f,
+          double = 44.9d
+        )
+      )
+    }
   }
 
   class `Parsing a JSON value as a JsonNode` {
@@ -324,3 +377,24 @@ case class ClassWithList(roles: List[String])
 case class ClassWithSeq(roles: Seq[String])
 
 case class ClassWithIndexedSeq(roles: IndexedSeq[String])
+
+case class ClassWithAllTypes(map: Map[String, String],
+                             set: Set[Int],
+                             string: String,
+                             list: List[Int],
+                             seq: Seq[Int],
+                             sequence: Sequence[Int],
+                             collection: Collection[Int],
+                             indexedSeq: IndexedSeq[Int],
+                             randomAccessSeq: RandomAccessSeq[Int],
+                             vector: Vector[Int],
+                             bigDecimal: BigDecimal,
+                             bigInt: BigInt,
+                             int: Int,
+                             long: Long,
+                             char: Char,
+                             bool: Boolean,
+                             short: Short,
+                             byte: Byte,
+                             float: Float,
+                             double: Double)
