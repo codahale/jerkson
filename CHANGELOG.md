@@ -1,3 +1,9 @@
+v0.2.2: May 18 2011
+===================
+
+* Upgraded to Jackson 1.7.7.
+* Fixed bugs in parsing case classes with other specially-namespaced types.
+
 v0.2.1: May 12 2011
 ===================
 
