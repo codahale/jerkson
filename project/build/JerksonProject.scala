@@ -22,7 +22,7 @@ class JerksonProject(info: ProjectInfo) extends DefaultProject(info)
   /**
    * Dependencies
    */
-  val jacksonVersion = "1.7.6"
+  val jacksonVersion = "1.7.7"
   val jacksonCore = "org.codehaus.jackson" % "jackson-core-asl" % jacksonVersion
   val jacksonMapper = "org.codehaus.jackson" % "jackson-mapper-asl" % jacksonVersion
 
