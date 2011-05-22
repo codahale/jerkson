@@ -9,6 +9,13 @@ class JerksonProject(info: ProjectInfo) extends DefaultProject(info)
   override def packageSrcJar = defaultJarPath("-sources.jar")
   val sourceArtifact = Artifact.sources(artifactID)
   override def packageToPublishActions = super.packageToPublishActions ++ Seq(packageSrc)
+
+  /**
+   * Always compile with deprecation alerts, full type explanations for errors,
+   * full unchecked errors, and optimizations.
+   */
+  override def compileOptions = super.compileOptions ++
+    Seq(Deprecation, ExplainTypes, Unchecked, Optimise)
   
   lazy val publishTo = Resolver.sftp("Personal Repo",
                                      "codahale.com",
