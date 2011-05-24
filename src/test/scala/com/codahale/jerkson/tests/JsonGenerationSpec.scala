@@ -117,12 +117,6 @@ class JsonGenerationSpec extends Spec {
     }
   }
 
-  class `A Vector[Int]` {
-    def `should generate a JSON array of ints` = {
-      generate(Vector(1, 2, 3)) must beEqualTo("[1,2,3]")
-    }
-  }
-
   class `A List[Int]` {
     def `should generate a JSON array of ints` = {
       generate(List(1, 2, 3)) must beEqualTo("[1,2,3]")
@@ -132,6 +126,12 @@ class JsonGenerationSpec extends Spec {
   class `A IndexedSeq[Int]` {
     def `should generate a JSON array of ints` = {
       generate(IndexedSeq(1, 2, 3)) must beEqualTo("[1,2,3]")
+    }
+  }
+
+  class `A Vector[Int]` {
+    def `should generate a JSON array of ints` = {
+      generate(Vector(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
   }
 
