@@ -111,15 +111,15 @@ class JsonGenerationSpec extends Spec {
     }
   }
 
-  class `A Vector[Int]` {
-    def `should generate a JSON array of ints` = {
-      generate(Vector(1, 2, 3)) must beEqualTo("[1,2,3]")
-    }
-  }
-
   class `A Seq[Int]` {
     def `should generate a JSON array of ints` = {
       generate(Seq(1, 2, 3)) must beEqualTo("[1,2,3]")
+    }
+  }
+
+  class `A Vector[Int]` {
+    def `should generate a JSON array of ints` = {
+      generate(Vector(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
   }
 
