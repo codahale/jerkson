@@ -4,6 +4,7 @@ import com.codahale.jerkson.AST._
 import com.codahale.jerkson.Json._
 import org.codehaus.jackson.annotate.JsonIgnore
 import com.codahale.simplespec.Spec
+import scala.collection.{mutable, immutable}
 
 object JsonGenerationSpec extends Spec {
   class `An Int` {
@@ -110,6 +111,12 @@ object JsonGenerationSpec extends Spec {
     }
   }
 
+  class `A Vector[Int]` {
+    def `should generate a JSON array of ints` = {
+      generate(Vector(1, 2, 3)) must beEqualTo("[1,2,3]")
+    }
+  }
+
   class `A Seq[Int]` {
     def `should generate a JSON array of ints` = {
       generate(Seq(1, 2, 3)) must beEqualTo("[1,2,3]")
@@ -125,12 +132,6 @@ object JsonGenerationSpec extends Spec {
   class `A IndexedSeq[Int]` {
     def `should generate a JSON array of ints` = {
       generate(IndexedSeq(1, 2, 3)) must beEqualTo("[1,2,3]")
-    }
-  }
-
-  class `A Vector[Int]` {
-    def `should generate a JSON array of ints` = {
-      generate(Vector(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
   }
 
@@ -234,3 +235,146 @@ case class CaseClassWithOverloadedField(id: Long) {
 }
 
 case class CaseClassWithOption(value: Option[String])
+
+object JsonGenerationCollectionCoverageSpec extends Spec {
+
+  // http://www.scala-lang.org/docu/files/collections-api/collections_2.html
+
+  class `A Vector` {
+    def `should generate a JSON array` = {
+      generate(Vector(1, 2, 3)) must beEqualTo(generate(Seq(1, 2, 3)))
+    }
+  }
+
+  class `A ResizableArray` {
+    def `should generate a JSON array` = {
+      generate(mutable.ResizableArray(1, 2, 3)) must beEqualTo(generate(Seq(1, 2, 3)))
+    }
+  }
+
+  class `An ArraySeq` {
+    def `should generate a JSON array` = {
+      generate(mutable.ArraySeq(1, 2, 3)) must beEqualTo(generate(Seq(1, 2, 3)))
+    }
+  }
+
+  class `A StringBuilder` {
+    def `should generate a JSON string` = {
+      generate(new StringBuilder("foo")) must beEqualTo(generate("foo"))
+    }
+  }
+
+  class `An Array` {
+    def `should generate a JSON array` = {
+      generate(Array(1, 2, 3)) must beEqualTo(generate(Seq(1, 2, 3)))
+    }
+  }
+
+  class `A List` {
+    def `should generate a JSON array` = {
+      generate(List(1, 2, 3)) must beEqualTo(generate(Seq(1, 2, 3)))
+    }
+  }
+
+  class `A Stream` {
+    def `should generate a JSON array` = {
+      generate(Stream(1, 2, 3)) must beEqualTo(generate(Seq(1, 2, 3)))
+    }
+  }
+
+  class `A MutableList` {
+    def `should generate a JSON array` = {
+      generate({ val xs = new mutable.MutableList[Int]; xs ++= List(1, 2, 3); xs}) must beEqualTo(generate(Seq(1, 2, 3)))
+    }
+  }
+
+  class `A Queue` {
+    def `should generate a JSON array` = {
+      generate(mutable.Queue(1, 2, 3)) must beEqualTo(generate(Seq(1, 2, 3)))
+    }
+  }
+
+  class `A ListBuffer` {
+    def `should generate a JSON array` = {
+      generate(mutable.ListBuffer(1, 2, 3)) must beEqualTo(generate(Seq(1, 2, 3)))
+    }
+  }
+
+  class `An ArrayBuffer` {
+    def `should generate a JSON array` = {
+      generate(mutable.ArrayBuffer(1, 2, 3)) must beEqualTo(generate(Seq(1, 2, 3)))
+    }
+  }
+
+  class `A Range` {
+    def `should generate a JSON array` = {
+      generate(Range(1, 4)) must beEqualTo(generate(Seq(1, 2, 3)))
+    }
+  }
+
+  class `A TreeSet` {
+    def `should generate a JSON array` = {
+      generate(immutable.TreeSet(1)) must beEqualTo("[1]")
+    }
+  }
+
+  class `An immutable HashSet` {
+    def `should generate a JSON array` = {
+      generate(immutable.HashSet(1)) must beEqualTo("[1]")
+    }
+  }
+
+  class `A mutable HashSet` {
+    def `should generate a JSON array` = {
+      generate(mutable.HashSet(1)) must beEqualTo("[1]")
+    }
+  }
+
+  class `A LinkedHashSet` {
+    def `should generate a JSON array` = {
+      generate(mutable.LinkedHashSet(1)) must beEqualTo("[1]")
+    }
+  }
+
+  class `A BitSet` {
+    def `should generate a JSON array` = {
+      generate(immutable.BitSet(1)) must beEqualTo("[1]")
+    }
+  }
+
+  class `A Set` {
+    def `should generate a JSON array` = {
+      generate(Set(1)) must beEqualTo("[1]")
+    }
+  }
+
+  class `A TreeMap` {
+    def `should generate a JSON object` = {
+      generate(immutable.TreeMap("one" -> 1)) must beEqualTo("""{"one":1}""")
+    }
+  }
+
+  class `An immutable HashMap` {
+    def `should generate a JSON object` = {
+      generate(immutable.HashMap("one" -> 1)) must beEqualTo("""{"one":1}""")
+    }
+  }
+
+  class `A mutable HashMap` {
+    def `should generate a JSON object` = {
+      generate(mutable.HashMap("one" -> 1)) must beEqualTo("""{"one":1}""")
+    }
+  }
+
+  class `A LinkedHashMap` {
+    def `should generate a JSON object` = {
+      generate(mutable.LinkedHashMap("one" -> 1)) must beEqualTo("""{"one":1}""")
+    }
+  }
+
+  class `A Map` {
+    def `should generate a JSON object` = {
+      generate(Map("one" -> 1)) must beEqualTo("""{"one":1}""")
+    }
+  }
+}
