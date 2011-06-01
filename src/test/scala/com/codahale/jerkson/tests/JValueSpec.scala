@@ -10,7 +10,7 @@ class JValueSpec extends Spec {
       parse[JValue]("8") \ "blah" must be(JNull)
     }
     
-    def `should return None on nonexistant fields` = {
+    def `should return None on nonexistent fields` = {
       parse[JValue]("{\"butt\": \"poop\"}") \ "anus" must be(JNull)
     }
     
