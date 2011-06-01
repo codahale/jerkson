@@ -111,6 +111,7 @@
                     <args>
                         <arg>-optimise</arg>
                         <arg>-unchecked</arg>
+                        <arg>-deprecation</arg>
                     </args>
                     <charset>UTF-8</charset>
                 </configuration>
