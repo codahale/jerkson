@@ -14,7 +14,7 @@ class ScalaSerializers extends Serializers {
         new OptionSerializer
     } else if (classOf[StringBuilder].isAssignableFrom(beanDesc.getBeanClass)) {
       new StringBuilderSerializer
-    } else if (classOf[Map[_, _]].isAssignableFrom(beanDesc.getBeanClass)) {
+    } else if (classOf[collection.Map[_,_]].isAssignableFrom(beanDesc.getBeanClass)) {
       new MapSerializer
     } else if (classOf[Iterable[_]].isAssignableFrom(beanDesc.getBeanClass)) {
         new IterableSerializer
