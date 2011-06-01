@@ -5,7 +5,7 @@ import com.codahale.jerkson.Json._
 import org.codehaus.jackson.annotate.JsonIgnore
 import com.codahale.simplespec.Spec
 
-object JsonGenerationSpec extends Spec {
+class JsonGenerationSpec extends Spec {
   class `An Int` {
     def `should generate a JSON int` = {
       generate(15) must beEqualTo("15")

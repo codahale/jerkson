@@ -9,7 +9,7 @@ import java.io.ByteArrayInputStream
 import com.codahale.jerkson.ParsingException
 import com.codahale.simplespec.Spec
 
-object JsonParsingSpec extends Spec {
+class JsonParsingSpec extends Spec {
   class `Parsing malformed JSON` {
     def `should throw a ParsingException with an informative message` = {
       parse[Boolean]("jjf8;09") must throwA[ParsingException].like {

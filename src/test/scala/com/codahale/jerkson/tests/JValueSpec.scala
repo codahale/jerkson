@@ -4,7 +4,7 @@ import com.codahale.jerkson.Json._
 import com.codahale.jerkson.AST._
 import com.codahale.simplespec.Spec
 
-object JValueSpec extends Spec {
+class JValueSpec extends Spec {
   class `Selecting single nodes` {
     def `should return None with primitives` = {
       parse[JValue]("8") \ "blah" must be(JNull)
