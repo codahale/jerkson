@@ -1,8 +1,19 @@
 import sbt._
 
+trait MMXPublishing extends BasicDependencyProject {
+  val mmxRepo = "http://metamx.artifactoryonline.com/metamx/libs-releases"
+  val mmxRepoLocal = mmxRepo + "-local"
+  //override def repositories = super.repositories ++ Set("Central" at mmxRepo)
+  override def managedStyle = ManagedStyle.Maven
+  lazy val publishTo = "central-local" at mmxRepoLocal
+  Credentials(Path.userHome / ".ivy2" / "credentials", log)
+}
+
 class JerksonProject(info: ProjectInfo) extends DefaultProject(info)
                                                 with IdeaProject
-                                                with maven.MavenDependencies {
+                                                //with maven.MavenDependencies
+                                                with MMXPublishing
+                                                {
   /**
    * Publish the source as well as the class files.
    */
@@ -17,9 +28,9 @@ class JerksonProject(info: ProjectInfo) extends DefaultProject(info)
   override def compileOptions = super.compileOptions ++
     Seq(Deprecation, ExplainTypes, Unchecked, Optimise)
   
-  lazy val publishTo = Resolver.sftp("Personal Repo",
-                                     "codahale.com",
-                                     "/home/codahale/repo.codahale.com/")
+  //lazy val publishTo = Resolver.sftp("Personal Repo",
+  //                                   "codahale.com",
+  //                                   "/home/codahale/repo.codahale.com/")
 
   /**
    * Repositories
