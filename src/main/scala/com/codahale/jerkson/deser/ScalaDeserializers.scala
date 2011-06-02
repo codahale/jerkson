@@ -20,6 +20,8 @@ class ScalaDeserializers extends Deserializers.None {
       createSeqDeserializer(config, javaType, Vector, provider, property)
     } else if (klass == classOf[IndexedSeq[_]] || klass == classOf[immutable.IndexedSeq[_]]) {
       createSeqDeserializer(config, javaType, IndexedSeq, provider, property)
+    } else if (klass == classOf[mutable.ResizableArray[_]]) {
+      createSeqDeserializer(config, javaType, mutable.ResizableArray, provider, property)
     } else if (klass == classOf[immutable.HashSet[_]]) {
       createSeqDeserializer(config, javaType, immutable.HashSet, provider, property)
     } else if (klass == classOf[collection.BitSet] || klass == classOf[immutable.BitSet]) {
