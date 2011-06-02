@@ -13,6 +13,8 @@ class ScalaDeserializers extends Deserializers.None {
     val klass = javaType.getRawClass
     if (klass == classOf[Range] || klass == classOf[immutable.Range]) {
       new RangeDeserializer
+    } else if (klass == classOf[StringBuilder]) {
+      new StringBuilderDeserializer
     } else if (klass == classOf[List[_]] || klass == classOf[immutable.List[_]]) {
       createSeqDeserializer(config, javaType, List, provider, property)
     } else if (klass == classOf[Seq[_]] || klass == classOf[immutable.Seq[_]] ||
