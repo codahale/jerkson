@@ -47,7 +47,7 @@ class MutableCollectionSupportSpec extends Spec {
     }
 
     def `is parsable from an empty JSON array` = {
-      parse[MutableList[Int]]("[]") must beEqualTo(MutableList.empty)
+      parse[MutableList[Int]]("[]") must beEqualTo(new MutableList[Int]())
     }
   }
 
@@ -61,7 +61,7 @@ class MutableCollectionSupportSpec extends Spec {
     }
 
     def `is parsable from an empty JSON array` = {
-      parse[Queue[Int]]("[]") must beEqualTo(Queue.empty)
+      parse[Queue[Int]]("[]") must beEqualTo(new Queue[Int]())
     }
   }
 

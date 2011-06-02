@@ -2,9 +2,9 @@ package com.codahale.jerkson.deser
 
 import org.codehaus.jackson.`type`.JavaType
 import org.codehaus.jackson.map._
-import scala.collection.generic.{MapFactory, GenericCompanion}
 import scala.collection.{Traversable, MapLike, immutable, mutable}
 import com.codahale.jerkson.AST.{JNull, JValue}
+import scala.collection.generic.{MapFactory, GenericCompanion}
 
 class ScalaDeserializers extends Deserializers.None {
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
@@ -30,9 +30,11 @@ class ScalaDeserializers extends Deserializers.None {
     } else if (klass == classOf[mutable.ArraySeq[_]]) {
       createSeqDeserializer(config, javaType, mutable.ArraySeq, provider, property)
     } else if (klass == classOf[mutable.MutableList[_]]) {
-      createSeqDeserializer(config, javaType, mutable.MutableList, provider, property)
+      val elementType = javaType.containedType(0)
+      new MutableListDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
     } else if (klass == classOf[mutable.Queue[_]]) {
-      createSeqDeserializer(config, javaType, mutable.Queue, provider, property)
+      val elementType = javaType.containedType(0)
+      new QueueDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
     } else if (klass == classOf[mutable.ListBuffer[_]]) {
       createSeqDeserializer(config, javaType, mutable.ListBuffer, provider, property)
     } else if (klass == classOf[mutable.ArrayBuffer[_]] || klass == classOf[mutable.Traversable[_]]) {
