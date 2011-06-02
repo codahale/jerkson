@@ -188,13 +188,11 @@ class DefaultCollectionSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON array of ints` = {
-      pending // TODO: 6/1/11 <coda> -- fix Traversable deserialization
-//      parse[Traversable[Int]]("[1,2,3]").toList must beEqualTo(List(1, 2, 3))
+      parse[Traversable[Int]]("[1,2,3]").toList must beEqualTo(List(1, 2, 3))
     }
 
     def `is parsable from an empty JSON array` = {
-      pending // TODO: 6/1/11 <coda> -- fix Traversable deserialization
-//      parse[Traversable[Int]]("[]").toList must beEqualTo(List.empty)
+      parse[Traversable[Int]]("[]").toList must beEqualTo(List.empty)
     }
   }
 

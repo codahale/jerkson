@@ -2,10 +2,9 @@ package com.codahale.jerkson.deser
 
 import org.codehaus.jackson.`type`.JavaType
 import org.codehaus.jackson.map._
-import collection.MapLike
 import com.codahale.jerkson.AST.JValue
-import scala.collection.{immutable, mutable}
 import scala.collection.generic.{MapFactory, GenericCompanion}
+import scala.collection.{Traversable, MapLike, immutable, mutable}
 
 class ScalaDeserializers extends Deserializers.None {
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
@@ -14,7 +13,7 @@ class ScalaDeserializers extends Deserializers.None {
     val klass = javaType.getRawClass
     if (klass == classOf[List[_]] || klass == classOf[immutable.List[_]]) {
       createSeqDeserializer(config, javaType, List, provider, property)
-    } else if (klass == classOf[Seq[_]] || klass == classOf[immutable.Seq[_]] || klass == classOf[Iterable[_]]) {
+    } else if (klass == classOf[Seq[_]] || klass == classOf[immutable.Seq[_]] || klass == classOf[Iterable[_]] || klass == classOf[Traversable[_]]) {
       createSeqDeserializer(config, javaType, Seq, provider, property)
     } else if (klass == classOf[Stream[_]] || klass == classOf[immutable.Stream[_]]) {
       createSeqDeserializer(config, javaType, Stream, provider, property)
