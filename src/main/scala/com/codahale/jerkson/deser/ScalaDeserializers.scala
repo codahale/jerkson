@@ -35,13 +35,13 @@ class ScalaDeserializers extends Deserializers.None {
       createSeqDeserializer(config, javaType, mutable.ListBuffer, provider, property)
     } else if (klass == classOf[mutable.ArrayBuffer[_]] || klass == classOf[mutable.Traversable[_]]) {
       createSeqDeserializer(config, javaType, mutable.ArrayBuffer, provider, property)
-    } else if (klass == classOf[immutable.HashSet[_]]) {
-      createSeqDeserializer(config, javaType, immutable.HashSet, provider, property)
     } else if (klass == classOf[collection.BitSet] || klass == classOf[immutable.BitSet]) {
       new BitSetDeserializer(immutable.BitSet)
     } else if (klass == classOf[mutable.BitSet]) {
       new BitSetDeserializer(mutable.BitSet)
-    } else if (klass == classOf[Set[_]]) {
+    } else if (klass == classOf[immutable.HashSet[_]]) {
+      createSeqDeserializer(config, javaType, immutable.HashSet, provider, property)
+    } else if (klass == classOf[Set[_]] || klass == classOf[immutable.Set[_]] || klass == classOf[collection.Set[_]]) {
       createSeqDeserializer(config, javaType, Set, provider, property)
     } else if (klass == classOf[mutable.HashSet[_]]) {
       createSeqDeserializer(config, javaType, mutable.HashSet, provider, property)
@@ -50,7 +50,7 @@ class ScalaDeserializers extends Deserializers.None {
     } else if (klass == classOf[Iterator[_]] || klass == classOf[BufferedIterator[_]]) {
       val elementType = javaType.containedType(0)
       new IteratorDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
-    } else if (klass == classOf[immutable.HashMap[_, _]] || klass == classOf[Map[_, _]]) {
+    } else if (klass == classOf[immutable.HashMap[_, _]] || klass == classOf[Map[_, _]] || klass == classOf[collection.Map[_, _]]) {
       createImmutableMapDeserializer(config, javaType, immutable.HashMap, provider, property)
     } else if (klass == classOf[mutable.HashMap[_, _]] || klass == classOf[mutable.Map[_, _]]) {
       if (javaType.containedType(0).getRawClass == classOf[String]) {
