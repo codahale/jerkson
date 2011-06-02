@@ -40,9 +40,8 @@ class CaseClassSupportSpec extends Spec {
     }
 
     def `is not parsable from a JSON object which doesn't include all of the matching field values` = {
-      pending // TODO: 6/1/11 <coda> -- fix bug in parsing empty object with missing params
-//      parse[CaseClassWithLazyVal]("""{}""") must
-//        throwA[ParsingException]("""Invalid JSON. Needed \[id], but found \[\].""")
+      parse[CaseClassWithLazyVal]("""{}""") must
+        throwA[ParsingException]("""Invalid JSON. Needed \[id], but found \[\].""")
     }
   }
 
@@ -57,9 +56,8 @@ class CaseClassSupportSpec extends Spec {
     }
 
     def `is not parsable from a JSON object which doesn't include all of the matching fields` = {
-      pending // TODO: 6/1/11 <coda> -- fix bug in parsing empty object with missing params
-//      parse[CaseClassWithIgnoredField]("""{}""") must
-//        throwA[CaseClassWithIgnoredField]("""Invalid JSON. Needed \[id], but found \[\].""")
+      parse[CaseClassWithIgnoredField]("""{}""") must
+        throwA[ParsingException]("""Invalid JSON. Needed \[id], but found \[\].""")
     }
   }
 
