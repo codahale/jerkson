@@ -5,6 +5,7 @@ import org.codehaus.jackson.map._
 import collection.generic.{MapFactory, GenericCompanion}
 import collection.MapLike
 import com.codahale.jerkson.AST.JValue
+import scala.collection.immutable
 
 /**
  *
@@ -18,6 +19,8 @@ class ScalaDeserializers extends Deserializers.None {
       createSeqDeserializer(config, javaType, List, provider, property)
     } else if (javaType.getRawClass == classOf[Seq[_]]) {
       createSeqDeserializer(config, javaType, Seq, provider, property)
+    } else if (javaType.getRawClass == classOf[immutable.Seq[_]]) {
+      createSeqDeserializer(config, javaType, immutable.Seq, provider, property)
     } else if (javaType.getRawClass == classOf[Vector[_]]) {
       createSeqDeserializer(config, javaType, Vector, provider, property)
     } else if (javaType.getRawClass == classOf[IndexedSeq[_]]) {
