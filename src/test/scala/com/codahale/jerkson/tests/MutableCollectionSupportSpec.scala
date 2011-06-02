@@ -170,14 +170,12 @@ class MutableCollectionSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON object with int field values` = {
-      pending // TODO: 5/31/11 <coda> -- fix mutable.LinkedHashMap deserialization
-//      parse[LinkedHashMap[String, Int]]("""{"one":1}""") must
-//        beEqualTo(LinkedHashMap("one" -> 1))
+      parse[LinkedHashMap[String, Int]]("""{"one":1}""") must
+        beEqualTo(LinkedHashMap("one" -> 1))
     }
 
     def `is parsable from an empty JSON object` = {
-      pending // TODO: 5/31/11 <coda> -- fix mutable.LinkedHashMap deserialization
-//      parse[LinkedHashMap[String, Int]]("{}") must beEqualTo(LinkedHashMap.empty)
+      parse[LinkedHashMap[String, Int]]("{}") must beEqualTo(LinkedHashMap.empty)
     }
   }
 }

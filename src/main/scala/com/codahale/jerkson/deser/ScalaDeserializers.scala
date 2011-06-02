@@ -57,6 +57,13 @@ class ScalaDeserializers extends Deserializers.None {
       } else {
         null
       }
+    } else if (klass == classOf[mutable.LinkedHashMap[_, _]]) {
+      if (javaType.containedType(0).getRawClass == classOf[String]) {
+        val valueType = javaType.containedType(1)
+        new MutableLinkedHashMapDeserializer(valueType, provider.findTypedValueDeserializer(config, valueType, property))
+      } else {
+        null
+      }
     } else if (klass == classOf[Option[_]]) {
       createOptionDeserializer(config, javaType, provider, property)
     } else if (klass == classOf[JValue]) {
