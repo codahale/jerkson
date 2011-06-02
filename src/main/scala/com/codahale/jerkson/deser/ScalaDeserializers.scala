@@ -40,6 +40,8 @@ class ScalaDeserializers extends Deserializers.None {
       new BitSetDeserializer(mutable.BitSet)
     } else if (klass == classOf[Set[_]]) {
       createSeqDeserializer(config, javaType, Set, provider, property)
+    } else if (klass == classOf[mutable.HashSet[_]]) {
+      createSeqDeserializer(config, javaType, mutable.HashSet, provider, property)
     } else if (klass == classOf[Iterator[_]]) {
       val elementType = javaType.containedType(0)
       new IteratorDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
