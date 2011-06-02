@@ -1,3 +1,13 @@
+v0.2.3: TBD
+===================
+* Added a very comprehensive set of tests, refactored around support for various
+  types. (h/t Daniel Brown)
+* Added support for `StringBuilder`, `Array[A]`, `immutable._`, `mutable._`,
+  `collection._` classes, `AST` classes, and others.
+* Fixed error messages when parsing empty JSON objects as case classes.
+* Enabled caching of all serializers and deserializers.
+* Switched to Maven for builds.
+
 v0.2.2: May 18 2011
 ===================
 
