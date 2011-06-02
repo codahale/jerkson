@@ -2,10 +2,11 @@ package com.codahale.jerkson.deser
 
 import org.codehaus.jackson.`type`.JavaType
 import org.codehaus.jackson.map._
-import collection.generic.{MapFactory, GenericCompanion}
 import collection.MapLike
 import com.codahale.jerkson.AST.JValue
 import scala.collection.{immutable, mutable}
+import scala.collection.generic.{MutableMapFactory, MapFactory, GenericCompanion}
+import scala.collection.mutable.HashMap
 
 class ScalaDeserializers extends Deserializers.None {
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
@@ -47,10 +48,15 @@ class ScalaDeserializers extends Deserializers.None {
     } else if (klass == classOf[Iterator[_]]) {
       val elementType = javaType.containedType(0)
       new IteratorDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
-    } else if (klass == classOf[immutable.HashMap[_, _]]) {
-      createMapDeserializer(config, javaType, immutable.HashMap, provider, property)
-    } else if (klass == classOf[Map[_, _]]) {
-      createMapDeserializer(config, javaType, Map, provider, property)
+    } else if (klass == classOf[immutable.HashMap[_, _]] || klass == classOf[Map[_, _]]) {
+      createImmutableMapDeserializer(config, javaType, immutable.HashMap, provider, property)
+    } else if (klass == classOf[mutable.HashMap[_, _]] || klass == classOf[mutable.Map[_, _]]) {
+      if (javaType.containedType(0).getRawClass == classOf[String]) {
+        val valueType = javaType.containedType(1)
+        new MutableMapDeserializer(valueType, provider.findTypedValueDeserializer(config, valueType, property))
+      } else {
+        null
+      }
     } else if (klass == classOf[Option[_]]) {
       createOptionDeserializer(config, javaType, provider, property)
     } else if (klass == classOf[JValue]) {
@@ -83,14 +89,14 @@ class ScalaDeserializers extends Deserializers.None {
     new OptionDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
   }
 
-  private def createMapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]]](config: DeserializationConfig,
+  private def createImmutableMapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]]](config: DeserializationConfig,
                                                                                         javaType: JavaType,
                                                                                         companion: MapFactory[CC],
                                                                                         provider: DeserializerProvider,
                                                                                         property: BeanProperty) = {
     if (javaType.containedType(0).getRawClass == classOf[String]) {
       val valueType = javaType.containedType(1)
-      new MapDeserializer[CC](companion, valueType, provider.findTypedValueDeserializer(config, valueType, property))
+      new ImmutableMapDeserializer[CC](companion, valueType, provider.findTypedValueDeserializer(config, valueType, property))
     } else {
       null
     }

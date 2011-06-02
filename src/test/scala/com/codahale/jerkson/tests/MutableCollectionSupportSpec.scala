@@ -135,20 +135,32 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
+  class `A Map[String, Int]` {
+    def `generates a JSON object` = {
+      generate(Map("one" -> 1)) must beEqualTo("""{"one":1}""")
+    }
+
+    def `is parsable from a JSON object with int field values` = {
+      parse[Map[String, Int]]("""{"one":1}""") must beEqualTo(Map("one" -> 1))
+    }
+
+    def `is parsable from an empty JSON object` = {
+      parse[Map[String, Int]]("{}") must beEqualTo(Map.empty)
+    }
+  }
+
   class `A HashMap[String, Int]` {
     def `generates a JSON object` = {
       generate(HashMap("one" -> 1)) must beEqualTo("""{"one":1}""")
     }
 
     def `is parsable from a JSON object with int field values` = {
-      pending // TODO: 5/31/11 <coda> -- fix mutable.HashMap deserialization
-//      parse[mutable.HashMap[String, Int]]("""{"one":1}""") must
-//        beEqualTo(mutable.HashMap("one" -> 1))
+      parse[HashMap[String, Int]]("""{"one":1}""") must
+        beEqualTo(HashMap("one" -> 1))
     }
 
     def `is parsable from an empty JSON object` = {
-      pending // TODO: 5/31/11 <coda> -- fix mutable.HashMap deserialization
-//      parse[HashMap[String, Int]]("{}") must beEqualTo(HashMap.empty)
+      parse[HashMap[String, Int]]("{}") must beEqualTo(HashMap.empty)
     }
   }
 
