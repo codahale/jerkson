@@ -31,6 +31,8 @@ class ScalaDeserializers extends Deserializers.None {
     } else if (klass == classOf[Iterator[_]]) {
       val elementType = javaType.containedType(0)
       new IteratorDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
+    } else if (klass == classOf[immutable.HashMap[_, _]]) {
+      createMapDeserializer(config, javaType, immutable.HashMap, provider, property)
     } else if (klass == classOf[Map[_, _]]) {
       createMapDeserializer(config, javaType, Map, provider, property)
     } else if (klass == classOf[Option[_]]) {

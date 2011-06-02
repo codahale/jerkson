@@ -120,13 +120,11 @@ class ImmutableCollectionSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON object with int field values` = {
-      pending // TODO: 5/31/11 <coda> -- fix immutable.HashMap deserialization
-//      parse[HashMap[String, Int]]("""{"one":1}""") must beEqualTo(HashMap("one" -> 1))
+      parse[HashMap[String, Int]]("""{"one":1}""") must beEqualTo(HashMap("one" -> 1))
     }
 
     def `is parsable from an empty JSON object` = {
-      pending // TODO: 5/31/11 <coda> -- fix immutable.HashMap deserialization
-//      parse[HashMap[String, Int]]("{}") must beEqualTo(HashMap.empty)
+      parse[HashMap[String, Int]]("{}") must beEqualTo(HashMap.empty)
     }
   }
 }
