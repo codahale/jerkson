@@ -19,6 +19,6 @@ class IteratorDeserializer(elementType: JavaType,
       builder += elementDeserializer.deserialize(jp, ctxt).asInstanceOf[Object]
     }
 
-    builder.result().iterator
+    builder.result().iterator.buffered
   }
 }

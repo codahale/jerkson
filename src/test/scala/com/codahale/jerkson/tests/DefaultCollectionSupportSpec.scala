@@ -204,13 +204,11 @@ class DefaultCollectionSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON array of ints` = {
-      pending // TODO: 6/1/11 <coda> -- fix BufferedIterator deserialization
-//      parse[BufferedIterator[Int]]("[1,2,3]").toList must beEqualTo(List(1, 2, 3))
+      parse[BufferedIterator[Int]]("[1,2,3]").toList must beEqualTo(List(1, 2, 3))
     }
 
     def `is parsable from an empty JSON array` = {
-      pending // TODO: 6/1/11 <coda> -- fix BufferedIterator deserialization
-//      parse[BufferedIterator[Int]]("[]").toList must beEqualTo(List.empty)
+      parse[BufferedIterator[Int]]("[]").toList must beEqualTo(List.empty)
     }
   }
 
