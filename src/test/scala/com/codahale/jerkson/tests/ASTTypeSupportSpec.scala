@@ -81,7 +81,7 @@ class ASTTypeSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON false` = {
-      pending // TODO: 5/31/11 <coda> -- fix this
+      pending // TODO: 5/31/11 <coda> -- fix JBoolean deserialization
 //      parse[JBoolean]("false") must beEqualTo(JBoolean(false))
     }
 
