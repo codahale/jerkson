@@ -13,7 +13,9 @@ class ScalaDeserializers extends Deserializers.None {
     val klass = javaType.getRawClass
     if (klass == classOf[List[_]] || klass == classOf[immutable.List[_]]) {
       createSeqDeserializer(config, javaType, List, provider, property)
-    } else if (klass == classOf[Seq[_]] || klass == classOf[immutable.Seq[_]] || klass == classOf[Iterable[_]] || klass == classOf[Traversable[_]]) {
+    } else if (klass == classOf[Seq[_]] || klass == classOf[immutable.Seq[_]] ||
+               klass == classOf[Iterable[_]] || klass == classOf[Traversable[_]] ||
+               klass == classOf[immutable.Traversable[_]]) {
       createSeqDeserializer(config, javaType, Seq, provider, property)
     } else if (klass == classOf[Stream[_]] || klass == classOf[immutable.Stream[_]]) {
       createSeqDeserializer(config, javaType, Stream, provider, property)
@@ -31,7 +33,7 @@ class ScalaDeserializers extends Deserializers.None {
       createSeqDeserializer(config, javaType, mutable.Queue, provider, property)
     } else if (klass == classOf[mutable.ListBuffer[_]]) {
       createSeqDeserializer(config, javaType, mutable.ListBuffer, provider, property)
-    } else if (klass == classOf[mutable.ArrayBuffer[_]]) {
+    } else if (klass == classOf[mutable.ArrayBuffer[_]] || klass == classOf[mutable.Traversable[_]]) {
       createSeqDeserializer(config, javaType, mutable.ArrayBuffer, provider, property)
     } else if (klass == classOf[immutable.HashSet[_]]) {
       createSeqDeserializer(config, javaType, immutable.HashSet, provider, property)
