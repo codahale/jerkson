@@ -39,13 +39,11 @@ class ImmutableCollectionSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON array of ints` = {
-      pending // TODO: 5/31/11 <coda> -- fix immutable.IndexedSeq deserialization
-//      parse[IndexedSeq[Int]]("[1,2,3]") must beEqualTo(IndexedSeq(1, 2, 3))
+      parse[IndexedSeq[Int]]("[1,2,3]") must beEqualTo(IndexedSeq(1, 2, 3))
     }
 
     def `is parsable from an empty JSON array` = {
-      pending // TODO: 5/31/11 <coda> -- fix immutable.IndexedSeq deserialization
-//      parse[IndexedSeq[Int]]("[]") must beEqualTo(IndexedSeq.empty)
+      parse[IndexedSeq[Int]]("[]") must beEqualTo(IndexedSeq.empty)
     }
   }
 
