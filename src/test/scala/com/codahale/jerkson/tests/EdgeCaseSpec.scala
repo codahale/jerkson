@@ -56,11 +56,10 @@ class EdgeCaseSpec extends Spec {
 
   class `Parsing invalid JSON` {
     def `should throw a ParsingException with an informative message` = {
-      parse[CaseClass]("900") must throwA[ParsingException].like {
-        case e: ParsingException => {
-          e.getMessage must beEqualTo("Invalid JSON.")
-        }
-      }
+      parse[CaseClass]("900") must throwA[ParsingException](
+        """Can not deserialize instance of com.codahale.jerkson.tests.CaseClass out of VALUE_NUMBER_INT token\n""" +
+          """ at \[Source: java.io.StringReader@[0-9a-f]{8}; line: 1, column: 1\]"""
+      )
 
       parse[CaseClass]("{\"woo\": 1}") must throwA[ParsingException].like {
         case e: ParsingException => {
