@@ -2,20 +2,44 @@ package com.codahale.jerkson.tests
 
 import com.codahale.jerkson.Json._
 import com.codahale.simplespec.Spec
+import com.codahale.jerkson.ParsingException
 
 class DefaultCollectionSupportSpec extends Spec {
   class `A Range` {
     def `generates a JSON object` = {
-      pending // TODO: 5/31/11 <coda> -- fix Range serialization
-//      generate(Range.inclusive(1, 4, 3)) must
-//        beEqualTo("""{"start":1,"end":4,"step":3,"inclusive":true}""")
+      generate(Range.inclusive(1, 4, 3)) must
+        beEqualTo("""{"start":1,"end":4,"step":3,"inclusive":true}""")
+    }
+
+    def `generates a JSON object without the inclusive field if it's exclusive` = {
+      generate(Range(1, 4, 3)) must
+        beEqualTo("""{"start":1,"end":4,"step":3}""")
+    }
+
+    def `generates a JSON object without the step field if it's 1` = {
+      generate(Range(1, 4)) must
+        beEqualTo("""{"start":1,"end":4}""")
     }
 
     def `is parsable from a JSON object` = {
-      pending // TODO: 5/31/11 <coda> -- fix Range deserialization
-//      parse[Range]("""{"start":1,"end":4,"step":3,"inclusive":true}""") must
-//        beEqualTo(Range.inclusive(1, 4, 3))
+      parse[Range]("""{"start":1,"end":4,"step":3,"inclusive":true}""") must
+        beEqualTo(Range.inclusive(1, 4, 3))
     }
+
+    def `is parsable from a JSON object without the inclusive field` = {
+      parse[Range]("""{"start":1,"end":4,"step":3}""") must
+        beEqualTo(Range(1, 4, 3))
+    }
+
+    def `is parsable from a JSON object without the step field` = {
+      parse[Range]("""{"start":1,"end":4}""") must
+        beEqualTo(Range(1, 4))
+    }
+
+    def `is not parsable from a JSON object without the required fields` = {
+      parse[Range]("""{"start":1}""") must throwA[ParsingException]("""Invalid JSON. Needed \[start, end, <step>, <inclusive>\], but found \[start\].""")
+    }
+
   }
 
   class `A Pair[Int]` {

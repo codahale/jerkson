@@ -11,7 +11,9 @@ class ScalaDeserializers extends Deserializers.None {
                             provider: DeserializerProvider, beanDesc: BeanDescription,
                             property: BeanProperty) = {
     val klass = javaType.getRawClass
-    if (klass == classOf[List[_]] || klass == classOf[immutable.List[_]]) {
+    if (klass == classOf[Range] || klass == classOf[immutable.Range]) {
+      new RangeDeserializer
+    } else if (klass == classOf[List[_]] || klass == classOf[immutable.List[_]]) {
       createSeqDeserializer(config, javaType, List, provider, property)
     } else if (klass == classOf[Seq[_]] || klass == classOf[immutable.Seq[_]] ||
                klass == classOf[Iterable[_]] || klass == classOf[Traversable[_]] ||
