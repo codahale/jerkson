@@ -23,6 +23,8 @@ class ScalaDeserializers extends Deserializers.None {
       createSeqDeserializer(config, javaType, Seq, provider, property)
     } else if (klass == classOf[Stream[_]] || klass == classOf[immutable.Stream[_]]) {
       createSeqDeserializer(config, javaType, Stream, provider, property)
+    } else if (klass == classOf[immutable.Queue[_]]) {
+      createSeqDeserializer(config, javaType, immutable.Queue, provider, property)
     } else if (klass == classOf[Vector[_]]) {
       createSeqDeserializer(config, javaType, Vector, provider, property)
     } else if (klass == classOf[IndexedSeq[_]] || klass == classOf[immutable.IndexedSeq[_]]) {

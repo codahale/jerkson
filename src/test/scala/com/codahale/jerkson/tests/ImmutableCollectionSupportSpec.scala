@@ -138,4 +138,18 @@ class ImmutableCollectionSupportSpec extends Spec {
       parse[HashMap[String, Int]]("{}") must beEqualTo(HashMap.empty)
     }
   }
+
+  class `A Queue[Int]` {
+    def `generates a JSON array` = {
+      generate(Queue(1, 2, 3)) must beEqualTo("[1,2,3]")
+    }
+
+    def `is parsable from a JSON array of ints` = {
+      parse[Queue[Int]]("[1,2,3]") must beEqualTo(Queue(1, 2, 3))
+    }
+
+    def `is parsable from an empty JSON array` = {
+      parse[Queue[Int]]("[]") must beEqualTo(Queue.empty)
+    }
+  }
 }
