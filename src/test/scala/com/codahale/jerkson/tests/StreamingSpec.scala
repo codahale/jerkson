@@ -29,13 +29,9 @@ class StreamingSpec extends Spec {
     }
 
     def `returns an iterator of stream elements` = {
-      val input = new ByteArrayInputStream(json.getBytes)
-
-      val people = new ArrayBuffer[CaseClass]
-      stream[CaseClass](input).toList must beEqualTo(List(CaseClass(1, "Coda"),
-                                                       CaseClass(2, "Niki"),
-                                                       CaseClass(3, "Biscuit"),
-                                                       CaseClass(4, "Louie")))
+      stream[CaseClass](new ByteArrayInputStream(json.getBytes)).toList must
+        beEqualTo(CaseClass(1, "Coda") :: CaseClass(2, "Niki") ::
+                  CaseClass(3, "Biscuit") :: CaseClass(4, "Louie") :: Nil)
     }
   }
 }
