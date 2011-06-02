@@ -43,13 +43,11 @@ class MutableCollectionSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON array of ints` = {
-      pending // TODO: 5/31/11 <coda> -- fix mutable.MutableList deserialization
-//      parse[MutableList[Int]]("[1,2,3]") must beEqualTo(xs)
+      parse[MutableList[Int]]("[1,2,3]") must beEqualTo(xs)
     }
 
     def `is parsable from an empty JSON array` = {
-      pending // TODO: 5/31/11 <coda> -- fix mutable.MutableList deserialization
-//      parse[MutableList[Int]]("[]") must beEqualTo(MutableList.empty)
+      parse[MutableList[Int]]("[]") must beEqualTo(MutableList.empty)
     }
   }
 
