@@ -38,22 +38,6 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
-  class `An Array[Int]` {
-    def `generates a JSON array of ints` = {
-      generate(Array(1, 2, 3)) must beEqualTo("[1,2,3]")
-    }
-
-    def `is parsable from a JSON array of ints` = {
-      pending // TODO: 5/31/11 <coda> -- fix Array deserialization
-//      parse[Array[Int]]("[1,2,3]").toList must beEqualTo(List(1, 2, 3))
-    }
-
-    def `is parsable from an empty JSON array` = {
-      pending // TODO: 5/31/11 <coda> -- fix Array deserialization
-//      parse[Array[Int]]("[]").toList must beEqualTo(List.empty)
-    }
-  }
-
   class `A MutableList[Int]` {
     private val xs = new MutableList[Int]
     xs ++= List(1, 2, 3)

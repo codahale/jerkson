@@ -191,4 +191,18 @@ class BasicTypeSupportSpec extends Spec {
       parse[Int](new IntNode(2)) must beEqualTo(2)
     }
   }
+
+  class `An Array[Int]` {
+    def `generates a JSON array of ints` = {
+      generate(Array(1, 2, 3)) must beEqualTo("[1,2,3]")
+    }
+
+    def `is parsable from a JSON array of ints` = {
+      parse[Array[Int]]("[1,2,3]").toList must beEqualTo(List(1, 2, 3))
+    }
+
+    def `is parsable from an empty JSON array` = {
+      parse[Array[Int]]("[]").toList must beEqualTo(List.empty)
+    }
+  }
 }

@@ -18,10 +18,11 @@ trait Factory {
 
   private[jerkson] def manifest2JavaType[A](manifest: Manifest[A]): JavaType = {
     if (manifest.erasure.isArray) {
-      throw new IllegalArgumentException("can't handle arrays")
+      TypeFactory.arrayType(manifest.erasure.getComponentType)
+    } else {
+      TypeFactory.parametricType(manifest.erasure,
+        manifest.typeArguments
+          .map {m => manifest2JavaType(m)}.toArray: _*)
     }
-    TypeFactory.parametricType(manifest.erasure,
-                               manifest.typeArguments
-                               .map{m => manifest2JavaType(m)}.toArray: _*)
   }
 }
