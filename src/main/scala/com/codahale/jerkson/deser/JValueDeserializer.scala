@@ -5,7 +5,9 @@ import org.codehaus.jackson.{JsonToken, JsonParser}
 import com.codahale.jerkson.Json.manifest2JavaType
 import com.codahale.jerkson.AST._
 import collection.mutable.ArrayBuffer
+import org.codehaus.jackson.map.annotate.JsonCachable
 
+@JsonCachable
 class JValueDeserializer extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext): Object = {
     if (jp.getCurrentToken == null) {

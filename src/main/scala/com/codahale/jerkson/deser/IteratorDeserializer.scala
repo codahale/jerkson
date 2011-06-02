@@ -3,7 +3,9 @@ package com.codahale.jerkson.deser
 import org.codehaus.jackson.`type`.JavaType
 import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer}
 import org.codehaus.jackson.{JsonToken, JsonParser}
+import org.codehaus.jackson.map.annotate.JsonCachable
 
+@JsonCachable
 class IteratorDeserializer(elementType: JavaType,
                            elementDeserializer: JsonDeserializer[Object]) extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {

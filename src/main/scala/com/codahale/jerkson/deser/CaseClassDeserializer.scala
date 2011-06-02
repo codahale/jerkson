@@ -4,11 +4,12 @@ import scala.collection.JavaConversions._
 import org.codehaus.jackson.`type`.JavaType
 import collection.mutable.ArrayBuffer
 import org.codehaus.jackson.map._
-import com.codahale.jerkson.Json
 import org.codehaus.jackson.{JsonNode, JsonToken, JsonParser}
 import com.codahale.jerkson.util._
 import org.codehaus.jackson.node.{ObjectNode, NullNode, TreeTraversingParser}
+import org.codehaus.jackson.map.annotate.JsonCachable
 
+@JsonCachable
 class CaseClassDeserializer(config: DeserializationConfig,
                             javaType: JavaType,
                             provider: DeserializerProvider) extends JsonDeserializer[Object] {

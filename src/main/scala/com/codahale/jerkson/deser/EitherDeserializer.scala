@@ -6,10 +6,6 @@ import org.codehaus.jackson.map.{DeserializerProvider, DeserializationConfig, De
 import org.codehaus.jackson.map.annotate.JsonCachable
 import org.codehaus.jackson.node.TreeTraversingParser
 
-/**
- *
- * @author coda
- */
 @JsonCachable
 class EitherDeserializer(config: DeserializationConfig,
                          javaType: JavaType,
