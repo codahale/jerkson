@@ -15,34 +15,33 @@ class ScalaDeserializers extends Deserializers.None {
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
                             provider: DeserializerProvider, beanDesc: BeanDescription,
                             property: BeanProperty) = {
-    if (javaType.getRawClass == classOf[List[_]]) {
+    val klass = javaType.getRawClass
+    if (klass == classOf[List[_]] || klass == classOf[immutable.List[_]]) {
       createSeqDeserializer(config, javaType, List, provider, property)
-    } else if (javaType.getRawClass == classOf[Seq[_]]) {
+    } else if (klass == classOf[Seq[_]] || klass == classOf[immutable.Seq[_]]) {
       createSeqDeserializer(config, javaType, Seq, provider, property)
-    } else if (javaType.getRawClass == classOf[immutable.Seq[_]]) {
-      createSeqDeserializer(config, javaType, immutable.Seq, provider, property)
-    } else if (javaType.getRawClass == classOf[Vector[_]]) {
+    } else if (klass == classOf[Vector[_]]) {
       createSeqDeserializer(config, javaType, Vector, provider, property)
-    } else if (javaType.getRawClass == classOf[IndexedSeq[_]]) {
+    } else if (klass == classOf[IndexedSeq[_]]) {
       createSeqDeserializer(config, javaType, IndexedSeq, provider, property)
-    } else if (javaType.getRawClass == classOf[Set[_]]) {
+    } else if (klass == classOf[Set[_]]) {
       createSeqDeserializer(config, javaType, Set, provider, property)
-    } else if (javaType.getRawClass == classOf[Iterator[_]]) {
+    } else if (klass == classOf[Iterator[_]]) {
       val elementType = javaType.containedType(0)
       new IteratorDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
-    } else if (javaType.getRawClass == classOf[Map[_, _]]) {
+    } else if (klass == classOf[Map[_, _]]) {
       createMapDeserializer(config, javaType, Map, provider, property)
-    } else if (javaType.getRawClass == classOf[Option[_]]) {
+    } else if (klass == classOf[Option[_]]) {
       createOptionDeserializer(config, javaType, provider, property)
-    } else if (javaType.getRawClass == classOf[JValue]) {
+    } else if (klass == classOf[JValue]) {
       new JValueDeserializer
-    } else if (javaType.getRawClass == classOf[BigInt]) {
+    } else if (klass == classOf[BigInt]) {
       new BigIntDeserializer
-    } else if (javaType.getRawClass == classOf[BigDecimal]) {
+    } else if (klass == classOf[BigDecimal]) {
       new BigDecimalDeserializer
-    } else if (javaType.getRawClass == classOf[Either[_,_]]) {
+    } else if (klass == classOf[Either[_,_]]) {
       new EitherDeserializer(config, javaType, provider)
-    } else if (classOf[Product].isAssignableFrom(javaType.getRawClass)) {
+    } else if (classOf[Product].isAssignableFrom(klass)) {
       new CaseClassDeserializer(config, javaType, provider)
     } else null
   }

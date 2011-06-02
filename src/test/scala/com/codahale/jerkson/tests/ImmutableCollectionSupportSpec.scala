@@ -25,13 +25,11 @@ class ImmutableCollectionSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON array of ints` = {
-      pending // TODO: 5/31/11 <coda> -- fix immutable.List deserialization
-//      parse[List[Int]]("[1,2,3]") must beEqualTo(List(1, 2, 3))
+      parse[List[Int]]("[1,2,3]") must beEqualTo(List(1, 2, 3))
     }
 
     def `is parsable from an empty JSON array` = {
-      pending // TODO: 5/31/11 <coda> -- fix immutable.List deserialization
-//      parse[List[Int]]("[]") must beEqualTo(List.empty)
+      parse[List[Int]]("[]") must beEqualTo(List.empty)
     }
   }
 
