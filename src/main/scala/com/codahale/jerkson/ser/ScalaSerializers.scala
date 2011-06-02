@@ -4,13 +4,9 @@ import org.codehaus.jackson.`type`.JavaType
 import com.codahale.jerkson.AST.JValue
 import org.codehaus.jackson.map._
 
-/**
- *
- * @author coda
- */
 class ScalaSerializers extends Serializers {
   def findSerializer(config: SerializationConfig, javaType: JavaType, beanDesc: BeanDescription, beanProp: BeanProperty) = {
-    val ser = if (classOf[Option[_]].isAssignableFrom(beanDesc.getBeanClass)) {
+    val ser: Object = if (classOf[Option[_]].isAssignableFrom(beanDesc.getBeanClass)) {
         new OptionSerializer
     } else if (classOf[StringBuilder].isAssignableFrom(beanDesc.getBeanClass)) {
       new StringBuilderSerializer
