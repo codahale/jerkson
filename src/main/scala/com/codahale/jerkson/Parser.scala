@@ -75,7 +75,7 @@ trait Parser extends Factory {
       if (mf.erasure == classOf[Option[_]]) {
         // thanks for special-casing VALUE_NULL, guys
         Option(parse(parser, mf.typeArguments.head)).asInstanceOf[A]
-      } else if (mf.erasure == classOf[JValue]) {
+      } else if (mf.erasure == classOf[JValue] || mf.erasure == JNull.getClass) {
         val value: A = parser.getCodec.readValue(parser, manifest2JavaType(mf))
         if (value == null) JNull.asInstanceOf[A] else value
       } else {

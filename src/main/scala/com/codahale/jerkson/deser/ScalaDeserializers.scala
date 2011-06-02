@@ -2,9 +2,9 @@ package com.codahale.jerkson.deser
 
 import org.codehaus.jackson.`type`.JavaType
 import org.codehaus.jackson.map._
-import com.codahale.jerkson.AST.JValue
 import scala.collection.generic.{MapFactory, GenericCompanion}
 import scala.collection.{Traversable, MapLike, immutable, mutable}
+import com.codahale.jerkson.AST.{JNull, JValue}
 
 class ScalaDeserializers extends Deserializers.None {
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
@@ -68,8 +68,8 @@ class ScalaDeserializers extends Deserializers.None {
       }
     } else if (klass == classOf[Option[_]]) {
       createOptionDeserializer(config, javaType, provider, property)
-    } else if (klass == classOf[JValue]) {
-      new JValueDeserializer
+    } else if (classOf[JValue].isAssignableFrom(klass) || klass == JNull.getClass) {
+      new JValueDeserializer(klass)
     } else if (klass == classOf[BigInt]) {
       new BigIntDeserializer
     } else if (klass == classOf[BigDecimal]) {

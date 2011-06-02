@@ -11,8 +11,7 @@ class ASTTypeSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON int` = {
-      pending // TODO: 5/31/11 <coda> -- fix JInt deserialization
-//      parse[JInt]("15") must beEqualTo(JInt(15))
+      parse[JInt]("15") must beEqualTo(JInt(15))
     }
 
     def `is parsable from a JSON int as a JValue` = {
@@ -26,8 +25,7 @@ class ASTTypeSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON float` = {
-      pending // TODO: 5/31/11 <coda> -- fix JFloat deserialization
-//      parse[JFloat]("15.1") must beEqualTo(JFloat(15.1))
+      parse[JFloat]("15.1") must beEqualTo(JFloat(15.1))
     }
 
     def `is parsable from a JSON float as a JValue` = {
@@ -42,8 +40,7 @@ class ASTTypeSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON string` = {
-      pending // TODO: 5/31/11 <coda> -- fix JString deserialization
-//      parse[JString]("\"woo\"") must beEqualTo(JString("woo"))
+      parse[JString]("\"woo\"") must beEqualTo(JString("woo"))
     }
 
     def `is parsable from a JSON string as a JValue` = {
@@ -57,8 +54,7 @@ class ASTTypeSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON null` = {
-      pending // TODO: 5/31/11 <coda> -- fix JNull deserialization
-//      parse[JNull.type]("null") must beEqualTo(JNull)
+      parse[JNull.type]("null") must beEqualTo(JNull)
     }
 
     def `is parsable from a JSON null as a JValue` = {
@@ -76,13 +72,11 @@ class ASTTypeSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON true` = {
-      pending // TODO: 5/31/11 <coda> -- fix JBoolean deserialization
-//      parse[JBoolean]("true") must beEqualTo(JBoolean(true))
+      parse[JBoolean]("true") must beEqualTo(JBoolean(true))
     }
 
     def `is parsable from a JSON false` = {
-      pending // TODO: 5/31/11 <coda> -- fix JBoolean deserialization
-//      parse[JBoolean]("false") must beEqualTo(JBoolean(false))
+      parse[JBoolean]("false") must beEqualTo(JBoolean(false))
     }
 
     def `is parsable from a JSON true as a JValue` = {
@@ -100,8 +94,7 @@ class ASTTypeSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON array of ints` = {
-      pending // TODO: 5/31/11 <coda> -- fix JArray deserialization
-//      parse[JArray]("[1,2,3]") must beEqualTo(JArray(List(JInt(1), JInt(2), JInt(3))))
+      parse[JArray]("[1,2,3]") must beEqualTo(JArray(List(JInt(1), JInt(2), JInt(3))))
     }
 
     def `is parsable from a JSON array of ints as a JValue` = {
@@ -117,8 +110,7 @@ class ASTTypeSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON object` = {
-      pending // TODO: 5/31/11 <coda> -- fix JObject deserialization
-//      parse[JObject]("""{"id":1,"name":"Coda"}""") must beEqualTo(obj)
+      parse[JObject]("""{"id":1,"name":"Coda"}""") must beEqualTo(obj)
     }
 
     def `is parsable from a JSON object as a JValue` = {

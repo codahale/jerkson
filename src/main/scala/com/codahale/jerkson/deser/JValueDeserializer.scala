@@ -8,13 +8,13 @@ import collection.mutable.ArrayBuffer
 import org.codehaus.jackson.map.annotate.JsonCachable
 
 @JsonCachable
-class JValueDeserializer extends JsonDeserializer[Object] {
+class JValueDeserializer(klass: Class[_]) extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext): Object = {
     if (jp.getCurrentToken == null) {
       jp.nextToken()
     }
 
-    jp.getCurrentToken match {
+    val value = jp.getCurrentToken match {
       case JsonToken.VALUE_NUMBER_INT => JInt(BigInt(jp.getText))
       case JsonToken.VALUE_NUMBER_FLOAT => JFloat(jp.getDoubleValue)
       case JsonToken.VALUE_STRING => JString(jp.getText)
@@ -40,5 +40,10 @@ class JValueDeserializer extends JsonDeserializer[Object] {
       case _ => throw ctxt.mappingException(classOf[JValue])
     }
 
+    if (!klass.isAssignableFrom(value.getClass)) {
+      throw ctxt.mappingException(klass)
+    }
+
+    value
   }
 }
