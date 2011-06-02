@@ -6,44 +6,48 @@ import com.codahale.simplespec.Spec
 
 class JValueSpec extends Spec {
   class `Selecting single nodes` {
-    def `should return None with primitives` = {
+    def `returns None with primitives` = {
       parse[JValue]("8") \ "blah" must be(JNull)
     }
     
-    def `should return None on nonexistent fields` = {
-      parse[JValue]("{\"butt\": \"poop\"}") \ "anus" must be(JNull)
+    def `returns None on nonexistent fields` = {
+      parse[JValue]("{\"one\": \"1\"}") \ "two" must be(JNull)
     }
     
-    def `should return a JValue with an existing field` = {
-      parse[JValue]("{\"butt\": \"poop\"}") \ "butt" must beEqualTo(JString("poop"))
+    def `returns a JValue with an existing field` = {
+      parse[JValue]("{\"one\": \"1\"}") \ "one" must beEqualTo(JString("1"))
     }
   }
   
   class `Selecting array members` {
-    def `should return  None with primitives` = {
+    def `returns None with primitives` = {
       parse[JValue]("\"derp\"").apply(0) must be(JNull)
     }
     
-    def `should return None on out of bounds` = {
+    def `returns None on out of bounds` = {
       parse[JValue]("[0, 1, 2, 3]").apply(4) must be(JNull)
     }
     
-    def `should return a JValue` = {
+    def `returns a JValue` = {
       parse[JValue]("[0, 1, 2, 3]").apply(2) must beEqualTo(JInt(2))
     }
   }
   
   class `Deep selecting` {
-    def `should return None with primitives` = {
-      parse[JValue]("0.234") \\ "herp" must be(Nil)
+    def `returns Nil with primitives` = {
+      parse[JValue]("0.234") \\ "herp" must beEmpty
+    }
+
+    def `returns Nil on nothing found` = {
+      parse[JValue]("{\"one\": {\"two\" : \"three\"}}") \\ "four" must beEmpty
     }
     
-    def `should return None on nothing found` = {
-      parse[JValue]("{\"butt\": {\"anus\" : \"poopoo\"}}") \\ "anus" must beEqualTo(Seq(JString("poopoo")))
+    def `returns single leaf nodes` = {
+      parse[JValue]("{\"one\": {\"two\" : \"three\"}}") \\ "two" must beEqualTo(Seq(JString("three")))
     }
     
     def `should return multiple leaf nodes` = {
-      parse[JValue]("{\"butt\": {\"anus\" : \"poopoo\"}, \"rectum\": {\"anus\" : \"dookie\"}}") \\ "anus" must beEqualTo(Seq(JString("poopoo"),JString("dookie")))
+      parse[JValue]("{\"one\": {\"two\" : \"three\"}, \"four\": {\"two\" : \"five\"}}") \\ "two" must beEqualTo(Seq(JString("three"),JString("five")))
     }
   }
 }
