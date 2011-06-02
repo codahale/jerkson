@@ -64,7 +64,7 @@ trait Parser extends Factory {
    * Parse a streaming JSON array of particular types, passing each deserialized
    * object to a callback method.
    */
-  @deprecated("Use Json.stream instead", "0.1.1")
+  @deprecated("Use Json.stream instead")
   // TODO: 2/18/11 <coda> -- remove for 0.2.0
   def parseStreamOf[A](input: InputStream)(callback: A => Unit)(implicit mf: Manifest[A]) {
     stream[A](input)(mf).foreach(callback)
