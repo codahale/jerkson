@@ -139,7 +139,7 @@ class ImmutableCollectionSupportSpec extends Spec {
     }
   }
 
-  class `A Queue[Int]` {
+  class `An immutable.Queue[Int]` {
     def `generates a JSON array` = {
       generate(Queue(1, 2, 3)) must beEqualTo("[1,2,3]")
     }

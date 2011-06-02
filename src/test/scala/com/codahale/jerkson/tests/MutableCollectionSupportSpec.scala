@@ -5,7 +5,7 @@ import com.codahale.jerkson.Json._
 import scala.collection.mutable._
 
 class MutableCollectionSupportSpec extends Spec {
-  class `A ResizableArray[Int]` {
+  class `A mutable.ResizableArray[Int]` {
     def `generates a JSON array of ints` = {
       generate(ResizableArray(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
@@ -19,7 +19,7 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
-  class `An ArraySeq[Int]` {
+  class `A mutable.ArraySeq[Int]` {
     def `generates a JSON array of ints` = {
       generate(ArraySeq(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
@@ -34,7 +34,7 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
-  class `A MutableList[Int]` {
+  class `A mutable.MutableList[Int]` {
     private val xs = new MutableList[Int]
     xs ++= List(1, 2, 3)
 
@@ -51,7 +51,7 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
-  class `A Queue[Int]` {
+  class `A mutable.Queue[Int]` {
     def `generates a JSON array` = {
       generate(Queue(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
@@ -65,7 +65,7 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
-  class `A ListBuffer[Int]` {
+  class `A mutable.ListBuffer[Int]` {
     def `generates a JSON array` = {
       generate(ListBuffer(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
@@ -79,7 +79,7 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
-  class `An ArrayBuffer[Int]` {
+  class `A mutable.ArrayBuffer[Int]` {
     def `generates a JSON array` = {
       generate(ArrayBuffer(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
@@ -93,7 +93,7 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
-  class `A BitSet` {
+  class `A mutable.BitSet` {
     def `generates a JSON array` = {
       generate(BitSet(1)) must beEqualTo("[1]")
     }
@@ -107,7 +107,7 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
-  class `A HashSet[Int]` {
+  class `A mutable.HashSet[Int]` {
     def `generates a JSON array` = {
       generate(HashSet(1)) must beEqualTo("[1]")
     }
@@ -121,7 +121,7 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
-  class `A LinkedHashSet[Int]` {
+  class `A mutable.LinkedHashSet[Int]` {
     def `generates a JSON array` = {
       generate(LinkedHashSet(1)) must beEqualTo("[1]")
     }
@@ -135,7 +135,7 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
-  class `A Map[String, Int]` {
+  class `A mutable.Map[String, Int]` {
     def `generates a JSON object` = {
       generate(Map("one" -> 1)) must beEqualTo("""{"one":1}""")
     }
@@ -149,7 +149,7 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
-  class `A HashMap[String, Int]` {
+  class `A mutable.HashMap[String, Int]` {
     def `generates a JSON object` = {
       generate(HashMap("one" -> 1)) must beEqualTo("""{"one":1}""")
     }
@@ -164,7 +164,7 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
-  class `A LinkedHashMap[String, Int]` {
+  class `A mutable.LinkedHashMap[String, Int]` {
     def `generates a JSON object` = {
       generate(LinkedHashMap("one" -> 1)) must beEqualTo("""{"one":1}""")
     }

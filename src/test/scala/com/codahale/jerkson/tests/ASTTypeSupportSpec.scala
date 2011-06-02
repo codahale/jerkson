@@ -5,7 +5,7 @@ import com.codahale.jerkson.AST._
 import com.codahale.simplespec.Spec
 
 class ASTTypeSupportSpec extends Spec {
-  class `A JInt` {
+  class `An AST.JInt` {
     def `generates a JSON int` = {
       generate(JInt(15)) must beEqualTo("15")
     }
@@ -19,7 +19,7 @@ class ASTTypeSupportSpec extends Spec {
     }
   }
 
-  class `A JFloat` {
+  class `An AST.JFloat` {
     def `generates a JSON int` = {
       generate(JFloat(15.1)) must beEqualTo("15.1")
     }
@@ -34,7 +34,7 @@ class ASTTypeSupportSpec extends Spec {
   }
 
 
-  class `A JString` {
+  class `An AST.JString` {
     def `generates a JSON string` = {
       generate(JString("woo")) must beEqualTo("\"woo\"")
     }
@@ -48,7 +48,7 @@ class ASTTypeSupportSpec extends Spec {
     }
   }
 
-  class `A JNull` {
+  class `An AST.JNull` {
     def `generates a JSON null` = {
       generate(JNull) must beEqualTo("null")
     }
@@ -62,7 +62,7 @@ class ASTTypeSupportSpec extends Spec {
     }
   }
 
-  class `A JBoolean` {
+  class `An AST.JBoolean` {
     def `generates a JSON true` = {
       generate(JBoolean(true)) must beEqualTo("true")
     }
@@ -88,7 +88,7 @@ class ASTTypeSupportSpec extends Spec {
     }
   }
 
-  class `A JArray of JInts` {
+  class `An AST.JArray of JInts` {
     def `generates a JSON array of ints` = {
       generate(JArray(List(JInt(1), JInt(2), JInt(3)))) must beEqualTo("[1,2,3]")
     }
@@ -102,7 +102,7 @@ class ASTTypeSupportSpec extends Spec {
     }
   }
 
-  class `A JObject` {
+  class `An AST.JObject` {
     private val obj = JObject(List(JField("id", JInt(1)), JField("name", JString("Coda"))))
 
     def `generates a JSON object with matching field values` = {

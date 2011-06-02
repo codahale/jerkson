@@ -5,7 +5,7 @@ import com.codahale.jerkson.Json._
 import com.codahale.simplespec.Spec
 
 class CollectionSupportSpec extends Spec {
-  class `A BitSet` {
+  class `A collection.BitSet` {
     def `generates a JSON array of ints` = {
       generate(BitSet(1)) must beEqualTo("[1]")
     }
@@ -15,7 +15,7 @@ class CollectionSupportSpec extends Spec {
     }
   }
 
-  class `An Iterator[Int]` {
+  class `A collection.Iterator[Int]` {
     def `generates a JSON array of ints` = {
       generate(Seq(1, 2, 3).iterator) must beEqualTo("[1,2,3]")
     }
@@ -29,7 +29,7 @@ class CollectionSupportSpec extends Spec {
     }
   }
 
-  class `A Traversable[Int]` {
+  class `A collection.Traversable[Int]` {
     def `generates a JSON array of ints` = {
       generate(Seq(1, 2, 3).toTraversable) must beEqualTo("[1,2,3]")
     }
@@ -43,7 +43,7 @@ class CollectionSupportSpec extends Spec {
     }
   }
 
-  class `A BufferedIterator[Int]` {
+  class `A collection.BufferedIterator[Int]` {
     def `generates a JSON array of ints` = {
       generate(Seq(1, 2, 3).iterator.buffered) must beEqualTo("[1,2,3]")
     }
@@ -57,7 +57,7 @@ class CollectionSupportSpec extends Spec {
     }
   }
 
-  class `An Iterable[Int]` {
+  class `A collection.Iterable[Int]` {
     def `generates a JSON array of ints` = {
       generate(Seq(1, 2, 3).toIterable) must beEqualTo("[1,2,3]")
     }
@@ -71,7 +71,7 @@ class CollectionSupportSpec extends Spec {
     }
   }
 
-  class `A Set[Int]` {
+  class `A collection.Set[Int]` {
     def `generates a JSON array of ints` = {
       generate(Set(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
@@ -85,7 +85,7 @@ class CollectionSupportSpec extends Spec {
     }
   }
 
-  class `A Map[String, Int]` {
+  class `A collection.Map[String, Int]` {
     def `generates a JSON object with int field values` = {
       generate(Map("one" -> 1, "two" -> 2)) must beEqualTo("""{"one":1,"two":2}""")
     }
@@ -99,7 +99,7 @@ class CollectionSupportSpec extends Spec {
     }
   }
 
-  class `An IndexedSeq[Int]` {
+  class `A collection.IndexedSeq[Int]` {
     def `generates a JSON array of ints` = {
       generate(IndexedSeq(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
@@ -113,7 +113,7 @@ class CollectionSupportSpec extends Spec {
     }
   }
 
-  class `A Seq[Int]` {
+  class `A collection.Seq[Int]` {
     def `generates a JSON array of ints` = {
       generate(Seq(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
@@ -127,7 +127,7 @@ class CollectionSupportSpec extends Spec {
     }
   }
 
-  class `A SortedMap[String, Int]` {
+  class `A collection.SortedMap[String, Int]` {
     def `generates a JSON object with int field values` = {
       generate(SortedMap("one" -> 1, "two" -> 2)) must beEqualTo("""{"one":1,"two":2}""")
     }
@@ -152,7 +152,7 @@ class CollectionSupportSpec extends Spec {
     }
   }
 
-  class `A SortedSet[Int]` {
+  class `A collection.SortedSet[Int]` {
     def `generates a JSON array of ints` = {
       generate(SortedSet(1, 2, 3)) must beEqualTo("[1,2,3]")
     }
