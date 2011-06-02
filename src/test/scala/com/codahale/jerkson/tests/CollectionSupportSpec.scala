@@ -11,8 +11,7 @@ class CollectionSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON array of ints` = {
-      pending // TODO: 6/1/11 <coda> -- fix collection.BitSet deserializations
-//      parse[BitSet]("[1,2,3]") must beEqualTo(BitSet(1, 2, 3))
+      parse[BitSet]("[1,2,3]") must beEqualTo(BitSet(1, 2, 3))
     }
   }
 

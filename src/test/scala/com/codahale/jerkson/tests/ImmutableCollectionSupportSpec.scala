@@ -90,13 +90,11 @@ class ImmutableCollectionSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON array of ints` = {
-      pending // TODO: 5/31/11 <coda> -- fix immutable.BitSet deserialization
-//      parse[BitSet]("[1,2,3]") must beEqualTo(BitSet(1, 2, 3))
+      parse[BitSet]("[1,2,3]") must beEqualTo(BitSet(1, 2, 3))
     }
 
     def `is parsable from an empty JSON array` = {
-      pending // TODO: 5/31/11 <coda> -- fix immutable.BitSet deserialization
-//      parse[BitSet]("[]") must beEqualTo(BitSet.empty)
+      parse[BitSet]("[]") must beEqualTo(BitSet.empty)
     }
   }
 

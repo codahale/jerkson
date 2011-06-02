@@ -105,6 +105,20 @@ class MutableCollectionSupportSpec extends Spec {
     }
   }
 
+  class `A BitSet` {
+    def `generates a JSON array` = {
+      generate(BitSet(1)) must beEqualTo("[1]")
+    }
+
+    def `is parsable from a JSON array of ints` = {
+      parse[BitSet]("[1,2,3]") must beEqualTo(BitSet(1, 2, 3))
+    }
+
+    def `is parsable from an empty JSON array` = {
+      parse[BitSet]("[]") must beEqualTo(BitSet.empty)
+    }
+  }
+
   class `A HashSet[Int]` {
     def `generates a JSON array` = {
       generate(HashSet(1)) must beEqualTo("[1]")

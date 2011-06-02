@@ -5,12 +5,8 @@ import org.codehaus.jackson.map._
 import collection.generic.{MapFactory, GenericCompanion}
 import collection.MapLike
 import com.codahale.jerkson.AST.JValue
-import scala.collection.immutable
+import scala.collection.{immutable, mutable}
 
-/**
- *
- * @author coda
- */
 class ScalaDeserializers extends Deserializers.None {
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
                             provider: DeserializerProvider, beanDesc: BeanDescription,
@@ -26,6 +22,10 @@ class ScalaDeserializers extends Deserializers.None {
       createSeqDeserializer(config, javaType, IndexedSeq, provider, property)
     } else if (klass == classOf[immutable.HashSet[_]]) {
       createSeqDeserializer(config, javaType, immutable.HashSet, provider, property)
+    } else if (klass == classOf[collection.BitSet] || klass == classOf[immutable.BitSet]) {
+      new BitSetDeserializer(immutable.BitSet)
+    } else if (klass == classOf[mutable.BitSet]) {
+      new BitSetDeserializer(mutable.BitSet)
     } else if (klass == classOf[Set[_]]) {
       createSeqDeserializer(config, javaType, Set, provider, property)
     } else if (klass == classOf[Iterator[_]]) {
