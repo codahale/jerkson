@@ -160,13 +160,11 @@ class DefaultCollectionSupportSpec extends Spec {
     }
 
     def `is parsable from a JSON array of ints` = {
-      pending // TODO: 5/31/11 <coda> -- fix Stream deserialization
-//      parse[Stream[Int]]("[1,2,3]") must beEqualTo(Stream(1, 2, 3))
+      parse[Stream[Int]]("[1,2,3]") must beEqualTo(Stream(1, 2, 3))
     }
 
     def `is parsable from an empty JSON array` = {
-      pending // TODO: 5/31/11 <coda> -- fix Stream deserialization
-//      parse[Stream[Int]]("[]") must beEqualTo(Stream.empty)
+      parse[Stream[Int]]("[]") must beEqualTo(Stream.empty)
     }
   }
 

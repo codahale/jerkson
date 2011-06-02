@@ -5,8 +5,7 @@ import org.codehaus.jackson.map._
 import collection.MapLike
 import com.codahale.jerkson.AST.JValue
 import scala.collection.{immutable, mutable}
-import scala.collection.generic.{MutableMapFactory, MapFactory, GenericCompanion}
-import scala.collection.mutable.HashMap
+import scala.collection.generic.{MapFactory, GenericCompanion}
 
 class ScalaDeserializers extends Deserializers.None {
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
@@ -17,6 +16,8 @@ class ScalaDeserializers extends Deserializers.None {
       createSeqDeserializer(config, javaType, List, provider, property)
     } else if (klass == classOf[Seq[_]] || klass == classOf[immutable.Seq[_]]) {
       createSeqDeserializer(config, javaType, Seq, provider, property)
+    } else if (klass == classOf[Stream[_]] || klass == classOf[immutable.Stream[_]]) {
+      createSeqDeserializer(config, javaType, Stream, provider, property)
     } else if (klass == classOf[Vector[_]]) {
       createSeqDeserializer(config, javaType, Vector, provider, property)
     } else if (klass == classOf[IndexedSeq[_]] || klass == classOf[immutable.IndexedSeq[_]]) {
