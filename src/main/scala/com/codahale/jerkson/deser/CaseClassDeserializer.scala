@@ -1,13 +1,15 @@
 package com.codahale.jerkson.deser
 
+import scala.collection.JavaConversions._
 import org.codehaus.jackson.`type`.JavaType
-import org.codehaus.jackson.node.{NullNode, TreeTraversingParser}
 import collection.mutable.ArrayBuffer
 import org.codehaus.jackson.map._
-import com.codahale.jerkson.Json
 import org.codehaus.jackson.{JsonNode, JsonToken, JsonParser}
 import com.codahale.jerkson.util._
+import org.codehaus.jackson.node.{ObjectNode, NullNode, TreeTraversingParser}
+import org.codehaus.jackson.map.annotate.JsonCachable
 
+@JsonCachable
 class CaseClassDeserializer(config: DeserializationConfig,
                             javaType: JavaType,
                             provider: DeserializerProvider) extends JsonDeserializer[Object] {
@@ -53,7 +55,11 @@ class CaseClassDeserializer(config: DeserializationConfig,
 
   private def errorMessage(node: JsonNode) = {
     val names = params.map {_._1}.mkString("[", ", ", "]")
-    val existing = Json.parse[Map[String, JsonNode]](node).keys.mkString("[", ", ", "]")
+    val existing = node match {
+      case obj: ObjectNode => obj.getFieldNames.mkString("[", ", ", "]")
+      case _: NullNode => "[]" // this is what Jackson deserializes the inside of an empty object to
+      case unknown => "a non-object"
+    }
     "Invalid JSON. Needed %s, but found %s.".format(names, existing)
   }
 }

@@ -7,13 +7,7 @@ import org.codehaus.jackson.{JsonParseException, JsonProcessingException}
 object ParsingException {
   def apply(cause: JsonProcessingException): ParsingException = {
     val message = cause match {
-      case e: JsonMappingException => {
-        if (e.getMessage.contains("deserialize instance of")) {
-          "Invalid JSON."
-        } else {
-          e.getMessage
-        }
-      }
+      case e: JsonMappingException => e.getMessage
       case e: JsonParseException => {
         val fake = new JsonParseException("", e.getLocation)
         val msg = e.getMessage.replace(fake.getMessage, "").replaceAll(""" (\(from.*\))""", "")

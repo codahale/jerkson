@@ -1,24 +1,26 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.`type`.JavaType
+import scala.collection.generic.BitSetFactory
+import scala.collection.{BitSetLike, BitSet}
 import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer}
 import org.codehaus.jackson.{JsonToken, JsonParser}
 import org.codehaus.jackson.map.annotate.JsonCachable
 
 @JsonCachable
-class IteratorDeserializer(elementType: JavaType,
-                           elementDeserializer: JsonDeserializer[Object]) extends JsonDeserializer[Object] {
+class BitSetDeserializer[Coll <: BitSet with BitSetLike[Coll]](factory: BitSetFactory[Coll])
+  extends JsonDeserializer[Coll] {
+
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
-    val builder = Seq.newBuilder[Object]
+    val builder = factory.newBuilder
 
     if (jp.getCurrentToken != JsonToken.START_ARRAY) {
-      throw ctxt.mappingException(elementType.getRawClass)
+      throw ctxt.mappingException(classOf[BitSet])
     }
 
     while (jp.nextToken() != JsonToken.END_ARRAY) {
-      builder += elementDeserializer.deserialize(jp, ctxt).asInstanceOf[Object]
+      builder += jp.getIntValue
     }
 
-    builder.result().iterator.buffered
+    builder.result()
   }
 }

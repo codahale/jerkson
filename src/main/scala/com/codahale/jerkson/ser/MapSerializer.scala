@@ -3,9 +3,11 @@ package com.codahale.jerkson.ser
 import org.codehaus.jackson.JsonGenerator
 import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
 import org.codehaus.jackson.map.`type`.TypeFactory
+import org.codehaus.jackson.map.annotate.JsonCachable
 
-class MapSerializer extends JsonSerializer[Map[_,_]] {
-  def serialize(value: Map[_, _], json: JsonGenerator, provider: SerializerProvider) {
+@JsonCachable
+class MapSerializer extends JsonSerializer[collection.Map[_ ,_]] {
+  def serialize(value: collection.Map[_,_], json: JsonGenerator, provider: SerializerProvider) {
     json.writeStartObject()
     for ((key, value) <- value) {
       if (key == null) {

@@ -60,22 +60,12 @@ trait Parser extends Factory {
     new StreamingIterator[A](parser, mf)
   }
 
-  /**
-   * Parse a streaming JSON array of particular types, passing each deserialized
-   * object to a callback method.
-   */
-  @deprecated("Use Json.stream instead")
-  // TODO: 2/18/11 <coda> -- remove for 0.2.0
-  def parseStreamOf[A](input: InputStream)(callback: A => Unit)(implicit mf: Manifest[A]) {
-    stream[A](input)(mf).foreach(callback)
-  }
-
   private[jerkson] def parse[A](parser: JsonParser, mf: Manifest[A]): A = {
     try {
       if (mf.erasure == classOf[Option[_]]) {
         // thanks for special-casing VALUE_NULL, guys
         Option(parse(parser, mf.typeArguments.head)).asInstanceOf[A]
-      } else if (mf.erasure == classOf[JValue]) {
+      } else if (mf.erasure == classOf[JValue] || mf.erasure == JNull.getClass) {
         val value: A = parser.getCodec.readValue(parser, manifest2JavaType(mf))
         if (value == null) JNull.asInstanceOf[A] else value
       } else {

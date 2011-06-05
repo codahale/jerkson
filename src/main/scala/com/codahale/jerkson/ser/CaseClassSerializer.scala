@@ -3,7 +3,9 @@ package com.codahale.jerkson.ser
 import org.codehaus.jackson.JsonGenerator
 import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
 import org.codehaus.jackson.annotate.JsonIgnore
+import org.codehaus.jackson.map.annotate.JsonCachable
 
+@JsonCachable
 class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[A] {
   private val nonIgnoredFields = klass.getDeclaredFields.filterNot { f =>
     f.getAnnotation(classOf[JsonIgnore]) != null || f.getName.contains("$")
