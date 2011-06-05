@@ -1,4 +1,4 @@
-v0.2.3: TBD
+v0.3.0: Jun 04 2011
 ===================
 * Added a very comprehensive set of tests, refactored around support for various
   types. (h/t Daniel Brown)
