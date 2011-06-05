@@ -3,6 +3,7 @@ package com.codahale.jerkson.tests
 import com.codahale.simplespec.Spec
 import com.codahale.jerkson.Json._
 import scala.collection.immutable._
+import com.codahale.jerkson.ParsingException
 
 class ImmutableCollectionSupportSpec extends Spec {
   class `An immutable.Seq[Int]` {
@@ -136,6 +137,42 @@ class ImmutableCollectionSupportSpec extends Spec {
 
     def `is parsable from an empty JSON object` = {
       parse[HashMap[String, Int]]("{}") must beEqualTo(HashMap.empty)
+    }
+  }
+
+  class `An immutable.IntMap[String]` {
+    def `generates a JSON object` = {
+      generate(IntMap(1 -> "one")) must beEqualTo("""{"1":"one"}""")
+    }
+
+    def `is parsable from a JSON object with decimal field names and string field values` = {
+      parse[IntMap[String]]("""{"1":"one"}""") must beEqualTo(IntMap(1 -> "one"))
+    }
+
+    def `is not parsable from a JSON object with non-decimal field names` = {
+      parse[IntMap[String]]("""{"one":"one"}""") must throwA[ParsingException]
+    }
+
+    def `is parsable from an empty JSON object` = {
+      parse[IntMap[String]]("{}") must beEqualTo(IntMap.empty)
+    }
+  }
+
+  class `An immutable.LongMap[String]` {
+    def `generates a JSON object` = {
+      generate(LongMap(1L -> "one")) must beEqualTo("""{"1":"one"}""")
+    }
+
+    def `is parsable from a JSON object with int field names and string field values` = {
+      parse[LongMap[String]]("""{"1":"one"}""") must beEqualTo(LongMap(1L -> "one"))
+    }
+
+    def `is not parsable from a JSON object with non-decimal field names` = {
+      parse[LongMap[String]]("""{"one":"one"}""") must throwA[ParsingException]
+    }
+
+    def `is parsable from an empty JSON object` = {
+      parse[LongMap[String]]("{}") must beEqualTo(LongMap.empty)
     }
   }
 

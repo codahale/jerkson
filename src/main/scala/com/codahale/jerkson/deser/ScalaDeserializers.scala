@@ -60,6 +60,12 @@ class ScalaDeserializers extends Deserializers.None {
       new IteratorDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
     } else if (klass == classOf[immutable.HashMap[_, _]] || klass == classOf[Map[_, _]] || klass == classOf[collection.Map[_, _]]) {
       createImmutableMapDeserializer(config, javaType, immutable.HashMap, provider, property)
+    } else if (klass == classOf[immutable.IntMap[_]]) {
+      val valueType = javaType.containedType(0)
+      new IntMapDeserializer(valueType, provider.findTypedValueDeserializer(config, valueType, property))
+    } else if (klass == classOf[immutable.LongMap[_]]) {
+      val valueType = javaType.containedType(0)
+      new LongMapDeserializer(valueType, provider.findTypedValueDeserializer(config, valueType, property))
     } else if (klass == classOf[mutable.HashMap[_, _]] || klass == classOf[mutable.Map[_, _]]) {
       if (javaType.containedType(0).getRawClass == classOf[String]) {
         val valueType = javaType.containedType(1)
