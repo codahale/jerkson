@@ -140,6 +140,42 @@ class ImmutableCollectionSupportSpec extends Spec {
     }
   }
 
+  class `An immutable.Map[Int, String]` {
+    def `generates a JSON object` = {
+      generate(Map(1 -> "one")) must beEqualTo("""{"1":"one"}""")
+    }
+
+    def `is parsable from a JSON object with decimal field names and string field values` = {
+      parse[Map[Int, String]]("""{"1":"one"}""") must beEqualTo(Map(1 -> "one"))
+    }
+
+    def `is not parsable from a JSON object with non-decimal field names` = {
+      parse[Map[Int, String]]("""{"one":"one"}""") must throwA[ParsingException]
+    }
+
+    def `is parsable from an empty JSON object` = {
+      parse[Map[Int, String]]("{}") must beEqualTo(Map.empty)
+    }
+  }
+
+  class `An immutable.Map[Long, String]` {
+    def `generates a JSON object` = {
+      generate(Map(1L -> "one")) must beEqualTo("""{"1":"one"}""")
+    }
+
+    def `is parsable from a JSON object with decimal field names and string field values` = {
+      parse[Map[Long, String]]("""{"1":"one"}""") must beEqualTo(Map(1L -> "one"))
+    }
+
+    def `is not parsable from a JSON object with non-decimal field names` = {
+      parse[Map[Long, String]]("""{"one":"one"}""") must throwA[ParsingException]
+    }
+
+    def `is parsable from an empty JSON object` = {
+      parse[Map[Long, String]]("{}") must beEqualTo(Map.empty)
+    }
+  }
+
   class `An immutable.IntMap[String]` {
     def `generates a JSON object` = {
       generate(IntMap(1 -> "one")) must beEqualTo("""{"1":"one"}""")
