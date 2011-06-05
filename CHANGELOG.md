@@ -7,6 +7,7 @@ v0.2.3: TBD
 * Fixed error messages when parsing empty JSON objects as case classes.
 * Enabled caching of all serializers and deserializers.
 * Switched to Maven for builds.
+* Removed the deprecated `Parser#parseStreamOf`.
 
 v0.2.2: May 18 2011
 ===================
