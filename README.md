@@ -10,53 +10,70 @@ brings Scala's ease-of-use to Jackson's features.
 Requirements
 ------------
 
-* Scala 2.8.1 or 2.9.0
+* Scala 2.8.1 or 2.9.0-1
 * Jackson 1.7.7
 
 
 Setting Up Your Project
 -----------------------
 
-In your [simple-build-tool](http://code.google.com/p/simple-build-tool/) project
-file, add Jerkson as a dependency:
-    
-    val codaRepo = "Coda Hale's Repository" at "http://repo.codahale.com/"
-    val jerkson = "com.codahale" %% "jerkson" % "0.2.2"
+Go ahead and add Jerkson as a dependency:
+
+```xml
+<repositories>
+  <repository>
+    <id>repo.codahale.com</id>
+    <url>http://repo.codahale.com</url>
+  </repository>
+</repositories>
+
+<dependencies>
+  <dependency>
+    <groupId>com.codahale</groupId>
+    <artifactId>jerkson_${scala.version}</artifactId>
+    <version>0.3.0</version>
+  </dependency>
+</dependencies>
+```
 
 
 Parsing JSON
 ------------
 
-    import com.codahale.jerkson.Json._
-    
-    // Parse JSON arrays
-    parse[List[Int]]("[1,2,3]") //=> List(1,2,3)
-    
-    // Parse JSON objects
-    parse[Map[String, Int]]("""{"one":1,"two":2}""") //=> Map("one"->1,"two"->2)
-    
-    // Parse JSON objects as case classes
-    case class Person(id: Long, name: String)
-    parse[Person]("""{"id":1,"name":"Coda"}""") //=> Person(1,"Coda")
-    
-    // Parse streaming arrays of things
-    stream[Person](inputStream).foreach { p =>
-      println("New person: " + p)
-    }
+```scala
+import com.codahale.jerkson.Json._
 
-For more examples, check out the [parsing specs](https://github.com/codahale/jerkson/blob/master/src/test/scala/com/codahale/jerkson/tests/JsonParsingSpec.scala).
+// Parse JSON arrays
+parse[List[Int]]("[1,2,3]") //=> List(1,2,3)
+
+// Parse JSON objects
+parse[Map[String, Int]]("""{"one":1,"two":2}""") //=> Map("one"->1,"two"->2)
+
+// Parse JSON objects as case classes
+case class Person(id: Long, name: String)
+parse[Person]("""{"id":1,"name":"Coda"}""") //=> Person(1,"Coda")
+
+// Parse streaming arrays of things
+for (person <- stream[Person](inputStream)) {
+  println("New person: " + person)
+}
+```
+
+For more examples, check out the [specs](https://github.com/codahale/jerkson/blob/master/src/test/scala/com/codahale/jerkson/tests/).
 
 
 Generating JSON
 ---------------
 
-    // Generate JSON arrays
-    generate(List(1, 2, 3)) //=> [1,2,3]
-    
-    // Generate JSON objects
-    generate(Map("one"->1, "two"->"dos")) //=> {"one":1,"two":"dos"}
+```scala
+// Generate JSON arrays
+generate(List(1, 2, 3)) //=> [1,2,3]
 
-For more examples, check out the [generating specs](https://github.com/codahale/jerkson/blob/master/src/test/scala/com/codahale/jerkson/tests/JsonGenerationSpec.scala).
+// Generate JSON objects
+generate(Map("one"->1, "two"->"dos")) //=> {"one":1,"two":"dos"}
+```
+
+For more examples, check out the [specs](https://github.com/codahale/jerkson/blob/master/src/test/scala/com/codahale/jerkson/tests/).
 
 
 License
