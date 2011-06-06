@@ -6,7 +6,7 @@
 
     <groupId>com.codahale</groupId>
     <artifactId>jerkson_2.9.0-1</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
     <name>Jerkson for Scala ${scala.version}</name>
 
     <properties>

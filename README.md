@@ -31,7 +31,7 @@ Go ahead and add Jerkson as a dependency:
   <dependency>
     <groupId>com.codahale</groupId>
     <artifactId>jerkson_${scala.version}</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1</version>
   </dependency>
 </dependencies>
 ```
