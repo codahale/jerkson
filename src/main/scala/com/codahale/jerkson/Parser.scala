@@ -60,6 +60,15 @@ trait Parser extends Factory {
     new StreamingIterator[A](parser, mf)
   }
 
+  /**
+   * Parse a streaming JSON array of particular types, returning an iterator
+   * of the elements of the stream.
+   */
+  def stream[A](input: Reader)(implicit mf: Manifest[A]): Iterator[A] = {
+    val parser = factory.createJsonParser(input)
+    new StreamingIterator[A](parser, mf)
+  }
+
   private[jerkson] def parse[A](parser: JsonParser, mf: Manifest[A]): A = {
     try {
       if (mf.erasure == classOf[Option[_]]) {
