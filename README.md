@@ -50,6 +50,8 @@ parse[List[Int]]("[1,2,3]") //=> List(1,2,3)
 parse[Map[String, Int]]("""{"one":1,"two":2}""") //=> Map("one"->1,"two"->2)
 
 // Parse JSON objects as case classes
+// (Nested/inner case classes aren't supported.)
+// (Parsing case classes isn't supported in the REPL.)
 case class Person(id: Long, name: String)
 parse[Person]("""{"id":1,"name":"Coda"}""") //=> Person(1,"Coda")
 
