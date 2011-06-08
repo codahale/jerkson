@@ -3,6 +3,7 @@ package com.codahale.jerkson.tests
 import com.codahale.simplespec.Spec
 import com.codahale.jerkson.Json._
 import scala.collection.mutable._
+import com.codahale.jerkson.ParsingException
 
 class MutableCollectionSupportSpec extends Spec {
   class `A mutable.ResizableArray[Int]` {
@@ -146,6 +147,12 @@ class MutableCollectionSupportSpec extends Spec {
 
     def `is parsable from an empty JSON object` = {
       parse[Map[String, Int]]("{}") must beEqualTo(Map.empty)
+    }
+  }
+
+  class `A mutable.Map[String, Any]` {
+    def `is not parsable from an empty JSON object in a JSON array` = {
+      parse[Map[String, Any]]("[{}]") must throwA[ParsingException]
     }
   }
 

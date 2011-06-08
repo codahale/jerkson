@@ -20,6 +20,11 @@ class ImmutableMapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]
       jp.nextToken()
     }
 
+    if (jp.getCurrentToken != JsonToken.FIELD_NAME &&
+        jp.getCurrentToken != JsonToken.END_OBJECT) {
+      throw ctxt.mappingException(valueType.getRawClass)
+    }
+
     while (jp.getCurrentToken != JsonToken.END_OBJECT) {
       val name = jp.getCurrentName
       jp.nextToken()
