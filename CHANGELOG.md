@@ -1,7 +1,7 @@
 v0.3.2: Jun 09 2011
 ===================
 
-* Added `Json.parse[A](Reader)`.
+* Added `Json.stream[A](Reader)`.
 * Fix `NullPointerException` when deserializing `Map` instances from weird JSON
   values.
 
