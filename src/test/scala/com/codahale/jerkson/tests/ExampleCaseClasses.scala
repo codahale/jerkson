@@ -41,4 +41,6 @@ case class CaseClassWithAllTypes(map: Map[String, String],
                                  short: Short,
                                  byte: Byte,
                                  float: Float,
-                                 double: Double)
+                                 double: Double,
+                                 any: Any,
+                                 anyRef: AnyRef)

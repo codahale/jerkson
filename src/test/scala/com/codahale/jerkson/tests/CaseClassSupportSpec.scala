@@ -122,7 +122,9 @@ class CaseClassSupportSpec extends Spec {
                          "short": 14,
                          "byte": 15,
                          "float": 34.5,
-                         "double": 44.9
+                         "double": 44.9,
+                         "any": true,
+                         "anyRef": "wah"
                        }
                        """
 
@@ -149,7 +151,9 @@ class CaseClassSupportSpec extends Spec {
           short = 14,
           byte = 15,
           float = 34.5f,
-          double = 44.9d
+          double = 44.9d,
+          any = true,
+          anyRef = "wah"
         )
       )
     }

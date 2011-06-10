@@ -111,6 +111,8 @@ object CaseClassSigParser {
     case "scala.Float" => classOf[java.lang.Float]
     case "scala.Double" => classOf[java.lang.Double]
     case "scala.Char" => classOf[java.lang.Character]
+    case "scala.Any" => classOf[Any]
+    case "scala.AnyRef" => classOf[AnyRef]
     case name => Class.forName(name)
   }
 }
