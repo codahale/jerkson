@@ -140,6 +140,24 @@ class ImmutableCollectionSupportSpec extends Spec {
     }
   }
 
+  class `An immutable.HashMap[String, Any]` {
+    def `generates a JSON object` = {
+      generate(HashMap[String, Any]("one" -> 1)) must beEqualTo("""{"one":1}""")
+    }
+
+    def `is parsable from a JSON object with int field values` = {
+      parse[HashMap[String, Any]]("""{"one":1}""") must beEqualTo(HashMap("one" -> 1))
+    }
+
+    def `is parsable from an empty JSON object` = {
+      parse[HashMap[String, Any]]("{}") must beEqualTo(HashMap.empty)
+    }
+
+    def `is not parsable from an empty JSON object in a JSON array` = {
+      parse[HashMap[String, Any]]("[{}]") must throwA[ParsingException]
+    }
+  }
+
   class `An immutable.Map[Int, String]` {
     def `generates a JSON object` = {
       generate(Map(1 -> "one")) must beEqualTo("""{"1":"one"}""")
@@ -155,6 +173,30 @@ class ImmutableCollectionSupportSpec extends Spec {
 
     def `is parsable from an empty JSON object` = {
       parse[Map[Int, String]]("{}") must beEqualTo(Map.empty)
+    }
+  }
+
+  class `An immutable.Map[Int, Any]` {
+    def `is not parsable from an empty JSON object in a JSON array` = {
+      parse[Map[Int, Any]]("[{}]") must throwA[ParsingException]
+    }
+  }
+
+  class `An immutable.IntMap[Any]` {
+    def `is not parsable from an empty JSON object in a JSON array` = {
+      parse[IntMap[Any]]("[{}]") must throwA[ParsingException]
+    }
+  }
+
+  class `An immutable.LongMap[Any]` {
+    def `is not parsable from an empty JSON object in a JSON array` = {
+      parse[LongMap[Any]]("[{}]") must throwA[ParsingException]
+    }
+  }
+
+  class `An immutable.Map[Long, Any]` {
+    def `is not parsable from an empty JSON object in a JSON array` = {
+      parse[Map[Long, Any]]("[{}]") must throwA[ParsingException]
     }
   }
 

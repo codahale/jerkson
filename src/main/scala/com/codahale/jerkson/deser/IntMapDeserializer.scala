@@ -16,6 +16,11 @@ class IntMapDeserializer(valueType: JavaType,
       jp.nextToken()
     }
 
+    if (jp.getCurrentToken != JsonToken.FIELD_NAME &&
+        jp.getCurrentToken != JsonToken.END_OBJECT) {
+      throw ctxt.mappingException(valueType.getRawClass)
+    }
+
     while (jp.getCurrentToken != JsonToken.END_OBJECT) {
       try {
         val name = jp.getCurrentName.toInt

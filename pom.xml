@@ -6,7 +6,7 @@
 
     <groupId>com.codahale</groupId>
     <artifactId>jerkson_2.9.0-1</artifactId>
-    <version>0.3.1</version>
+    <version>0.3.2</version>
     <name>Jerkson for Scala ${scala.version}</name>
 
     <properties>
@@ -119,6 +119,13 @@
                     </args>
                     <charset>UTF-8</charset>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.scala-lang</groupId>
+                        <artifactId>jline</artifactId>
+                        <version>${scala.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
