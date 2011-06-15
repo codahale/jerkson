@@ -116,5 +116,9 @@ class ASTTypeSupportSpec extends Spec {
     def `is parsable from a JSON object as a JValue` = {
       parse[JValue]("""{"id":1,"name":"Coda"}""") must beEqualTo(obj)
     }
+
+    def `is parsable from an empty JSON object` = {
+      parse[JObject]("""{}""") must beEqualTo(JObject(Nil))
+    }
   }
 }
