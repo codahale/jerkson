@@ -124,7 +124,13 @@ class CaseClassSupportSpec extends Spec {
                          "float": 34.5,
                          "double": 44.9,
                          "any": true,
-                         "anyRef": "wah"
+                         "anyRef": "wah",
+                         "intMap": {
+                           "1": "1"
+                         },
+                         "longMap": {
+                           "2": 2
+                         }
                        }
                        """
 
@@ -137,10 +143,7 @@ class CaseClassSupportSpec extends Spec {
           string = "woo",
           list = List(4, 5, 6),
           seq = Seq(7, 8, 9),
-          sequence = Seq(10, 11, 12),
-          collection = Iterable(13, 14, 15),
           indexedSeq = IndexedSeq(16, 17, 18),
-          randomAccessSeq = IndexedSeq(19, 20, 21),
           vector = Vector(22, 23, 24),
           bigDecimal = BigDecimal("12.0"),
           bigInt = BigInt("13"),
@@ -153,7 +156,9 @@ class CaseClassSupportSpec extends Spec {
           float = 34.5f,
           double = 44.9d,
           any = true,
-          anyRef = "wah"
+          anyRef = "wah",
+          intMap = Map(1 -> 1),
+          longMap = Map(2L -> 2L)
         )
       )
     }
