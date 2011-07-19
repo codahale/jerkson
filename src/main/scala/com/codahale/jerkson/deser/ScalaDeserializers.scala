@@ -83,7 +83,7 @@ class ScalaDeserializers extends Deserializers.None {
     } else if (klass == classOf[Option[_]]) {
       createOptionDeserializer(config, javaType, provider, property)
     } else if (classOf[JValue].isAssignableFrom(klass) || klass == JNull.getClass) {
-      new JValueDeserializer(klass)
+      new JValueDeserializer(config.getTypeFactory, klass)
     } else if (klass == classOf[BigInt]) {
       new BigIntDeserializer
     } else if (klass == classOf[BigDecimal]) {

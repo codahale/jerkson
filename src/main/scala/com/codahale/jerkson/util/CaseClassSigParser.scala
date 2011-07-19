@@ -55,7 +55,7 @@ object CaseClassSigParser {
     }
   }
 
-  def parse[A](clazz: Class[A]) = {
+  def parse[A](clazz: Class[A], factory: TypeFactory) = {
     findSym(clazz).children
       .filter(c => c.isCaseAccessor && !c.isPrivate)
       .map(_.asInstanceOf[MethodSymbol])
@@ -63,19 +63,19 @@ object CaseClassSigParser {
       .flatMap {
         case (ms, idx) => {
           ms.infoType match {
-            case NullaryMethodType(t: TypeRefType) => Some(ms.name -> typeRef2JavaType(t))
+            case NullaryMethodType(t: TypeRefType) => Some(ms.name -> typeRef2JavaType(t, factory))
             case _ => None
           }
         }
       }
   }
 
-  protected def typeRef2JavaType(ref: TypeRefType): JavaType = {
+  protected def typeRef2JavaType(ref: TypeRefType, factory: TypeFactory): JavaType = {
     try {
       val klass = loadClass(ref.symbol.path)
-      TypeFactory.parametricType(
+      factory.constructParametricType(
         klass, ref.typeArgs.map {
-          t => typeRef2JavaType(t.asInstanceOf[TypeRefType])
+          t => typeRef2JavaType(t.asInstanceOf[TypeRefType], factory)
         }: _*
       )
     } catch {
