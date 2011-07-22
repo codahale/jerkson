@@ -17,14 +17,14 @@ object CaseClassSigParser {
   val BYTES_VALUE = "bytes"
 
   protected def parseScalaSig[A](clazz: Class[A]): Option[ScalaSig] = {
-    val firstPass = ScalaSigParser.parse(clazz)
+    val firstPass = ScalaSigUtil.parse(clazz)
     firstPass match {
       case Some(x) => {
         Some(x)
       }
       case None if clazz.getName.endsWith("$") => {
         val clayy = Class.forName(clazz.getName.replaceFirst("\\$$", ""))
-        val secondPass = ScalaSigParser.parse(clayy)
+        val secondPass = ScalaSigUtil.parse(clayy)
         secondPass
       }
       case x => x
