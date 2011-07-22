@@ -163,6 +163,17 @@ class CaseClassSupportSpec extends Spec {
         )
       )
     }
+  }
 
+  class `A case class nested inside of an object` {
+    @test def `is parsable from a JSON object` = {
+      parse[OuterObject.NestedCaseClass]("""{"id": 1}""") must beEqualTo(OuterObject.NestedCaseClass(1))
+    }
+  }
+
+  class `A case class nested inside of an object nested inside of an object` {
+    @test def `is parsable from a JSON object` = {
+      parse[OuterObject.InnerObject.SuperNestedCaseClass]("""{"id": 1}""") must beEqualTo(OuterObject.InnerObject.SuperNestedCaseClass(1))
+    }
   }
 }

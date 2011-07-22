@@ -43,3 +43,11 @@ case class CaseClassWithAllTypes(map: Map[String, String],
                                  anyRef: AnyRef,
                                  intMap: Map[Int, Int],
                                  longMap: Map[Long, Long])
+
+object OuterObject {
+  case class NestedCaseClass(id: Long)
+
+  object InnerObject {
+    case class SuperNestedCaseClass(id: Long)
+  }
+}

@@ -3,6 +3,8 @@ package com.codahale.jerkson.util
 import com.codahale.jerkson.util.scalax.rules.scalasig._
 import org.codehaus.jackson.`type`.JavaType
 import org.codehaus.jackson.map.`type`.TypeFactory
+import scala.reflect.ScalaSignature
+import scala.reflect.generic.ByteCodecs
 
 class MissingPickledSig(clazz: Class[_]) extends Error("Failed to parse pickled Scala signature from: %s".format(clazz))
 
@@ -16,22 +18,41 @@ object CaseClassSigParser {
   val SCALA_SIG_ANNOTATION = "Lscala/reflect/ScalaSignature;"
   val BYTES_VALUE = "bytes"
 
-  protected def parseScalaSig[A](clazz: Class[A]): Option[ScalaSig] = {
-    val firstPass = ScalaSigUtil.parse(clazz)
-    firstPass match {
-      case Some(x) => {
-        Some(x)
-      }
-      case None if clazz.getName.endsWith("$") => {
-        val clayy = Class.forName(clazz.getName.replaceFirst("\\$$", ""))
-        val secondPass = ScalaSigUtil.parse(clayy)
-        secondPass
-      }
-      case x => x
+  private def parseClassFileFromByteCode(clazz: Class[_]): Option[ClassFile] = try {
+    // taken from ScalaSigParser parse method with the explicit purpose of walking away from NPE
+    val byteCode = ByteCode.forClass(clazz)
+    Option(ClassFileParser.parse(byteCode))
+  }
+  catch {
+    case e: NullPointerException => None // yes, this is the exception, but it is totally unhelpful to the end user
+  }
+
+  private def parseByteCodeFromAnnotation(clazz: Class[_]): Option[ByteCode] = {
+    if (clazz.isAnnotationPresent(classOf[ScalaSignature])) {
+      val sig = clazz.getAnnotation(classOf[ScalaSignature])
+      val bytes = sig.bytes.getBytes("UTF-8")
+      val len = ByteCodecs.decode(bytes)
+      Option(ByteCode(bytes.take(len)))
+    } else {
+      None
     }
   }
 
+  private def parseScalaSig(_clazz: Class[_]): Option[ScalaSig] = {
+    val clazz = findRootClass(_clazz)
+    parseClassFileFromByteCode(clazz).map(ScalaSigParser.parse(_)).getOrElse(None) orElse
+      parseByteCodeFromAnnotation(clazz).map(ScalaSigAttributeParsers.parse(_)) orElse
+      None
+  }
+
+  protected def findRootClass(klass: Class[_]) =
+    Class.forName(klass.getName.split("\\$").head)
+
+  protected def simpleName(klass: Class[_]) =
+    klass.getName.split("\\$").last
+
   protected def findSym[A](clazz: Class[A]) = {
+    val name = simpleName(clazz)
     val pss = parseScalaSig(clazz)
     pss match {
       case Some(x) => {
@@ -44,7 +65,10 @@ object CaseClassSigParser {
             val topLevelObjects = x.topLevelObjects
             topLevelObjects.headOption match {
               case Some(tlo) => {
-                tlo
+                x.symbols.find { s => !s.isModule && s.name == name } match {
+                  case Some(s) => s.asInstanceOf[ClassSymbol]
+                  case None => throw new MissingExpectedType(clazz)
+                }
               }
               case _ => throw new MissingExpectedType(clazz)
             }
