@@ -55,6 +55,10 @@ class BasicTypeSupportSpec extends Spec {
     @test def `is parsable from a JSON int` = {
       parse[BigInt]("15") must beEqualTo(BigInt(15))
     }
+
+    @test def `is parsable from a JSON string` = {
+      parse[BigInt]("\"15\"") must beEqualTo(BigInt(15))
+    }
   }
 
   class `A Float` {
@@ -84,6 +88,10 @@ class BasicTypeSupportSpec extends Spec {
 
     @test def `is parsable from a JSON float` = {
       parse[BigDecimal]("15.5") must beEqualTo(BigDecimal(15.5))
+    }
+
+    @test def `is parsable from a JSON int` = {
+      parse[BigDecimal]("15") must beEqualTo(BigDecimal(15.0))
     }
   }
 
