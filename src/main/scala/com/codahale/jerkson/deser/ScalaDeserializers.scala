@@ -83,7 +83,7 @@ class ScalaDeserializers extends Deserializers.None {
     } else if (klass == classOf[Option[_]]) {
       createOptionDeserializer(config, javaType, provider, property)
     } else if (classOf[JValue].isAssignableFrom(klass) || klass == JNull.getClass) {
-      new JValueDeserializer(klass)
+      new JValueDeserializer(config.getTypeFactory, klass)
     } else if (klass == classOf[BigInt]) {
       new BigIntDeserializer
     } else if (klass == classOf[BigDecimal]) {
@@ -122,9 +122,9 @@ class ScalaDeserializers extends Deserializers.None {
     val deserializer = provider.findTypedValueDeserializer(config, valueType, property)
     if (keyType.getRawClass == classOf[String]) {
       new ImmutableMapDeserializer[CC](companion, valueType, deserializer)
-    } else if (keyType.getRawClass == classOf[Int]) {
+    } else if (keyType.getRawClass == classOf[Int] || keyType.getRawClass == classOf[java.lang.Integer]) {
       new IntMapDeserializer(valueType, deserializer)
-    } else if (keyType.getRawClass == classOf[Long]) {
+    } else if (keyType.getRawClass == classOf[Long] || keyType.getRawClass == classOf[java.lang.Long]) {
       new LongMapDeserializer(valueType, deserializer)
     } else {
       null

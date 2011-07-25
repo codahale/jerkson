@@ -27,10 +27,7 @@ case class CaseClassWithAllTypes(map: Map[String, String],
                                  string: String,
                                  list: List[Int],
                                  seq: Seq[Int],
-                                 sequence: Sequence[Int],
-                                 collection: Collection[Int],
                                  indexedSeq: IndexedSeq[Int],
-                                 randomAccessSeq: RandomAccessSeq[Int],
                                  vector: Vector[Int],
                                  bigDecimal: BigDecimal,
                                  bigInt: BigInt,
@@ -41,4 +38,16 @@ case class CaseClassWithAllTypes(map: Map[String, String],
                                  short: Short,
                                  byte: Byte,
                                  float: Float,
-                                 double: Double)
+                                 double: Double,
+                                 any: Any,
+                                 anyRef: AnyRef,
+                                 intMap: Map[Int, Int],
+                                 longMap: Map[Long, Long])
+
+object OuterObject {
+  case class NestedCaseClass(id: Long)
+
+  object InnerObject {
+    case class SuperNestedCaseClass(id: Long)
+  }
+}

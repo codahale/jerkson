@@ -3,6 +3,8 @@ package com.codahale.jerkson.util
 import com.codahale.jerkson.util.scalax.rules.scalasig._
 import org.codehaus.jackson.`type`.JavaType
 import org.codehaus.jackson.map.`type`.TypeFactory
+import scala.reflect.ScalaSignature
+import scala.reflect.generic.ByteCodecs
 
 class MissingPickledSig(clazz: Class[_]) extends Error("Failed to parse pickled Scala signature from: %s".format(clazz))
 
@@ -16,22 +18,41 @@ object CaseClassSigParser {
   val SCALA_SIG_ANNOTATION = "Lscala/reflect/ScalaSignature;"
   val BYTES_VALUE = "bytes"
 
-  protected def parseScalaSig[A](clazz: Class[A]): Option[ScalaSig] = {
-    val firstPass = ScalaSigParser.parse(clazz)
-    firstPass match {
-      case Some(x) => {
-        Some(x)
-      }
-      case None if clazz.getName.endsWith("$") => {
-        val clayy = Class.forName(clazz.getName.replaceFirst("\\$$", ""))
-        val secondPass = ScalaSigParser.parse(clayy)
-        secondPass
-      }
-      case x => x
+  private def parseClassFileFromByteCode(clazz: Class[_]): Option[ClassFile] = try {
+    // taken from ScalaSigParser parse method with the explicit purpose of walking away from NPE
+    val byteCode = ByteCode.forClass(clazz)
+    Option(ClassFileParser.parse(byteCode))
+  }
+  catch {
+    case e: NullPointerException => None // yes, this is the exception, but it is totally unhelpful to the end user
+  }
+
+  private def parseByteCodeFromAnnotation(clazz: Class[_]): Option[ByteCode] = {
+    if (clazz.isAnnotationPresent(classOf[ScalaSignature])) {
+      val sig = clazz.getAnnotation(classOf[ScalaSignature])
+      val bytes = sig.bytes.getBytes("UTF-8")
+      val len = ByteCodecs.decode(bytes)
+      Option(ByteCode(bytes.take(len)))
+    } else {
+      None
     }
   }
 
+  private def parseScalaSig(_clazz: Class[_]): Option[ScalaSig] = {
+    val clazz = findRootClass(_clazz)
+    parseClassFileFromByteCode(clazz).map(ScalaSigParser.parse(_)).getOrElse(None) orElse
+      parseByteCodeFromAnnotation(clazz).map(ScalaSigAttributeParsers.parse(_)) orElse
+      None
+  }
+
+  protected def findRootClass(klass: Class[_]) =
+    Class.forName(klass.getName.split("\\$").head)
+
+  protected def simpleName(klass: Class[_]) =
+    klass.getName.split("\\$").last
+
   protected def findSym[A](clazz: Class[A]) = {
+    val name = simpleName(clazz)
     val pss = parseScalaSig(clazz)
     pss match {
       case Some(x) => {
@@ -44,7 +65,10 @@ object CaseClassSigParser {
             val topLevelObjects = x.topLevelObjects
             topLevelObjects.headOption match {
               case Some(tlo) => {
-                tlo
+                x.symbols.find { s => !s.isModule && s.name == name } match {
+                  case Some(s) => s.asInstanceOf[ClassSymbol]
+                  case None => throw new MissingExpectedType(clazz)
+                }
               }
               case _ => throw new MissingExpectedType(clazz)
             }
@@ -55,7 +79,7 @@ object CaseClassSigParser {
     }
   }
 
-  def parse[A](clazz: Class[A]) = {
+  def parse[A](clazz: Class[A], factory: TypeFactory) = {
     findSym(clazz).children
       .filter(c => c.isCaseAccessor && !c.isPrivate)
       .map(_.asInstanceOf[MethodSymbol])
@@ -63,19 +87,19 @@ object CaseClassSigParser {
       .flatMap {
         case (ms, idx) => {
           ms.infoType match {
-            case NullaryMethodType(t: TypeRefType) => Some(ms.name -> typeRef2JavaType(t))
+            case NullaryMethodType(t: TypeRefType) => Some(ms.name -> typeRef2JavaType(t, factory))
             case _ => None
           }
         }
       }
   }
 
-  protected def typeRef2JavaType(ref: TypeRefType): JavaType = {
+  protected def typeRef2JavaType(ref: TypeRefType, factory: TypeFactory): JavaType = {
     try {
       val klass = loadClass(ref.symbol.path)
-      TypeFactory.parametricType(
+      factory.constructParametricType(
         klass, ref.typeArgs.map {
-          t => typeRef2JavaType(t.asInstanceOf[TypeRefType])
+          t => typeRef2JavaType(t.asInstanceOf[TypeRefType], factory)
         }: _*
       )
     } catch {
@@ -111,6 +135,8 @@ object CaseClassSigParser {
     case "scala.Float" => classOf[java.lang.Float]
     case "scala.Double" => classOf[java.lang.Double]
     case "scala.Char" => classOf[java.lang.Character]
+    case "scala.Any" => classOf[Any]
+    case "scala.AnyRef" => classOf[AnyRef]
     case name => Class.forName(name)
   }
 }

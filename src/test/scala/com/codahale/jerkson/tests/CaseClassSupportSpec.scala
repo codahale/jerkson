@@ -4,130 +4,139 @@ import com.codahale.jerkson.Json._
 import com.codahale.simplespec.Spec
 import com.codahale.jerkson.ParsingException
 import org.codehaus.jackson.node.IntNode
+import com.codahale.simplespec.annotation.test
 
 class CaseClassSupportSpec extends Spec {
   class `A basic case class` {
-    def `generates a JSON object with matching field values` = {
+    @test def `generates a JSON object with matching field values` = {
       generate(CaseClass(1, "Coda")) must
         beEqualTo("""{"id":1,"name":"Coda"}""")
     }
 
-    def `is parsable from a JSON object with corresponding fields` = {
+    @test def `is parsable from a JSON object with corresponding fields` = {
       parse[CaseClass]("""{"id":1,"name":"Coda"}""") must
         beEqualTo(CaseClass(1, "Coda"))
     }
 
-    def `is parsable from a JSON object with extra fields` = {
+    @test def `is parsable from a JSON object with extra fields` = {
       parse[CaseClass]("""{"id":1,"name":"Coda","derp":100}""") must
         beEqualTo(CaseClass(1, "Coda"))
     }
 
-    def `is not parsable from a JSON object which doesn't include all of the matching field values` = {
+    @test def `is not parsable from a JSON object which doesn't include all of the matching field values` = {
       parse[CaseClass]("""{"id":1}""") must
         throwA[ParsingException]("""Invalid JSON. Needed \[id, name\], but found \[id\].""")
     }
   }
 
   class `A case class with lazy fields` {
-    def `generates a JSON object with those fields evaluated` = {
+    @test def `generates a JSON object with those fields evaluated` = {
       generate(CaseClassWithLazyVal(1)) must
         beEqualTo("""{"id":1,"woo":"yeah"}""")
     }
 
-    def `is parsable from a JSON object without those fields` = {
+    @test def `is parsable from a JSON object without those fields` = {
       parse[CaseClassWithLazyVal]("""{"id":1}""") must
         beEqualTo(CaseClassWithLazyVal(1))
     }
 
-    def `is not parsable from a JSON object which doesn't include all of the matching field values` = {
+    @test def `is not parsable from a JSON object which doesn't include all of the matching field values` = {
       parse[CaseClassWithLazyVal]("""{}""") must
         throwA[ParsingException]("""Invalid JSON. Needed \[id], but found \[\].""")
     }
   }
 
   class `A case class with ignored members` {
-    def `generates a JSON object without those fields` = {
+    @test def `generates a JSON object without those fields` = {
       generate(CaseClassWithIgnoredField(1)) must beEqualTo("""{"id":1}""")
     }
 
-    def `is parsable from a JSON object without those fields` = {
+    @test def `is parsable from a JSON object without those fields` = {
       parse[CaseClassWithIgnoredField]("""{"id":1}""") must
         beEqualTo(CaseClassWithIgnoredField(1))
     }
 
-    def `is not parsable from a JSON object which doesn't include all of the matching fields` = {
+    @test def `is not parsable from a JSON object which doesn't include all of the matching fields` = {
       parse[CaseClassWithIgnoredField]("""{}""") must
         throwA[ParsingException]("""Invalid JSON. Needed \[id], but found \[\].""")
     }
   }
 
   class `A case class with an overloaded field` {
-    def `generates a JSON object with the nullary version of that field` = {
+    @test def `generates a JSON object with the nullary version of that field` = {
       generate(CaseClassWithOverloadedField(1)) must beEqualTo("""{"id":1}""")
     }
   }
 
   class `A case class with an Option[String] member` {
-    def `generates a field if the member is Some` = {
+    @test def `generates a field if the member is Some` = {
       generate(CaseClassWithOption(Some("what"))) must beEqualTo("""{"value":"what"}""")
     }
 
-    def `is parsable from a JSON object with that field` = {
+    @test def `is parsable from a JSON object with that field` = {
       parse[CaseClassWithOption]("""{"value":"what"}""") must
         beEqualTo(CaseClassWithOption(Some("what")))
     }
 
-    def `doesn't generate a field if the member is None` = {
+    @test def `doesn't generate a field if the member is None` = {
       generate(CaseClassWithOption(None)) must beEqualTo("""{}""")
     }
 
-    def `is parsable from a JSON object without that field` = {
+    @test def `is parsable from a JSON object without that field` = {
       parse[CaseClassWithOption]("""{}""") must
         beEqualTo(CaseClassWithOption(None))
     }
 
-    def `is parsable from a JSON object with a null value for that field` = {
+    @test def `is parsable from a JSON object with a null value for that field` = {
       parse[CaseClassWithOption]("""{"value":null}""") must
         beEqualTo(CaseClassWithOption(None))
     }
   }
 
   class `A case class with a JsonNode member` {
-    def `generates a field of the given type` = {
+    @test def `generates a field of the given type` = {
       generate(CaseClassWithJsonNode(new IntNode(2))) must beEqualTo("""{"value":2}""")
     }
   }
 
   class `A case class with members of all ScalaSig types` {
-    private val json = """
-                       {
-                         "map": {
-                           "one": "two"
-                         },
-                         "set": [1, 2, 3],
-                         "string": "woo",
-                         "list": [4, 5, 6],
-                         "seq": [7, 8, 9],
-                         "sequence": [10, 11, 12],
-                         "collection": [13, 14, 15],
-                         "indexedSeq": [16, 17, 18],
-                         "randomAccessSeq": [19, 20, 21],
-                         "vector": [22, 23, 24],
-                         "bigDecimal": 12.0,
-                         "bigInt": 13,
-                         "int": 1,
-                         "long": 2,
-                         "char": "x",
-                         "bool": false,
-                         "short": 14,
-                         "byte": 15,
-                         "float": 34.5,
-                         "double": 44.9
-                       }
-                       """
+    val json = """
+               {
+                 "map": {
+                   "one": "two"
+                 },
+                 "set": [1, 2, 3],
+                 "string": "woo",
+                 "list": [4, 5, 6],
+                 "seq": [7, 8, 9],
+                 "sequence": [10, 11, 12],
+                 "collection": [13, 14, 15],
+                 "indexedSeq": [16, 17, 18],
+                 "randomAccessSeq": [19, 20, 21],
+                 "vector": [22, 23, 24],
+                 "bigDecimal": 12.0,
+                 "bigInt": 13,
+                 "int": 1,
+                 "long": 2,
+                 "char": "x",
+                 "bool": false,
+                 "short": 14,
+                 "byte": 15,
+                 "float": 34.5,
+                 "double": 44.9,
+                 "any": true,
+                 "anyRef": "wah",
+                 "intMap": {
+                   "1": "1"
+                 },
+                 "longMap": {
+                   "2": 2
+                 }
+               }
+               """
 
 
-    def `is parsable from a JSON object with those fields` = {
+    @test def `is parsable from a JSON object with those fields` = {
       parse[CaseClassWithAllTypes](json) must beEqualTo(
         CaseClassWithAllTypes(
           map = Map("one" -> "two"),
@@ -135,10 +144,7 @@ class CaseClassSupportSpec extends Spec {
           string = "woo",
           list = List(4, 5, 6),
           seq = Seq(7, 8, 9),
-          sequence = Seq(10, 11, 12),
-          collection = Iterable(13, 14, 15),
           indexedSeq = IndexedSeq(16, 17, 18),
-          randomAccessSeq = IndexedSeq(19, 20, 21),
           vector = Vector(22, 23, 24),
           bigDecimal = BigDecimal("12.0"),
           bigInt = BigInt("13"),
@@ -149,10 +155,25 @@ class CaseClassSupportSpec extends Spec {
           short = 14,
           byte = 15,
           float = 34.5f,
-          double = 44.9d
+          double = 44.9d,
+          any = true,
+          anyRef = "wah",
+          intMap = Map(1 -> 1),
+          longMap = Map(2L -> 2L)
         )
       )
     }
+  }
 
+  class `A case class nested inside of an object` {
+    @test def `is parsable from a JSON object` = {
+      parse[OuterObject.NestedCaseClass]("""{"id": 1}""") must beEqualTo(OuterObject.NestedCaseClass(1))
+    }
+  }
+
+  class `A case class nested inside of an object nested inside of an object` {
+    @test def `is parsable from a JSON object` = {
+      parse[OuterObject.InnerObject.SuperNestedCaseClass]("""{"id": 1}""") must beEqualTo(OuterObject.InnerObject.SuperNestedCaseClass(1))
+    }
   }
 }

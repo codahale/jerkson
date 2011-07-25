@@ -21,13 +21,8 @@ class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[
       val methodOpt = methods.get(field.getName)
       val fieldValue: Object = methodOpt.map { _.invoke(value) }.getOrElse(field.get(value))
       if (fieldValue != None) {
-        json.writeFieldName(methodOpt.map {_.getName}.getOrElse(field.getName))
-        if (fieldValue == null) {
-          provider.getNullValueSerializer.serialize(null, json, provider)
-        } else {
-          val serializer = provider.findValueSerializer(fieldValue.getClass, null)
-          serializer.serialize(fieldValue, json, provider)
-        }
+        val fieldName = methodOpt.map { _.getName }.getOrElse(field.getName)
+        provider.defaultSerializeField(fieldName, fieldValue, json)
       }
     }
     json.writeEndObject()

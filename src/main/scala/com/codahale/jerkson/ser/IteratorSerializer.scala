@@ -10,13 +10,7 @@ class IteratorSerializer extends JsonSerializer[Iterator[_]] {
                 provider: SerializerProvider) {
     json.writeStartArray()
     for (element <- value) {
-      if (element == null) {
-        provider.getNullValueSerializer.serialize(null, json, provider)
-      } else {
-        val obj = element.asInstanceOf[Object]
-        val serializer = provider.findValueSerializer(obj.getClass, null)
-        serializer.serialize(obj, json, provider)
-      }
+      provider.defaultSerializeValue(element, json)
     }
     json.writeEndArray()
   }

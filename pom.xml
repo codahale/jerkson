@@ -6,7 +6,7 @@
 
     <groupId>com.codahale</groupId>
     <artifactId>jerkson_2.9.0-1</artifactId>
-    <version>0.3.2</version>
+    <version>0.4.0</version>
     <name>Jerkson for Scala ${scala.version}</name>
 
     <properties>
@@ -63,12 +63,12 @@
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.7.7</version>
+            <version>1.8.3</version>
         </dependency>
         <dependency>
             <groupId>com.codahale</groupId>
             <artifactId>simplespec_${scala.version}</artifactId>
-            <version>0.3.4</version>
+            <version>0.4.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
