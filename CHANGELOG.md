@@ -1,3 +1,18 @@
+v0.4.0: Jul 25 2011
+===================
+
+* Upgraded to Jackson 1.8.3.
+* Fixed deserialization of empty JSON objects as `JValue` instances.
+* Fixed deserialization of `Map[java.lang.Integer, A]` and
+  `Map[java.lang.Long, A]` instances.
+* Fixed deserialization of case classes in weird bytecode environments like
+  Play.
+* Added support for case classes nested in objects.
+* Allowed for deserializing `BigInt` and `BigDecimal` instances from anything
+  those classes can parse as text.
+* Added a cache for type manifests.
+
+
 v0.3.2: Jun 09 2011
 ===================
 
