@@ -8,7 +8,9 @@ import org.codehaus.jackson.map.annotate.JsonCachable
 @JsonCachable
 class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[A] {
   private val nonIgnoredFields = klass.getDeclaredFields.filterNot { f =>
-    f.getAnnotation(classOf[JsonIgnore]) != null || f.getName.contains("$")
+    f.getAnnotation(classOf[JsonIgnore]) != null ||
+      f.getAnnotation(classOf[transient]) != null ||
+      f.getName.contains("$")
   }
 
   private val methods = klass.getDeclaredMethods
