@@ -4,12 +4,13 @@ import org.codehaus.jackson.JsonGenerator
 import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
 import org.codehaus.jackson.annotate.JsonIgnore
 import org.codehaus.jackson.map.annotate.JsonCachable
+import java.lang.reflect.Modifier
 
 @JsonCachable
 class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[A] {
   private val nonIgnoredFields = klass.getDeclaredFields.filterNot { f =>
     f.getAnnotation(classOf[JsonIgnore]) != null ||
-      f.getAnnotation(classOf[transient]) != null ||
+      (f.getModifiers & Modifier.TRANSIENT) != 0 ||
       f.getName.contains("$")
   }
 

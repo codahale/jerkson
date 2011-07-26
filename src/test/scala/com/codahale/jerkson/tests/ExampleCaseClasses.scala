@@ -13,6 +13,10 @@ case class CaseClassWithIgnoredField(id: Long) {
   @JsonIgnore
   val uncomfortable = "Bad Touch"
 }
+case class CaseClassWithTransientField(id: Long) {
+  @transient
+  val lol = "I'm sure it's just a phase."
+}
 
 case class CaseClassWithOverloadedField(id: Long) {
   def id(prefix: String): String = prefix + id
