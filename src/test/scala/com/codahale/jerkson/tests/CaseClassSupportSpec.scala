@@ -62,6 +62,22 @@ class CaseClassSupportSpec extends Spec {
     }
   }
 
+  class `A case class with transient members` {
+    @test def `generates a JSON object without those fields` = {
+      generate(CaseClassWithTransientField(1)) must beEqualTo("""{"id":1}""")
+    }
+
+    @test def `is parsable from a JSON object without those fields` = {
+      parse[CaseClassWithTransientField]("""{"id":1}""") must
+        beEqualTo(CaseClassWithTransientField(1))
+    }
+
+    @test def `is not parsable from a JSON object which doesn't include all of the matching fields` = {
+      parse[CaseClassWithTransientField]("""{}""") must
+        throwA[ParsingException]("""Invalid JSON. Needed \[id], but found \[\].""")
+    }
+  }
+
   class `A case class with an overloaded field` {
     @test def `generates a JSON object with the nullary version of that field` = {
       generate(CaseClassWithOverloadedField(1)) must beEqualTo("""{"id":1}""")
