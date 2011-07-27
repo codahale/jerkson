@@ -1,3 +1,9 @@
+v0.4.1: TBD
+===================
+
+* No longer serializing `transient` members of case classes.
+* Upgraded to Jackson 1.8.4.
+
 v0.4.0: Jul 25 2011
 ===================
 
