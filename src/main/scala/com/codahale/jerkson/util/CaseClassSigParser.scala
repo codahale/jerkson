@@ -17,6 +17,11 @@ object CaseClassSigParser {
   val SCALA_SIG = "ScalaSig"
   val SCALA_SIG_ANNOTATION = "Lscala/reflect/ScalaSignature;"
   val BYTES_VALUE = "bytes"
+  var classLoader: ClassLoader = getClass.getClassLoader
+
+  def setClassLoader(cl: ClassLoader) {
+    classLoader = cl
+  }
 
   private def parseClassFileFromByteCode(clazz: Class[_]): Option[ClassFile] = try {
     // taken from ScalaSigParser parse method with the explicit purpose of walking away from NPE
@@ -46,7 +51,7 @@ object CaseClassSigParser {
   }
 
   protected def findRootClass(klass: Class[_]) =
-    Class.forName(klass.getName.split("\\$").head)
+    classLoader.loadClass(klass.getName.split("\\$").head)
 
   protected def simpleName(klass: Class[_]) =
     klass.getName.split("\\$").last
@@ -137,6 +142,6 @@ object CaseClassSigParser {
     case "scala.Char" => classOf[java.lang.Character]
     case "scala.Any" => classOf[Any]
     case "scala.AnyRef" => classOf[AnyRef]
-    case name => Class.forName(name)
+    case name => classLoader.loadClass(name)
   }
 }
