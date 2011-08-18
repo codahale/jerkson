@@ -6,7 +6,7 @@ import scala.collection.{Traversable, MapLike, immutable, mutable}
 import com.codahale.jerkson.AST.{JNull, JValue}
 import scala.collection.generic.{MapFactory, GenericCompanion}
 
-class ScalaDeserializers extends Deserializers.None {
+class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.None {
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
                             provider: DeserializerProvider, beanDesc: BeanDescription,
                             property: BeanProperty) = {
@@ -91,7 +91,7 @@ class ScalaDeserializers extends Deserializers.None {
     } else if (klass == classOf[Either[_,_]]) {
       new EitherDeserializer(config, javaType, provider)
     } else if (classOf[Product].isAssignableFrom(klass)) {
-      new CaseClassDeserializer(config, javaType, provider)
+      new CaseClassDeserializer(config, javaType, provider, classLoader)
     } else null
   }
 

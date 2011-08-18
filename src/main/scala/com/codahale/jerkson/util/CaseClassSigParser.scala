@@ -79,7 +79,7 @@ object CaseClassSigParser {
     }
   }
 
-  def parse[A](clazz: Class[A], factory: TypeFactory) = {
+  def parse[A](clazz: Class[A], factory: TypeFactory, classLoader: ClassLoader) = {
     findSym(clazz).children
       .filter(c => c.isCaseAccessor && !c.isPrivate)
       .map(_.asInstanceOf[MethodSymbol])
@@ -87,19 +87,19 @@ object CaseClassSigParser {
       .flatMap {
         case (ms, idx) => {
           ms.infoType match {
-            case NullaryMethodType(t: TypeRefType) => Some(ms.name -> typeRef2JavaType(t, factory))
+            case NullaryMethodType(t: TypeRefType) => Some(ms.name -> typeRef2JavaType(t, factory, classLoader))
             case _ => None
           }
         }
       }
   }
 
-  protected def typeRef2JavaType(ref: TypeRefType, factory: TypeFactory): JavaType = {
+  protected def typeRef2JavaType(ref: TypeRefType, factory: TypeFactory, classLoader: ClassLoader): JavaType = {
     try {
-      val klass = loadClass(ref.symbol.path)
+      val klass = loadClass(ref.symbol.path, classLoader)
       factory.constructParametricType(
         klass, ref.typeArgs.map {
-          t => typeRef2JavaType(t.asInstanceOf[TypeRefType], factory)
+          t => typeRef2JavaType(t.asInstanceOf[TypeRefType], factory, classLoader)
         }: _*
       )
     } catch {
@@ -110,7 +110,7 @@ object CaseClassSigParser {
     }
   }
 
-  protected def loadClass(path: String) = path match {
+  protected def loadClass(path: String, classLoader: ClassLoader) = path match {
     case "scala.Predef.Map" => classOf[Map[_, _]]
     case "scala.Predef.Set" => classOf[Set[_]]
     case "scala.Predef.String" => classOf[String]
@@ -137,6 +137,6 @@ object CaseClassSigParser {
     case "scala.Char" => classOf[java.lang.Character]
     case "scala.Any" => classOf[Any]
     case "scala.AnyRef" => classOf[AnyRef]
-    case name => Class.forName(name)
+    case name => classLoader.loadClass(name)
   }
 }
