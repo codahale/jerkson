@@ -9,76 +9,52 @@ import com.codahale.simplespec.annotation.test
 class EdgeCaseSpec extends Spec {
   class `Deserializing lists` {
     @test def `doesn't cache Seq builders` = {
-      parse[List[Int]]("[1,2,3,4]") must beEqualTo(List(1, 2, 3, 4))
-      parse[List[Int]]("[1,2,3,4]") must beEqualTo(List(1, 2, 3, 4))
+      parse[List[Int]]("[1,2,3,4]").mustEqual(List(1, 2, 3, 4))
+      parse[List[Int]]("[1,2,3,4]").mustEqual(List(1, 2, 3, 4))
     }
   }
 
   class `Parsing a JSON array of ints with nulls` {
     @test def `should be readable as a List[Option[Int]]` = {
-      parse[List[Option[Int]]]("[1,2,null,4]") must beEqualTo(List(Some(1),
-                                                                   Some(2),
-                                                                   None,
-                                                                   Some(4)))
+      parse[List[Option[Int]]]("[1,2,null,4]").mustEqual(List(Some(1), Some(2), None, Some(4)))
     }
   }
 
   class `Deserializing maps` {
     @test def `doesn't cache Map builders` = {
-      parse[Map[String, Int]](""" {"one":1, "two": 2} """) must beEqualTo(Map("one" -> 1,
-                                                                              "two" -> 2))
-      parse[Map[String, Int]](""" {"one":1, "two": 2} """) must beEqualTo(Map("one" -> 1,
-                                                                              "two" -> 2))
+      parse[Map[String, Int]](""" {"one":1, "two": 2} """).mustEqual(Map("one" -> 1, "two" -> 2))
+      parse[Map[String, Int]](""" {"one":1, "two": 2} """).mustEqual(Map("one" -> 1, "two" -> 2))
     }
   }
 
   class `Parsing malformed JSON` {
     @test def `should throw a ParsingException with an informative message` = {
-      parse[Boolean]("jjf8;09") must throwA[ParsingException].like {
-        case e: ParsingException => {
-          e.getMessage must beEqualTo(
+      parse[Boolean]("jjf8;09").mustThrowA[ParsingException](
             "Malformed JSON. Unexpected character ('j' (code 106)): expected a " +
                     "valid value (number, String, array, object, 'true', 'false' " +
-                    "or 'null') at character offset 0."
-          )
-        }
-      }
+                    "or 'null') at character offset 0.")
 
-      parse[CaseClass]("{\"ye\":1") must throwA[ParsingException].like {
-        case e: ParsingException => {
-          e.getMessage must beEqualTo(
+      parse[CaseClass]("{\"ye\":1").mustThrowA[ParsingException](
             "Malformed JSON. Unexpected end-of-input: expected close marker for " +
-                    "OBJECT at character offset 20."
-          )
-        }
-      }
+                    "OBJECT at character offset 20.")
     }
   }
 
   class `Parsing invalid JSON` {
     @test def `should throw a ParsingException with an informative message` = {
-      parse[CaseClass]("900") must throwA[ParsingException](
-        """Can not deserialize instance of com.codahale.jerkson.tests.CaseClass out of VALUE_NUMBER_INT token\n""" +
-          """ at \[Source: java.io.StringReader@[0-9a-f]+; line: 1, column: 1\]"""
-      )
+      parse[CaseClass]("900").mustThrowA[ParsingException](
+        ("""Can not deserialize instance of com.codahale.jerkson.tests.CaseClass out of VALUE_NUMBER_INT token\n""" +
+          """ at \[Source: java.io.StringReader@[0-9a-f]+; line: 1, column: 1\]""").r)
 
-      parse[CaseClass]("{\"woo\": 1}") must throwA[ParsingException].like {
-        case e: ParsingException => {
-          e.getMessage must beEqualTo("Invalid JSON. Needed [id, name], " +
-                                              "but found [woo].")
-        }
-      }
+      parse[CaseClass]("{\"woo\": 1}").mustThrowA[ParsingException](
+        "Invalid JSON. Needed [id, name], but found [woo].")
     }
   }
 
   class `Parsing an empty document` {
     @test def `should throw a ParsingException with an informative message` = {
       val input = new ByteArrayInputStream(Array.empty)
-      parse[CaseClass](input) must throwA[ParsingException].like {
-        case e: ParsingException => {
-          e.getMessage must beEqualTo("JSON document ended unexpectedly.")
-        }
-      }
+      parse[CaseClass](input).mustThrowA[ParsingException]("JSON document ended unexpectedly.")
     }
   }
 }

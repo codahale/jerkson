@@ -8,129 +8,129 @@ import com.codahale.simplespec.annotation.test
 class CollectionSupportSpec extends Spec {
   class `A collection.BitSet` {
     @test def `generates a JSON array of ints` = {
-      generate(BitSet(1)) must beEqualTo("[1]")
+      generate(BitSet(1)).mustEqual("[1]")
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[BitSet]("[1,2,3]") must beEqualTo(BitSet(1, 2, 3))
+      parse[BitSet]("[1,2,3]").mustEqual(BitSet(1, 2, 3))
     }
   }
 
   class `A collection.Iterator[Int]` {
     @test def `generates a JSON array of ints` = {
-      generate(Seq(1, 2, 3).iterator) must beEqualTo("[1,2,3]")
+      generate(Seq(1, 2, 3).iterator).mustEqual("[1,2,3]")
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[Iterator[Int]]("[1,2,3]").toList must beEqualTo(List(1, 2, 3))
+      parse[Iterator[Int]]("[1,2,3]").toList.mustEqual(List(1, 2, 3))
     }
 
     @test def `is parsable from an empty JSON array` = {
-      parse[Iterator[Int]]("[]").toList must beEqualTo(List.empty)
+      parse[Iterator[Int]]("[]").toList.mustEqual(List.empty)
     }
   }
 
   class `A collection.Traversable[Int]` {
     @test def `generates a JSON array of ints` = {
-      generate(Seq(1, 2, 3).toTraversable) must beEqualTo("[1,2,3]")
+      generate(Seq(1, 2, 3).toTraversable).mustEqual("[1,2,3]")
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[Traversable[Int]]("[1,2,3]").toList must beEqualTo(List(1, 2, 3))
+      parse[Traversable[Int]]("[1,2,3]").toList.mustEqual(List(1, 2, 3))
     }
 
     @test def `is parsable from an empty JSON array` = {
-      parse[Traversable[Int]]("[]").toList must beEqualTo(List.empty)
+      parse[Traversable[Int]]("[]").toList.mustEqual(List.empty)
     }
   }
 
   class `A collection.BufferedIterator[Int]` {
     @test def `generates a JSON array of ints` = {
-      generate(Seq(1, 2, 3).iterator.buffered) must beEqualTo("[1,2,3]")
+      generate(Seq(1, 2, 3).iterator.buffered).mustEqual("[1,2,3]")
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[BufferedIterator[Int]]("[1,2,3]").toList must beEqualTo(List(1, 2, 3))
+      parse[BufferedIterator[Int]]("[1,2,3]").toList.mustEqual(List(1, 2, 3))
     }
 
     @test def `is parsable from an empty JSON array` = {
-      parse[BufferedIterator[Int]]("[]").toList must beEqualTo(List.empty)
+      parse[BufferedIterator[Int]]("[]").toList.mustEqual(List.empty)
     }
   }
 
   class `A collection.Iterable[Int]` {
     @test def `generates a JSON array of ints` = {
-      generate(Seq(1, 2, 3).toIterable) must beEqualTo("[1,2,3]")
+      generate(Seq(1, 2, 3).toIterable).mustEqual("[1,2,3]")
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[Iterable[Int]]("[1,2,3]").toList must beEqualTo(List(1, 2, 3))
+      parse[Iterable[Int]]("[1,2,3]").toList.mustEqual(List(1, 2, 3))
     }
 
     @test def `is parsable from an empty JSON array` = {
-      parse[Iterable[Int]]("[]").toList must beEqualTo(List.empty)
+      parse[Iterable[Int]]("[]").toList.mustEqual(List.empty)
     }
   }
 
   class `A collection.Set[Int]` {
     @test def `generates a JSON array of ints` = {
-      generate(Set(1, 2, 3)) must beEqualTo("[1,2,3]")
+      generate(Set(1, 2, 3)).mustEqual("[1,2,3]")
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[Set[Int]]("[1,2,3]") must beEqualTo(Set(1, 2, 3))
+      parse[Set[Int]]("[1,2,3]").mustEqual(Set(1, 2, 3))
     }
 
     @test def `is parsable from an empty JSON array` = {
-      parse[Set[Int]]("[]") must beEqualTo(Set.empty)
+      parse[Set[Int]]("[]").mustEqual(Set.empty)
     }
   }
 
   class `A collection.Map[String, Int]` {
     @test def `generates a JSON object with int field values` = {
-      generate(Map("one" -> 1, "two" -> 2)) must beEqualTo("""{"one":1,"two":2}""")
+      generate(Map("one" -> 1, "two" -> 2)).mustEqual("""{"one":1,"two":2}""")
     }
 
     @test def `is parsable from a JSON object with int field values` = {
-      parse[Map[String, Int]]("""{"one":1,"two":2}""") must beEqualTo(Map("one" -> 1, "two" -> 2))
+      parse[Map[String, Int]]("""{"one":1,"two":2}""").mustEqual(Map("one" -> 1, "two" -> 2))
     }
 
     @test def `is parsable from an empty JSON object` = {
-      parse[Map[String, Int]]("{}") must beEqualTo(Map.empty)
+      parse[Map[String, Int]]("{}").mustEqual(Map.empty)
     }
   }
 
   class `A collection.IndexedSeq[Int]` {
     @test def `generates a JSON array of ints` = {
-      generate(IndexedSeq(1, 2, 3)) must beEqualTo("[1,2,3]")
+      generate(IndexedSeq(1, 2, 3)).mustEqual("[1,2,3]")
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[IndexedSeq[Int]]("[1,2,3]") must beEqualTo(IndexedSeq(1, 2, 3))
+      parse[IndexedSeq[Int]]("[1,2,3]").mustEqual(IndexedSeq(1, 2, 3))
     }
 
     @test def `is parsable from an empty JSON array` = {
-      parse[IndexedSeq[Int]]("[]") must beEqualTo(IndexedSeq.empty)
+      parse[IndexedSeq[Int]]("[]").mustEqual(IndexedSeq.empty)
     }
   }
 
   class `A collection.Seq[Int]` {
     @test def `generates a JSON array of ints` = {
-      generate(Seq(1, 2, 3)) must beEqualTo("[1,2,3]")
+      generate(Seq(1, 2, 3)).mustEqual("[1,2,3]")
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[Seq[Int]]("[1,2,3]") must beEqualTo(Seq(1, 2, 3))
+      parse[Seq[Int]]("[1,2,3]").mustEqual(Seq(1, 2, 3))
     }
 
     @test def `is parsable from an empty JSON array` = {
-      parse[Seq[Int]]("[]") must beEqualTo(Seq.empty)
+      parse[Seq[Int]]("[]").mustEqual(Seq.empty)
     }
   }
 
   class `A collection.SortedMap[String, Int]` {
     @test def `generates a JSON object with int field values` = {
-      generate(SortedMap("one" -> 1, "two" -> 2)) must beEqualTo("""{"one":1,"two":2}""")
+      generate(SortedMap("one" -> 1, "two" -> 2)).mustEqual("""{"one":1,"two":2}""")
     }
 
     // TODO: 6/1/11 <coda> -- figure out how to deserialize SortedMap instances
@@ -143,19 +143,19 @@ class CollectionSupportSpec extends Spec {
      */
 
     @test def `is parsable from a JSON object with int field values` = {
-//      parse[SortedMap[String, Int]]("""{"one":1,"two":2}""") must beEqualTo(SortedMap("one" -> 1, "two" -> 2))
-      pending
+      pending()
+      parse[SortedMap[String, Int]]("""{"one":1,"two":2}""").mustEqual(SortedMap("one" -> 1, "two" -> 2))
     }
 
     @test def `is parsable from an empty JSON object` = {
-//      parse[SortedMap[String, Int]]("{}") must beEqualTo(SortedMap.empty[String, Int])
-      pending
+      pending()
+      parse[SortedMap[String, Int]]("{}").mustEqual(SortedMap.empty[String, Int])
     }
   }
 
   class `A collection.SortedSet[Int]` {
     @test def `generates a JSON array of ints` = {
-      generate(SortedSet(1, 2, 3)) must beEqualTo("[1,2,3]")
+      generate(SortedSet(1, 2, 3)).mustEqual("[1,2,3]")
     }
 
     // TODO: 6/1/11 <coda> -- figure out how to deserialize SortedMap instances
@@ -168,13 +168,14 @@ class CollectionSupportSpec extends Spec {
      */
 
     @test def `is parsable from a JSON array of ints` = {
-//      parse[SortedSet[Int]]("[1,2,3]") must beEqualTo(SortedSet(1, 2, 3))
-      pending
+      pending()
+      parse[SortedSet[Int]]("[1,2,3]").mustEqual(SortedSet(1, 2, 3))
+
     }
 
     @test def `is parsable from an empty JSON array` = {
-//      parse[SortedSet[Int]]("[]") must beEqualTo(SortedSet.empty[String])
-      pending
+      pending()
+      parse[SortedSet[Int]]("[]").mustEqual(SortedSet.empty[String])
     }
   }
 }
