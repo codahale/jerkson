@@ -16,8 +16,8 @@ class StreamingSpec extends Spec {
 
     @test def `returns an iterator of stream elements` = {
       stream[CaseClass](new ByteArrayInputStream(json.getBytes)).toList
-        .mustEqual(CaseClass(1, "Coda") :: CaseClass(2, "Niki") ::
-                  CaseClass(3, "Biscuit") :: CaseClass(4, "Louie") :: Nil)
+        .must(be(CaseClass(1, "Coda") :: CaseClass(2, "Niki") ::
+                  CaseClass(3, "Biscuit") :: CaseClass(4, "Louie") :: Nil))
     }
   }
 }

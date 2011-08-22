@@ -9,49 +9,49 @@ import com.codahale.simplespec.annotation.test
 class ImmutableCollectionSupportSpec extends Spec {
   class `An immutable.Seq[Int]` {
     @test def `generates a JSON array of ints` = {
-      generate(Seq(1, 2, 3)).mustEqual("[1,2,3]")
+      generate(Seq(1, 2, 3)).must(be("[1,2,3]"))
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[Seq[Int]]("[1,2,3]").mustEqual(Seq(1, 2, 3))
+      parse[Seq[Int]]("[1,2,3]").must(be(Seq(1, 2, 3)))
     }
 
     @test def `is parsable from an empty JSON array` = {
-      parse[Seq[Int]]("[]").mustEqual(Seq.empty)
+      parse[Seq[Int]]("[]").must(be(Seq.empty[Int]))
     }
   }
 
   class `An immutable.List[Int]` {
     @test def `generates a JSON array of ints` = {
-      generate(List(1, 2, 3)).mustEqual("[1,2,3]")
+      generate(List(1, 2, 3)).must(be("[1,2,3]"))
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[List[Int]]("[1,2,3]").mustEqual(List(1, 2, 3))
+      parse[List[Int]]("[1,2,3]").must(be(List(1, 2, 3)))
     }
 
     @test def `is parsable from an empty JSON array` = {
-      parse[List[Int]]("[]").mustEqual(List.empty)
+      parse[List[Int]]("[]").must(be(List.empty[Int]))
     }
   }
 
   class `An immutable.IndexedSeq[Int]` {
     @test def `generates a JSON array of ints` = {
-      generate(IndexedSeq(1, 2, 3)).mustEqual("[1,2,3]")
+      generate(IndexedSeq(1, 2, 3)).must(be("[1,2,3]"))
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[IndexedSeq[Int]]("[1,2,3]").mustEqual(IndexedSeq(1, 2, 3))
+      parse[IndexedSeq[Int]]("[1,2,3]").must(be(IndexedSeq(1, 2, 3)))
     }
 
     @test def `is parsable from an empty JSON array` = {
-      parse[IndexedSeq[Int]]("[]").mustEqual(IndexedSeq.empty)
+      parse[IndexedSeq[Int]]("[]").must(be(IndexedSeq.empty[Int]))
     }
   }
 
   class `An immutable.TreeSet[Int]` {
     @test def `generates a JSON array` = {
-      generate(TreeSet(1)).mustEqual("[1]")
+      generate(TreeSet(1)).must(be("[1]"))
     }
 
     // TODO: 6/1/11 <coda> -- figure out how to deserialize TreeSet instances
@@ -65,46 +65,46 @@ class ImmutableCollectionSupportSpec extends Spec {
 
     @test def `is parsable from a JSON array of ints` = {
       pending()
-      parse[TreeSet[Int]]("[1,2,3]").mustEqual(TreeSet(1, 2, 3))
+      parse[TreeSet[Int]]("[1,2,3]").must(be(TreeSet(1, 2, 3)))
     }
 
     @test def `is parsable from an empty JSON array` = {
       pending()
-      parse[TreeSet[Int]]("[]").mustEqual(TreeSet.empty[Int])
+      parse[TreeSet[Int]]("[]").must(be(TreeSet.empty[Int]))
     }
   }
 
   class `An immutable.HashSet[Int]` {
     @test def `generates a JSON array` = {
-      generate(HashSet(1)).mustEqual("[1]")
+      generate(HashSet(1)).must(be("[1]"))
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[HashSet[Int]]("[1,2,3]").mustEqual(HashSet(1, 2, 3))
+      parse[HashSet[Int]]("[1,2,3]").must(be(HashSet(1, 2, 3)))
     }
 
     @test def `is parsable from an empty JSON array` = {
-      parse[HashSet[Int]]("[]").mustEqual(HashSet.empty)
+      parse[HashSet[Int]]("[]").must(be(HashSet.empty[Int]))
     }
   }
 
   class `An immutable.BitSet` {
     @test def `generates a JSON array` = {
-      generate(BitSet(1)).mustEqual("[1]")
+      generate(BitSet(1)).must(be("[1]"))
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[BitSet]("[1,2,3]").mustEqual(BitSet(1, 2, 3))
+      parse[BitSet]("[1,2,3]").must(be(BitSet(1, 2, 3)))
     }
 
     @test def `is parsable from an empty JSON array` = {
-      parse[BitSet]("[]").mustEqual(BitSet.empty)
+      parse[BitSet]("[]").must(be(BitSet.empty))
     }
   }
 
   class `An immutable.TreeMap[String, Int]` {
     @test def `generates a JSON object` = {
-      generate(TreeMap("one" -> 1)).mustEqual("""{"one":1}""")
+      generate(TreeMap("one" -> 1)).must(be("""{"one":1}"""))
     }
 
     // TODO: 6/1/11 <coda> -- figure out how to deserialize TreeMap instances
@@ -118,154 +118,172 @@ class ImmutableCollectionSupportSpec extends Spec {
 
     @test def `is parsable from a JSON object with int field values` = {
       pending()
-      parse[TreeMap[String, Int]]("""{"one":1}""").mustEqual(TreeMap("one" -> 1))
+      parse[TreeMap[String, Int]]("""{"one":1}""").must(be(TreeMap("one" -> 1)))
     }
 
     @test def `is parsable from an empty JSON object` = {
       pending()
-      parse[TreeMap[String, Int]]("{}").mustEqual(TreeMap.empty[String, Int])
+      parse[TreeMap[String, Int]]("{}").must(be(TreeMap.empty[String, Int]))
     }
   }
 
   class `An immutable.HashMap[String, Int]` {
     @test def `generates a JSON object` = {
-      generate(HashMap("one" -> 1)).mustEqual("""{"one":1}""")
+      generate(HashMap("one" -> 1)).must(be("""{"one":1}"""))
     }
 
     @test def `is parsable from a JSON object with int field values` = {
-      parse[HashMap[String, Int]]("""{"one":1}""").mustEqual(HashMap("one" -> 1))
+      parse[HashMap[String, Int]]("""{"one":1}""").must(be(HashMap("one" -> 1)))
     }
 
     @test def `is parsable from an empty JSON object` = {
-      parse[HashMap[String, Int]]("{}").mustEqual(HashMap.empty)
+      parse[HashMap[String, Int]]("{}").must(be(HashMap.empty[String, Int]))
     }
   }
 
   class `An immutable.HashMap[String, Any]` {
     @test def `generates a JSON object` = {
-      generate(HashMap[String, Any]("one" -> 1)).mustEqual("""{"one":1}""")
+      generate(HashMap[String, Any]("one" -> 1)).must(be("""{"one":1}"""))
     }
 
     @test def `is parsable from a JSON object with int field values` = {
-      parse[HashMap[String, Any]]("""{"one":1}""").mustEqual(HashMap("one" -> 1))
+      parse[HashMap[String, Any]]("""{"one":1}""").must(be(HashMap("one" -> 1)))
     }
 
     @test def `is parsable from an empty JSON object` = {
-      parse[HashMap[String, Any]]("{}").mustEqual(HashMap.empty)
+      parse[HashMap[String, Any]]("{}").must(be(HashMap.empty[String, Any]))
     }
 
     @test def `is not parsable from an empty JSON object in a JSON array` = {
-      parse[HashMap[String, Any]]("[{}]").mustThrowA[ParsingException]
+      evaluating {
+        parse[HashMap[String, Any]]("[{}]")
+      }.must(throwA[ParsingException])
     }
   }
 
   class `An immutable.Map[Int, String]` {
     @test def `generates a JSON object` = {
-      generate(Map(1 -> "one")).mustEqual("""{"1":"one"}""")
+      generate(Map(1 -> "one")).must(be("""{"1":"one"}"""))
     }
 
     @test def `is parsable from a JSON object with decimal field names and string field values` = {
-      parse[Map[Int, String]]("""{"1":"one"}""").mustEqual(Map(1 -> "one"))
+      parse[Map[Int, String]]("""{"1":"one"}""").must(be(Map(1 -> "one")))
     }
 
     @test def `is not parsable from a JSON object with non-decimal field names` = {
-      parse[Map[Int, String]]("""{"one":"one"}""").mustThrowA[ParsingException]
+      evaluating {
+        parse[Map[Int, String]]("""{"one":"one"}""")
+      }.must(throwA[ParsingException])
     }
 
     @test def `is parsable from an empty JSON object` = {
-      parse[Map[Int, String]]("{}").mustEqual(Map.empty)
+      parse[Map[Int, String]]("{}").must(be(Map.empty[Int, String]))
     }
   }
 
   class `An immutable.Map[Int, Any]` {
     @test def `is not parsable from an empty JSON object in a JSON array` = {
-      parse[Map[Int, Any]]("[{}]").mustThrowA[ParsingException]
+      evaluating {
+        parse[Map[Int, Any]]("[{}]")
+      }.must(throwA[ParsingException])
     }
   }
 
   class `An immutable.IntMap[Any]` {
     @test def `is not parsable from an empty JSON object in a JSON array` = {
-      parse[IntMap[Any]]("[{}]").mustThrowA[ParsingException]
+      evaluating {
+        parse[IntMap[Any]]("[{}]")
+      }.must(throwA[ParsingException])
     }
   }
 
   class `An immutable.LongMap[Any]` {
     @test def `is not parsable from an empty JSON object in a JSON array` = {
-      parse[LongMap[Any]]("[{}]").mustThrowA[ParsingException]
+      evaluating {
+        parse[LongMap[Any]]("[{}]")
+      }.must(throwA[ParsingException])
     }
   }
 
   class `An immutable.Map[Long, Any]` {
     @test def `is not parsable from an empty JSON object in a JSON array` = {
-      parse[Map[Long, Any]]("[{}]").mustThrowA[ParsingException]
+      evaluating {
+        parse[Map[Long, Any]]("[{}]")
+      }.must(throwA[ParsingException])
     }
   }
 
   class `An immutable.Map[Long, String]` {
     @test def `generates a JSON object` = {
-      generate(Map(1L -> "one")).mustEqual("""{"1":"one"}""")
+      generate(Map(1L -> "one")).must(be("""{"1":"one"}"""))
     }
 
     @test def `is parsable from a JSON object with decimal field names and string field values` = {
-      parse[Map[Long, String]]("""{"1":"one"}""").mustEqual(Map(1L -> "one"))
+      parse[Map[Long, String]]("""{"1":"one"}""").must(be(Map(1L -> "one")))
     }
 
     @test def `is not parsable from a JSON object with non-decimal field names` = {
-      parse[Map[Long, String]]("""{"one":"one"}""").mustThrowA[ParsingException]
+      evaluating {
+        parse[Map[Long, String]]("""{"one":"one"}""")
+      }.must(throwA[ParsingException])
     }
 
     @test def `is parsable from an empty JSON object` = {
-      parse[Map[Long, String]]("{}").mustEqual(Map.empty)
+      parse[Map[Long, String]]("{}").must(be(Map.empty[Long, String]))
     }
   }
 
   class `An immutable.IntMap[String]` {
     @test def `generates a JSON object` = {
-      generate(IntMap(1 -> "one")).mustEqual("""{"1":"one"}""")
+      generate(IntMap(1 -> "one")).must(be("""{"1":"one"}"""))
     }
 
     @test def `is parsable from a JSON object with decimal field names and string field values` = {
-      parse[IntMap[String]]("""{"1":"one"}""").mustEqual(IntMap(1 -> "one"))
+      parse[IntMap[String]]("""{"1":"one"}""").must(be(IntMap(1 -> "one")))
     }
 
     @test def `is not parsable from a JSON object with non-decimal field names` = {
-      parse[IntMap[String]]("""{"one":"one"}""").mustThrowA[ParsingException]
+      evaluating {
+        parse[IntMap[String]]("""{"one":"one"}""")
+      }.must(throwA[ParsingException])
     }
 
     @test def `is parsable from an empty JSON object` = {
-      parse[IntMap[String]]("{}").mustEqual(IntMap.empty)
+      parse[IntMap[String]]("{}").must(be(IntMap.empty[String]))
     }
   }
 
   class `An immutable.LongMap[String]` {
     @test def `generates a JSON object` = {
-      generate(LongMap(1L -> "one")).mustEqual("""{"1":"one"}""")
+      generate(LongMap(1L -> "one")).must(be("""{"1":"one"}"""))
     }
 
     @test def `is parsable from a JSON object with int field names and string field values` = {
-      parse[LongMap[String]]("""{"1":"one"}""").mustEqual(LongMap(1L -> "one"))
+      parse[LongMap[String]]("""{"1":"one"}""").must(be(LongMap(1L -> "one")))
     }
 
     @test def `is not parsable from a JSON object with non-decimal field names` = {
-      parse[LongMap[String]]("""{"one":"one"}""").mustThrowA[ParsingException]
+      evaluating {
+        parse[LongMap[String]]("""{"one":"one"}""")
+      }.must(throwA[ParsingException])
     }
 
     @test def `is parsable from an empty JSON object` = {
-      parse[LongMap[String]]("{}").mustEqual(LongMap.empty)
+      parse[LongMap[String]]("{}").must(be(LongMap.empty))
     }
   }
 
   class `An immutable.Queue[Int]` {
     @test def `generates a JSON array` = {
-      generate(Queue(1, 2, 3)).mustEqual("[1,2,3]")
+      generate(Queue(1, 2, 3)).must(be("[1,2,3]"))
     }
 
     @test def `is parsable from a JSON array of ints` = {
-      parse[Queue[Int]]("[1,2,3]").mustEqual(Queue(1, 2, 3))
+      parse[Queue[Int]]("[1,2,3]").must(be(Queue(1, 2, 3)))
     }
 
     @test def `is parsable from an empty JSON array` = {
-      parse[Queue[Int]]("[]").mustEqual(Queue.empty)
+      parse[Queue[Int]]("[]").must(be(Queue.empty))
     }
   }
 }

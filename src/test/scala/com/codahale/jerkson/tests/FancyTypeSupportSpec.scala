@@ -9,11 +9,11 @@ import java.util.UUID
 class FancyTypeSupportSpec extends Spec {
   class `A URI` {
     @test def `generates a JSON string` = {
-      generate(new URI("http://example.com/resource?query=yes")).mustEqual("\"http://example.com/resource?query=yes\"")
+      generate(new URI("http://example.com/resource?query=yes")).must(be("\"http://example.com/resource?query=yes\""))
     }
 
     @test def `is parsable from a JSON string` = {
-      parse[URI]("\"http://example.com/resource?query=yes\"").mustEqual(new URI("http://example.com/resource?query=yes"))
+      parse[URI]("\"http://example.com/resource?query=yes\"").must(be(new URI("http://example.com/resource?query=yes")))
     }
   }
 
@@ -21,11 +21,11 @@ class FancyTypeSupportSpec extends Spec {
     val uuid = UUID.fromString("a62047e4-bfb5-4d71-aad7-1a6b338eee63")
 
     @test def `generates a JSON string` = {
-      generate(uuid).mustEqual("\"a62047e4-bfb5-4d71-aad7-1a6b338eee63\"")
+      generate(uuid).must(be("\"a62047e4-bfb5-4d71-aad7-1a6b338eee63\""))
     }
 
     @test def `is parsable from a JSON string` = {
-      parse[UUID]("\"a62047e4-bfb5-4d71-aad7-1a6b338eee63\"").mustEqual(uuid)
+      parse[UUID]("\"a62047e4-bfb5-4d71-aad7-1a6b338eee63\"").must(be(uuid))
     }
   }
 }
