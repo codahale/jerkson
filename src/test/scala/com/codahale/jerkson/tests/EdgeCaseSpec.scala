@@ -4,31 +4,31 @@ import com.codahale.jerkson.Json._
 import com.codahale.simplespec.Spec
 import com.codahale.jerkson.ParsingException
 import java.io.ByteArrayInputStream
-import com.codahale.simplespec.annotation.test
+import org.junit.Test
 
 class EdgeCaseSpec extends Spec {
   class `Deserializing lists` {
-    @test def `doesn't cache Seq builders` = {
+    @Test def `doesn't cache Seq builders` = {
       parse[List[Int]]("[1,2,3,4]").must(be(List(1, 2, 3, 4)))
       parse[List[Int]]("[1,2,3,4]").must(be(List(1, 2, 3, 4)))
     }
   }
 
   class `Parsing a JSON array of ints with nulls` {
-    @test def `should be readable as a List[Option[Int]]` = {
+    @Test def `should be readable as a List[Option[Int]]` = {
       parse[List[Option[Int]]]("[1,2,null,4]").must(be(List(Some(1), Some(2), None, Some(4))))
     }
   }
 
   class `Deserializing maps` {
-    @test def `doesn't cache Map builders` = {
+    @Test def `doesn't cache Map builders` = {
       parse[Map[String, Int]](""" {"one":1, "two": 2} """).must(be(Map("one" -> 1, "two" -> 2)))
       parse[Map[String, Int]](""" {"one":1, "two": 2} """).must(be(Map("one" -> 1, "two" -> 2)))
     }
   }
 
   class `Parsing malformed JSON` {
-    @test def `should throw a ParsingException with an informative message` = {
+    @Test def `should throw a ParsingException with an informative message` = {
       evaluating {
         parse[Boolean]("jjf8;09")
       }.must(throwA[ParsingException](
@@ -45,7 +45,7 @@ class EdgeCaseSpec extends Spec {
   }
 
   class `Parsing invalid JSON` {
-    @test def `should throw a ParsingException with an informative message` = {
+    @Test def `should throw a ParsingException with an informative message` = {
       evaluating {
         parse[CaseClass]("900")
       }.must(throwA[ParsingException](
@@ -59,7 +59,7 @@ class EdgeCaseSpec extends Spec {
   }
 
   class `Parsing an empty document` {
-    @test def `should throw a ParsingException with an informative message` = {
+    @Test def `should throw a ParsingException with an informative message` = {
       val input = new ByteArrayInputStream(Array.empty)
       evaluating {
         parse[CaseClass](input)
