@@ -57,12 +57,12 @@ class ImmutableCollectionSupportSpec extends Spec {
     // TODO: 6/1/11 <coda> -- figure out how to deserialize TreeSet instances
 
     /**
-     * I'm not entirely sure I can do this, since I need an Ordering instance
-     * before I can do this. I'd need to go from the intended element type to
-     * the Ordering instance, but that's done via the implicit scoping, which I
-     * can't do with just a Class[_] instance.
+     * I think all this would take is a mapping from Class[_] to Ordering, which
+     * would need to have hard-coded the various primitive types, and then add
+     * support for Ordered and Comparable classes. Once we have the Ordering,
+     * we can pass it in manually to a builder.
      */
-
+    
     @Ignore @Test def `is parsable from a JSON array of ints` = {
       parse[TreeSet[Int]]("[1,2,3]").must(be(TreeSet(1, 2, 3)))
     }
@@ -108,12 +108,12 @@ class ImmutableCollectionSupportSpec extends Spec {
     // TODO: 6/1/11 <coda> -- figure out how to deserialize TreeMap instances
 
     /**
-     * I'm not entirely sure I can do this, since I need an Ordering instance
-     * before I can do this. I'd need to go from the intended element type to
-     * the Ordering instance, but that's done via the implicit scoping, which I
-     * can't do with just a Class[_] instance.
+     * I think all this would take is a mapping from Class[_] to Ordering, which
+     * would need to have hard-coded the various primitive types, and then add
+     * support for Ordered and Comparable classes. Once we have the Ordering,
+     * we can pass it in manually to a builder.
      */
-
+    
     @Ignore @Test def `is parsable from a JSON object with int field values` = {
       parse[TreeMap[String, Int]]("""{"one":1}""").must(be(TreeMap("one" -> 1)))
     }
