@@ -46,15 +46,21 @@ class CaseClassSupportSpec extends Spec {
   class `A case class with ignored members` {
     @Test def `generates a JSON object without those fields` = {
       generate(CaseClassWithIgnoredField(1)).must(be("""{"id":1}"""))
+      generate(CaseClassWithIgnoredFields(1)).must(be("""{"id":1}"""))
     }
 
     @Test def `is parsable from a JSON object without those fields` = {
       parse[CaseClassWithIgnoredField]("""{"id":1}""").must(be(CaseClassWithIgnoredField(1)))
+      parse[CaseClassWithIgnoredFields]("""{"id":1}""").must(be(CaseClassWithIgnoredFields(1)))
     }
 
     @Test def `is not parsable from an incomplete JSON object` = {
       evaluating {
         parse[CaseClassWithIgnoredField]("""{}""")
+      }.must(throwA[ParsingException]("""Invalid JSON. Needed [id], but found []."""))
+
+      evaluating {
+        parse[CaseClassWithIgnoredFields]("""{}""")
       }.must(throwA[ParsingException]("""Invalid JSON. Needed [id], but found []."""))
     }
   }

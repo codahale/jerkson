@@ -8,12 +8,13 @@ import java.lang.reflect.Modifier
 
 @JsonCachable
 class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[A] {
-  val jsonIgnoreProperties = Option(klass.getAnnotation(classOf[JsonIgnoreProperties]))
-  val jsonIgnoreArray = jsonIgnoreProperties map {_.value} getOrElse Array[String]()
+  private val ignoredFields = if (klass.isAnnotationPresent(classOf[JsonIgnoreProperties])) {
+    klass.getAnnotation(classOf[JsonIgnoreProperties]).value().toSet
+  } else Set.empty[String]
   
   private val nonIgnoredFields = klass.getDeclaredFields.filterNot { f =>
     f.getAnnotation(classOf[JsonIgnore]) != null ||
-    jsonIgnoreArray.contains(f.getName) ||
+    ignoredFields.contains(f.getName) ||
       (f.getModifiers & Modifier.TRANSIENT) != 0 ||
       f.getName.contains("$")
   }
