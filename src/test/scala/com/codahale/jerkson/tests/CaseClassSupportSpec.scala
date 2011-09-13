@@ -20,7 +20,7 @@ class CaseClassSupportSpec extends Spec {
       parse[CaseClass]("""{"id":1,"name":"Coda","derp":100}""").must(be(CaseClass(1, "Coda")))
     }
 
-    @Test def `is not parsable from a JSON object which doesn't include all of the matching field values` = {
+    @Test def `is not parsable from an incomplete JSON object` = {
       evaluating {
         parse[CaseClass]("""{"id":1}""")
       }.must(throwA[ParsingException]("""Invalid JSON. Needed [id, name], but found [id]."""))
@@ -36,7 +36,7 @@ class CaseClassSupportSpec extends Spec {
       parse[CaseClassWithLazyVal]("""{"id":1}""").must(be(CaseClassWithLazyVal(1)))
     }
 
-    @Test def `is not parsable from a JSON object which doesn't include all of the matching field values` = {
+    @Test def `is not parsable from an incomplete JSON object` = {
       evaluating {
         parse[CaseClassWithLazyVal]("""{}""")
       }.must(throwA[ParsingException]("""Invalid JSON. Needed [id], but found []."""))
@@ -52,7 +52,7 @@ class CaseClassSupportSpec extends Spec {
       parse[CaseClassWithIgnoredField]("""{"id":1}""").must(be(CaseClassWithIgnoredField(1)))
     }
 
-    @Test def `is not parsable from a JSON object which doesn't include all of the matching fields` = {
+    @Test def `is not parsable from an incomplete JSON object` = {
       evaluating {
         parse[CaseClassWithIgnoredField]("""{}""")
       }.must(throwA[ParsingException]("""Invalid JSON. Needed [id], but found []."""))
@@ -68,7 +68,7 @@ class CaseClassSupportSpec extends Spec {
       parse[CaseClassWithTransientField]("""{"id":1}""").must(be(CaseClassWithTransientField(1)))
     }
 
-    @Test def `is not parsable from a JSON object which doesn't include all of the matching fields` = {
+    @Test def `is not parsable from an incomplete JSON object` = {
       evaluating {
         parse[CaseClassWithTransientField]("""{}""")
       }.must(throwA[ParsingException]("""Invalid JSON. Needed [id], but found []."""))

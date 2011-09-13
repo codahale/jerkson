@@ -125,13 +125,6 @@
                     </args>
                     <charset>UTF-8</charset>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.scala-lang</groupId>
-                        <artifactId>jline</artifactId>
-                        <version>${scala.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
