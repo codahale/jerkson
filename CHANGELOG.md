@@ -1,8 +1,11 @@
-v0.4.1: TBD
+v0.4.1: Sep 13 2011
 ===================
 
+* Added `@JsonIgnoreProperties` support.
 * No longer serializing `transient` members of case classes.
-* Upgraded to Jackson 1.8.4.
+* Upgraded to Jackson 1.8.x. (Jerkson will now track the highest available
+  version in the 1.8.x series.)
+
 
 v0.4.0: Jul 25 2011
 ===================
