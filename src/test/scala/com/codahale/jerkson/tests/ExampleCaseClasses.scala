@@ -1,7 +1,7 @@
 package com.codahale.jerkson.tests
 
-import org.codehaus.jackson.annotate.JsonIgnore
 import org.codehaus.jackson.JsonNode
+import org.codehaus.jackson.annotate.{JsonIgnoreProperties, JsonIgnore}
 
 case class CaseClass(id: Long, name: String)
 
@@ -12,6 +12,17 @@ case class CaseClassWithLazyVal(id: Long) {
 case class CaseClassWithIgnoredField(id: Long) {
   @JsonIgnore
   val uncomfortable = "Bad Touch"
+}
+
+@JsonIgnoreProperties(Array("uncomfortable", "unpleasant"))
+case class CaseClassWithIgnoredFields(id: Long) {
+  val uncomfortable = "Bad Touch"
+  val unpleasant = "The Creeps"
+}
+
+case class CaseClassWithTransientField(id: Long) {
+  @transient
+  val lol = "I'm sure it's just a phase."
 }
 
 case class CaseClassWithOverloadedField(id: Long) {

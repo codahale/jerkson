@@ -6,11 +6,12 @@
 
     <groupId>com.codahale</groupId>
     <artifactId>jerkson_2.8.1</artifactId>
-    <version>0.4.0</version>
+    <version>0.4.1</version>
     <name>Jerkson for Scala ${scala.version}</name>
 
     <properties>
         <scala.version>2.8.1</scala.version>
+        <jackson.version>[1.8.0,1.9.0)</jackson.version>
     </properties>
 
     <developers>
@@ -62,13 +63,18 @@
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.8.3</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.codahale</groupId>
             <artifactId>simplespec_${scala.version}</artifactId>
-            <version>0.4.0</version>
+            <version>[0.5.0,0.6.0)</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

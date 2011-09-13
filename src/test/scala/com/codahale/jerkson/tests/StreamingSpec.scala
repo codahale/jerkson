@@ -3,7 +3,7 @@ package com.codahale.jerkson.tests
 import com.codahale.jerkson.Json._
 import java.io.ByteArrayInputStream
 import com.codahale.simplespec.Spec
-import com.codahale.simplespec.annotation.test
+import org.junit.Test
 
 class StreamingSpec extends Spec {
   class `Parsing a stream of objects` {
@@ -14,10 +14,10 @@ class StreamingSpec extends Spec {
       {"id":4, "name": "Louie"}
     ]"""
 
-    @test def `returns an iterator of stream elements` = {
-      stream[CaseClass](new ByteArrayInputStream(json.getBytes)).toList must
-        beEqualTo(CaseClass(1, "Coda") :: CaseClass(2, "Niki") ::
-                  CaseClass(3, "Biscuit") :: CaseClass(4, "Louie") :: Nil)
+    @Test def `returns an iterator of stream elements` = {
+      stream[CaseClass](new ByteArrayInputStream(json.getBytes)).toList
+        .must(be(CaseClass(1, "Coda") :: CaseClass(2, "Niki") ::
+                  CaseClass(3, "Biscuit") :: CaseClass(4, "Louie") :: Nil))
     }
   }
 }
