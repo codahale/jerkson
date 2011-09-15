@@ -14,9 +14,24 @@ class CaseClassDeserializer(config: DeserializationConfig,
                             javaType: JavaType,
                             provider: DeserializerProvider,
                             classLoader: ClassLoader) extends JsonDeserializer[Object] {
-  require(javaType.getRawClass.getConstructors.length == 1, "Case classes must only have one constructor.")
-  private val constructor = javaType.getRawClass.getConstructors.head
   private val params = CaseClassSigParser.parse(javaType.getRawClass, config.getTypeFactory, classLoader).toArray
+  private val paramTypes = params.map { _._2.getRawClass }.toList
+  private val constructor = javaType.getRawClass.getConstructors.find { c =>
+    val constructorTypes = c.getParameterTypes.toList.map { t =>
+      t.toString match {
+        case "byte" => classOf[java.lang.Byte]
+        case "short" => classOf[java.lang.Short]
+        case "int" => classOf[java.lang.Integer]
+        case "long" => classOf[java.lang.Long]
+        case "float" => classOf[java.lang.Float]
+        case "double" => classOf[java.lang.Double]
+        case "char" => classOf[java.lang.Character]
+        case "boolean" => classOf[java.lang.Boolean]
+        case _ => t
+      }
+    }
+    constructorTypes == paramTypes
+  }.getOrElse { throw new JsonMappingException("Unable to find a case accessor for " + javaType.getRawClass.getName) }
 
   def deserialize(jp: JsonParser, ctxt: DeserializationContext): Object = {
     if (jp.getCurrentToken == JsonToken.START_OBJECT) {

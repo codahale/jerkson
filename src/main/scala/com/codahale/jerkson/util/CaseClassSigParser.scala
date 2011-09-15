@@ -80,16 +80,11 @@ object CaseClassSigParser {
   }
 
   def parse[A](clazz: Class[A], factory: TypeFactory, classLoader: ClassLoader) = {
-    findSym(clazz).children
-      .filter(c => c.isCaseAccessor && !c.isPrivate)
-      .map(_.asInstanceOf[MethodSymbol])
-      .zipWithIndex
-      .flatMap {
-        case (ms, idx) => {
-          ms.infoType match {
-            case NullaryMethodType(t: TypeRefType) => Some(ms.name -> typeRef2JavaType(t, factory, classLoader))
-            case _ => None
-          }
+    findSym(clazz).children.filter(c => c.isCaseAccessor && !c.isPrivate)
+      .flatMap { ms =>
+        ms.asInstanceOf[MethodSymbol].infoType match {
+          case NullaryMethodType(t: TypeRefType) => ms.name -> typeRef2JavaType(t, factory, classLoader) :: Nil
+          case _ => Nil
         }
       }
   }

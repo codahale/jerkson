@@ -192,4 +192,16 @@ class CaseClassSupportSpec extends Spec {
       parse[OuterObject.InnerObject.SuperNestedCaseClass]("""{"id": 1}""").must(be(OuterObject.InnerObject.SuperNestedCaseClass(1)))
     }
   }
+
+  class `A case class with two constructors` {
+    @Test def `is parsable from a JSON object with the same parameters as the case accessor` = {
+      parse[CaseClassWithTwoConstructors]("""{"id":1,"name":"Bert"}""").must(be(CaseClassWithTwoConstructors(1, "Bert")))
+    }
+
+    @Test def `is parsable from a JSON object which works with the second constructor` = {
+      evaluating {
+        parse[CaseClassWithTwoConstructors]("""{"id":1}""")
+      }.must(throwA[ParsingException])
+    }
+  }
 }

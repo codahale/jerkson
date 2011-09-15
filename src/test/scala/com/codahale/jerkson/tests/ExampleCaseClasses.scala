@@ -62,3 +62,7 @@ object OuterObject {
     case class SuperNestedCaseClass(id: Long)
   }
 }
+
+case class CaseClassWithTwoConstructors(id: Long,  name: String) {
+  def this(id: Long) = this(id,  "New User")
+}
