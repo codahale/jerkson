@@ -5,34 +5,33 @@ import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
 import org.codehaus.jackson.annotate.{JsonIgnore, JsonIgnoreProperties}
 import org.codehaus.jackson.map.annotate.JsonCachable
 import java.lang.reflect.Modifier
+import com.codahale.jerkson.util.CaseClassSigParser
+import annotation.tailrec
 
 @JsonCachable
 class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[A] {
+  private val paramNames = CaseClassSigParser.parseNames(klass)
   private val ignoredFields = if (klass.isAnnotationPresent(classOf[JsonIgnoreProperties])) {
     klass.getAnnotation(classOf[JsonIgnoreProperties]).value().toSet
   } else Set.empty[String]
   
-  private val nonIgnoredFields = klass.getDeclaredFields.filterNot { f =>
-    f.getAnnotation(classOf[JsonIgnore]) != null ||
-    ignoredFields.contains(f.getName) ||
-      (f.getModifiers & Modifier.TRANSIENT) != 0 ||
-      f.getName.contains("$")
-  }
-
-  private val methods = klass.getDeclaredMethods
-                                .filter { _.getParameterTypes.isEmpty }
-                                .map { m => m.getName -> m }.toMap
-  
-  def serialize(value: A, json: JsonGenerator, provider: SerializerProvider) {
-    json.writeStartObject()
-    for (field <- nonIgnoredFields) {
-      val methodOpt = methods.get(field.getName)
-      val fieldValue: Object = methodOpt.map { _.invoke(value) }.getOrElse(field.get(value))
-      if (fieldValue != None) {
-        val fieldName = methodOpt.map { _.getName }.getOrElse(field.getName)
-        provider.defaultSerializeField(fieldName, fieldValue, json)
+  def serialize(obj: A, json: JsonGenerator, provider: SerializerProvider) {
+    @tailrec
+    def writeFields(idx: Int, fields: Seq[String]) {
+      if (!fields.isEmpty) {
+        val field = fields.head
+        if (!ignoredFields(field)) {
+          val value = obj.productElement(idx)
+          if (value != None) {
+            provider.defaultSerializeField(field, value, json)
+          }
+        }
+        writeFields(idx + 1, fields.tail)
       }
     }
+
+    json.writeStartObject()
+    writeFields(0, paramNames)
     json.writeEndObject()
   }
 }

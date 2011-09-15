@@ -89,6 +89,16 @@ object CaseClassSigParser {
       }
   }
 
+  def parseNames[A](clazz: Class[A]) = {
+    findSym(clazz).children.filter(c => c.isCaseAccessor && !c.isPrivate)
+      .flatMap { ms =>
+        ms.asInstanceOf[MethodSymbol].infoType match {
+          case NullaryMethodType(t: TypeRefType) => ms.name :: Nil
+          case _ => Nil
+        }
+    }
+  }
+
   protected def typeRef2JavaType(ref: TypeRefType, factory: TypeFactory, classLoader: ClassLoader): JavaType = {
     try {
       val klass = loadClass(ref.symbol.path, classLoader)

@@ -5,29 +5,10 @@ import org.codehaus.jackson.annotate.{JsonIgnoreProperties, JsonIgnore}
 
 case class CaseClass(id: Long, name: String)
 
-case class CaseClassWithLazyVal(id: Long) {
-  lazy val woo = "yeah"
-}
-
-case class CaseClassWithIgnoredField(id: Long) {
-  @JsonIgnore
-  val uncomfortable = "Bad Touch"
-}
-
 @JsonIgnoreProperties(Array("uncomfortable", "unpleasant"))
-case class CaseClassWithIgnoredFields(id: Long) {
-  val uncomfortable = "Bad Touch"
-  val unpleasant = "The Creeps"
-}
-
-case class CaseClassWithTransientField(id: Long) {
-  @transient
-  val lol = "I'm sure it's just a phase."
-}
-
-case class CaseClassWithOverloadedField(id: Long) {
-  def id(prefix: String): String = prefix + id
-}
+case class CaseClassWithIgnoredFields(id: Long,
+                                      uncomfortable: String = "Bad Touch",
+                                      unpleasant: String = "The Creeps")
 
 case class CaseClassWithOption(value: Option[String])
 

@@ -27,66 +27,6 @@ class CaseClassSupportSpec extends Spec {
     }
   }
 
-  class `A case class with lazy fields` {
-    @Test def `generates a JSON object with those fields evaluated` = {
-      generate(CaseClassWithLazyVal(1)).must(be("""{"id":1,"woo":"yeah"}"""))
-    }
-
-    @Test def `is parsable from a JSON object without those fields` = {
-      parse[CaseClassWithLazyVal]("""{"id":1}""").must(be(CaseClassWithLazyVal(1)))
-    }
-
-    @Test def `is not parsable from an incomplete JSON object` = {
-      evaluating {
-        parse[CaseClassWithLazyVal]("""{}""")
-      }.must(throwA[ParsingException]("""Invalid JSON. Needed [id], but found []."""))
-    }
-  }
-
-  class `A case class with ignored members` {
-    @Test def `generates a JSON object without those fields` = {
-      generate(CaseClassWithIgnoredField(1)).must(be("""{"id":1}"""))
-      generate(CaseClassWithIgnoredFields(1)).must(be("""{"id":1}"""))
-    }
-
-    @Test def `is parsable from a JSON object without those fields` = {
-      parse[CaseClassWithIgnoredField]("""{"id":1}""").must(be(CaseClassWithIgnoredField(1)))
-      parse[CaseClassWithIgnoredFields]("""{"id":1}""").must(be(CaseClassWithIgnoredFields(1)))
-    }
-
-    @Test def `is not parsable from an incomplete JSON object` = {
-      evaluating {
-        parse[CaseClassWithIgnoredField]("""{}""")
-      }.must(throwA[ParsingException]("""Invalid JSON. Needed [id], but found []."""))
-
-      evaluating {
-        parse[CaseClassWithIgnoredFields]("""{}""")
-      }.must(throwA[ParsingException]("""Invalid JSON. Needed [id], but found []."""))
-    }
-  }
-
-  class `A case class with transient members` {
-    @Test def `generates a JSON object without those fields` = {
-      generate(CaseClassWithTransientField(1)).must(be("""{"id":1}"""))
-    }
-
-    @Test def `is parsable from a JSON object without those fields` = {
-      parse[CaseClassWithTransientField]("""{"id":1}""").must(be(CaseClassWithTransientField(1)))
-    }
-
-    @Test def `is not parsable from an incomplete JSON object` = {
-      evaluating {
-        parse[CaseClassWithTransientField]("""{}""")
-      }.must(throwA[ParsingException]("""Invalid JSON. Needed [id], but found []."""))
-    }
-  }
-
-  class `A case class with an overloaded field` {
-    @Test def `generates a JSON object with the nullary version of that field` = {
-      generate(CaseClassWithOverloadedField(1)).must(be("""{"id":1}"""))
-    }
-  }
-
   class `A case class with an Option[String] member` {
     @Test def `generates a field if the member is Some` = {
       generate(CaseClassWithOption(Some("what"))).must(be("""{"value":"what"}"""))
