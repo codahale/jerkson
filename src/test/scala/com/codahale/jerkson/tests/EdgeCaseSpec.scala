@@ -28,7 +28,7 @@ class EdgeCaseSpec extends Spec {
   }
 
   class `Parsing malformed JSON` {
-    @Test def `should throw a ParsingException with an informative message` = {
+    @Test def `throws a ParsingException with an informative message` = {
       evaluating {
         parse[Boolean]("jjf8;09")
       }.must(throwA[ParsingException](
@@ -45,7 +45,7 @@ class EdgeCaseSpec extends Spec {
   }
 
   class `Parsing invalid JSON` {
-    @Test def `should throw a ParsingException with an informative message` = {
+    @Test def `throws a ParsingException with an informative message` = {
       evaluating {
         parse[CaseClass]("900")
       }.must(throwA[ParsingException](
@@ -59,11 +59,17 @@ class EdgeCaseSpec extends Spec {
   }
 
   class `Parsing an empty document` {
-    @Test def `should throw a ParsingException with an informative message` = {
+    @Test def `throws a ParsingException with an informative message` = {
       val input = new ByteArrayInputStream(Array.empty)
       evaluating {
         parse[CaseClass](input)
       }.must(throwA[ParsingException]("JSON document ended unexpectedly."))
+    }
+  }
+
+  class `Parsing a document with a Class[A]` {
+    @Test def `works` = {
+      parse("\"womp\"", classOf[String]).must(be("womp"))
     }
   }
 }

@@ -12,36 +12,43 @@ trait Parser extends Factory {
    * Parse a JSON string as a particular type.
    */
   def parse[A](input: String)(implicit mf: Manifest[A]): A = parse[A](factory.createJsonParser(input), mf)
+  def parse[A](input: String, klass: Class[A]): A = parse[A](input)(Manifest.classType(klass))
 
   /**
    * Parse a JSON input stream as a particular type.
    */
   def parse[A](input: InputStream)(implicit mf: Manifest[A]): A = parse[A](factory.createJsonParser(input), mf)
+  def parse[A](input: InputStream, klass: Class[A]): A = parse[A](input)(Manifest.classType(klass))
 
   /**
    * Parse a JSON file as a particular type.
    */
   def parse[A](input: File)(implicit mf: Manifest[A]): A = parse[A](factory.createJsonParser(input), mf)
+  def parse[A](input: File, klass: Class[A]): A = parse[A](input)(Manifest.classType(klass))
 
   /**
    * Parse a JSON URL as a particular type.
    */
   def parse[A](input: URL)(implicit mf: Manifest[A]): A = parse[A](factory.createJsonParser(input), mf)
+  def parse[A](input: URL, klass: Class[A]): A = parse[A](input)(Manifest.classType(klass))
 
   /**
    * Parse a JSON Reader as a particular type.
    */
   def parse[A](input: Reader)(implicit mf: Manifest[A]): A = parse[A](factory.createJsonParser(input), mf)
+  def parse[A](input: Reader, klass: Class[A]): A = parse[A](input)(Manifest.classType(klass))
 
   /**
    * Parse a JSON byte array as a particular type.
    */
   def parse[A](input: Array[Byte])(implicit mf: Manifest[A]): A = parse[A](factory.createJsonParser(input), mf)
+  def parse[A](input: Array[Byte], klass: Class[A]): A = parse[A](input)(Manifest.classType(klass))
 
   /**
    * Parse a JSON Source as a particular type.
    */
   def parse[A](input: Source)(implicit mf: Manifest[A]): A = parse[A](input.mkString)
+  def parse[A](input: Source, klass: Class[A]): A = parse[A](input)(Manifest.classType(klass))
 
   /**
    * Parse a JSON node as a particular type.
@@ -50,6 +57,7 @@ trait Parser extends Factory {
     val parser = new TreeTraversingParser(input, mapper)
     parse(parser, mf)
   }
+  def parse[A](input: JsonNode, klass: Class[A]): A = parse[A](input)(Manifest.classType(klass))
 
   /**
    * Parse a streaming JSON array of particular types, returning an iterator
@@ -59,6 +67,7 @@ trait Parser extends Factory {
     val parser = factory.createJsonParser(input)
     new StreamingIterator[A](parser, mf)
   }
+  def stream[A](input: InputStream, klass: Class[A]): Iterator[A] = stream[A](input)(Manifest.classType(klass))
 
   /**
    * Parse a streaming JSON array of particular types, returning an iterator
@@ -68,6 +77,7 @@ trait Parser extends Factory {
     val parser = factory.createJsonParser(input)
     new StreamingIterator[A](parser, mf)
   }
+  def stream[A](input: Reader, klass: Class[A]): Iterator[A] = stream[A](input)(Manifest.classType(klass))
 
   private[jerkson] def parse[A](parser: JsonParser, mf: Manifest[A]): A = {
     try {
