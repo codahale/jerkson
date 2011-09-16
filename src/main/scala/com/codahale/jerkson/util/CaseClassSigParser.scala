@@ -38,22 +38,22 @@ object CaseClassSigParser {
     }
   }
 
-  private def parseScalaSig(_clazz: Class[_]): Option[ScalaSig] = {
-    val clazz = findRootClass(_clazz)
+  private def parseScalaSig(_clazz: Class[_], classLoader: ClassLoader): Option[ScalaSig] = {
+    val clazz = findRootClass(_clazz, classLoader)
     parseClassFileFromByteCode(clazz).map(ScalaSigParser.parse(_)).getOrElse(None) orElse
       parseByteCodeFromAnnotation(clazz).map(ScalaSigAttributeParsers.parse(_)) orElse
       None
   }
 
-  protected def findRootClass(klass: Class[_]) =
-    Class.forName(klass.getName.split("\\$").head)
+  protected def findRootClass(klass: Class[_], classLoader: ClassLoader) =
+    loadClass(klass.getName.split("\\$").head, classLoader)
 
   protected def simpleName(klass: Class[_]) =
     klass.getName.split("\\$").last
 
-  protected def findSym[A](clazz: Class[A]) = {
+  protected def findSym[A](clazz: Class[A], classLoader: ClassLoader) = {
     val name = simpleName(clazz)
-    val pss = parseScalaSig(clazz)
+    val pss = parseScalaSig(clazz, classLoader)
     pss match {
       case Some(x) => {
         val topLevelClasses = x.topLevelClasses
@@ -80,7 +80,7 @@ object CaseClassSigParser {
   }
 
   def parse[A](clazz: Class[A], factory: TypeFactory, classLoader: ClassLoader) = {
-    findSym(clazz).children.filter(c => c.isCaseAccessor && !c.isPrivate)
+    findSym(clazz, classLoader).children.filter(c => c.isCaseAccessor && !c.isPrivate)
       .flatMap { ms =>
         ms.asInstanceOf[MethodSymbol].infoType match {
           case NullaryMethodType(t: TypeRefType) => ms.name -> typeRef2JavaType(t, factory, classLoader) :: Nil
