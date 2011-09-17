@@ -2,7 +2,7 @@ package com.codahale.jerkson.deser
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
-import com.codahale.jerkson.SnakeCase
+import com.codahale.jerkson.JsonSnakeCase
 import com.codahale.jerkson.util._
 import com.codahale.jerkson.Util._
 import org.codehaus.jackson.{JsonNode, JsonToken, JsonParser}
@@ -16,7 +16,7 @@ class CaseClassDeserializer(config: DeserializationConfig,
                             javaType: JavaType,
                             provider: DeserializerProvider,
                             classLoader: ClassLoader) extends JsonDeserializer[Object] {
-  private val isSnakeCase = javaType.getRawClass.isAnnotationPresent(classOf[SnakeCase])
+  private val isSnakeCase = javaType.getRawClass.isAnnotationPresent(classOf[JsonSnakeCase])
   private val params = CaseClassSigParser.parse(javaType.getRawClass, config.getTypeFactory, classLoader).map { case (name, jt) =>
     (if (isSnakeCase) snakeCase(name) else name, jt)
   }

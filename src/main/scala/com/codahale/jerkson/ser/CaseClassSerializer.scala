@@ -1,7 +1,7 @@
 package com.codahale.jerkson.ser
 
 import java.lang.reflect.Modifier
-import com.codahale.jerkson.SnakeCase
+import com.codahale.jerkson.JsonSnakeCase
 import com.codahale.jerkson.Util._
 import org.codehaus.jackson.JsonGenerator
 import org.codehaus.jackson.annotate.{JsonIgnore, JsonIgnoreProperties}
@@ -10,7 +10,7 @@ import org.codehaus.jackson.map.annotate.JsonCachable
 
 @JsonCachable
 class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[A] {
-  private val isSnakeCase = klass.isAnnotationPresent(classOf[SnakeCase])
+  private val isSnakeCase = klass.isAnnotationPresent(classOf[JsonSnakeCase])
   private val ignoredFields = if (klass.isAnnotationPresent(classOf[JsonIgnoreProperties])) {
     klass.getAnnotation(classOf[JsonIgnoreProperties]).value().toSet
   } else Set.empty[String]
