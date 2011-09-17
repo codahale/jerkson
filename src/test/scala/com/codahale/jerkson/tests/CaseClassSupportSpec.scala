@@ -204,4 +204,20 @@ class CaseClassSupportSpec extends Spec {
       }.must(throwA[ParsingException])
     }
   }
+
+  class `A case class with snake-cased fields` {
+    @Test def `is parsable from a snake-cased JSON object` = {
+      parse[CaseClassWithSnakeCase]("""{"one_thing":"yes","two_thing":"good"}""").must(be(CaseClassWithSnakeCase("yes", "good")))
+    }
+
+    @Test def `generates a snake-cased JSON object` = {
+      generate(CaseClassWithSnakeCase("yes", "good")).must(be("""{"one_thing":"yes","two_thing":"good"}"""))
+    }
+
+    @Test def `throws errors with the snake-cased field names present` = {
+      evaluating {
+        parse[CaseClassWithSnakeCase]("""{"one_thing":"yes"}""")
+      }.must(throwA[ParsingException]("Invalid JSON. Needed [one_thing, two_thing], but found [one_thing]."))
+    }
+  }
 }
