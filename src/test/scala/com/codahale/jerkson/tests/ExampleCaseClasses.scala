@@ -2,6 +2,7 @@ package com.codahale.jerkson.tests
 
 import org.codehaus.jackson.JsonNode
 import org.codehaus.jackson.annotate.{JsonIgnoreProperties, JsonIgnore}
+import com.codahale.jerkson.JsonSnakeCase
 
 case class CaseClass(id: Long, name: String)
 
@@ -62,3 +63,10 @@ object OuterObject {
     case class SuperNestedCaseClass(id: Long)
   }
 }
+
+case class CaseClassWithTwoConstructors(id: Long,  name: String) {
+  def this(id: Long) = this(id,  "New User")
+}
+
+@JsonSnakeCase
+case class CaseClassWithSnakeCase(oneThing: String, twoThing: String)

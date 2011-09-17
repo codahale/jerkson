@@ -192,4 +192,32 @@ class CaseClassSupportSpec extends Spec {
       parse[OuterObject.InnerObject.SuperNestedCaseClass]("""{"id": 1}""").must(be(OuterObject.InnerObject.SuperNestedCaseClass(1)))
     }
   }
+
+  class `A case class with two constructors` {
+    @Test def `is parsable from a JSON object with the same parameters as the case accessor` = {
+      parse[CaseClassWithTwoConstructors]("""{"id":1,"name":"Bert"}""").must(be(CaseClassWithTwoConstructors(1, "Bert")))
+    }
+
+    @Test def `is parsable from a JSON object which works with the second constructor` = {
+      evaluating {
+        parse[CaseClassWithTwoConstructors]("""{"id":1}""")
+      }.must(throwA[ParsingException])
+    }
+  }
+
+  class `A case class with snake-cased fields` {
+    @Test def `is parsable from a snake-cased JSON object` = {
+      parse[CaseClassWithSnakeCase]("""{"one_thing":"yes","two_thing":"good"}""").must(be(CaseClassWithSnakeCase("yes", "good")))
+    }
+
+    @Test def `generates a snake-cased JSON object` = {
+      generate(CaseClassWithSnakeCase("yes", "good")).must(be("""{"one_thing":"yes","two_thing":"good"}"""))
+    }
+
+    @Test def `throws errors with the snake-cased field names present` = {
+      evaluating {
+        parse[CaseClassWithSnakeCase]("""{"one_thing":"yes"}""")
+      }.must(throwA[ParsingException]("Invalid JSON. Needed [one_thing, two_thing], but found [one_thing]."))
+    }
+  }
 }
