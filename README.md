@@ -31,7 +31,7 @@ Go ahead and add Jerkson as a dependency:
   <dependency>
     <groupId>com.codahale</groupId>
     <artifactId>jerkson_${scala.version}</artifactId>
-    <version>0.4.1</version>
+    <version>0.4.2</version>
   </dependency>
 </dependencies>
 ```
@@ -75,6 +75,20 @@ generate(Map("one"->1, "two"->"dos")) //=> {"one":1,"two":"dos"}
 ```
 
 For more examples, check out the [specs](https://github.com/codahale/jerkson/blob/master/src/test/scala/com/codahale/jerkson/tests/).
+
+
+Handling `snake_case` Field Names
+=================================
+
+```scala
+case class Person(firstName: String, lastName: String)
+
+@JsonSnakeCase
+case class Snake(firstName: String, lastName: String)
+
+generate(Person("Coda", "Hale"))   //=> {"firstName": "Coda","lastName":"Hale"}
+generate(Snake("Windey", "Mover")) //=> {"first_name": "Windey","last_name":"Mover"}
+```
 
 
 License
