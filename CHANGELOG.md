@@ -1,3 +1,10 @@
+v0.4.2: Sep 16 2011
+===================
+
+* Added support for case classes with multiple constructors.
+* Added support for `snake_cased` JSON field names via the `@JsonSnakeCase`
+  annotation.
+
 v0.4.1: Sep 13 2011
 ===================
 
