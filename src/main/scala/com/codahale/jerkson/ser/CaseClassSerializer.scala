@@ -17,7 +17,7 @@ class CaseClassSerializer[A <: Product](klass: Class[_]) extends JsonSerializer[
   
   private val nonIgnoredFields = klass.getDeclaredFields.filterNot { f =>
     f.getAnnotation(classOf[JsonIgnore]) != null ||
-    ignoredFields.contains(f.getName) ||
+    ignoredFields(f.getName) ||
       (f.getModifiers & Modifier.TRANSIENT) != 0 ||
       f.getName.contains("$")
   }
