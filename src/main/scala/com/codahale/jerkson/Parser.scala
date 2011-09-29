@@ -69,6 +69,11 @@ trait Parser extends Factory {
     new StreamingIterator[A](parser, mf)
   }
 
+  /**
+   * Returns true if the given class is deserializable.
+   */
+  def canDeserialize[A](implicit mf: Manifest[A]) = mapper.canDeserialize(Types.build(mapper.getTypeFactory, mf))
+
   private[jerkson] def parse[A](parser: JsonParser, mf: Manifest[A]): A = {
     try {
       if (mf.erasure == classOf[Option[_]]) {
