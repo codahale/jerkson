@@ -6,7 +6,7 @@ import scala.collection.{Traversable, MapLike, immutable, mutable}
 import com.codahale.jerkson.AST.{JNull, JValue}
 import scala.collection.generic.{MapFactory, GenericCompanion}
 
-class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.None {
+class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
                             provider: DeserializerProvider, beanDesc: BeanDescription,
                             property: BeanProperty) = {
