@@ -76,10 +76,7 @@ trait Parser extends Factory {
 
   private[jerkson] def parse[A](parser: JsonParser, mf: Manifest[A]): A = {
     try {
-      if (mf.erasure == classOf[Option[_]]) {
-        // thanks for special-casing VALUE_NULL, guys
-        Option(parse(parser, mf.typeArguments.head)).asInstanceOf[A]
-      } else if (mf.erasure == classOf[JValue] || mf.erasure == JNull.getClass) {
+      if (mf.erasure == classOf[JValue] || mf.erasure == JNull.getClass) {
         val value: A = parser.getCodec.readValue(parser, Types.build(mapper.getTypeFactory, mf))
         if (value == null) JNull.asInstanceOf[A] else value
       } else {
