@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.codahale</groupId>
-    <artifactId>jerkson_2.8.1</artifactId>
-    <version>0.4.2</version>
+    <artifactId>jerkson_2.8.2</artifactId>
+    <version>0.5.0</version>
     <name>Jerkson for Scala ${scala.version}</name>
 
     <properties>
-        <scala.version>2.8.1</scala.version>
-        <jackson.version>[1.8.0,1.9.0)</jackson.version>
+        <scala.version>2.8.2</scala.version>
+        <jackson.version>[1.9.0,2.0.0)</jackson.version>
     </properties>
 
     <developers>
@@ -73,7 +73,7 @@
         </dependency>
         <dependency>
             <groupId>com.codahale</groupId>
-            <artifactId>simplespec_${scala.version}</artifactId>
+            <artifactId>simplespec_2.8.1</artifactId>
             <version>[0.5.0,0.6.0)</version>
             <scope>test</scope>
         </dependency>

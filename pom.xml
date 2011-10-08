@@ -6,12 +6,12 @@
 
     <groupId>com.codahale</groupId>
     <artifactId>jerkson_2.9.1</artifactId>
-    <version>0.4.2</version>
+    <version>0.5.0</version>
     <name>Jerkson for Scala ${scala.version}</name>
 
     <properties>
         <scala.version>2.9.1</scala.version>
-        <jackson.version>[1.8.0,1.9.0)</jackson.version>
+        <jackson.version>[1.9.0,2.0.0)</jackson.version>
     </properties>
 
     <developers>
@@ -38,6 +38,10 @@
         <repository>
             <id>repo.codahale.com</id>
             <url>http://repo.codahale.com</url>
+        </repository>
+        <repository>
+            <id>nativelibs4java</id>
+            <url>http://nativelibs4java.sourceforge.net/maven</url>
         </repository>
     </repositories>
 
@@ -123,6 +127,13 @@
                         <arg>-unchecked</arg>
                         <arg>-deprecation</arg>
                     </args>
+                    <compilerPlugins>
+                        <compilerPlugin>
+                            <groupId>com.nativelibs4java</groupId>
+                            <artifactId>scalacl-compiler-plugin</artifactId>
+                            <version>0.2</version>
+                        </compilerPlugin>
+                    </compilerPlugins>
                     <charset>UTF-8</charset>
                 </configuration>
             </plugin>

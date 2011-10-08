@@ -220,4 +220,20 @@ class CaseClassSupportSpec extends Spec {
       }.must(throwA[ParsingException]("Invalid JSON. Needed [one_thing, two_thing], but found [one_thing]."))
     }
   }
+
+  class `A case class with array members` {
+    @Test def `is parsable from a JSON object` = {
+      val c = parse[CaseClassWithArrays]("""{"one":"1","two":["a","b","c"],"three":[1,2,3]}""")
+
+      c.one.must(be("1"))
+      c.two.must(be(Array("a", "b", "c")))
+      c.three.must(be(Array(1, 2, 3)))
+    }
+
+    @Test def `generates a JSON object` = {
+      generate(CaseClassWithArrays("1", Array("a", "b", "c"), Array(1, 2, 3))).must(be(
+        """{"one":"1","two":["a","b","c"],"three":[1,2,3]}"""
+      ))
+    }
+  }
 }

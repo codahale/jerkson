@@ -10,6 +10,10 @@ class OptionDeserializer(elementType: JavaType,
                               elementDeserializer: JsonDeserializer[Object])
   extends JsonDeserializer[Object] {
 
+  override def getEmptyValue = None
+
+  override def getNullValue = None
+
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
     if (jp.getCurrentToken == JsonToken.VALUE_NULL) {
       None

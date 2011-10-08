@@ -91,12 +91,30 @@ object CaseClassSigParser {
 
   protected def typeRef2JavaType(ref: TypeRefType, factory: TypeFactory, classLoader: ClassLoader): JavaType = {
     try {
-      val klass = loadClass(ref.symbol.path, classLoader)
-      factory.constructParametricType(
-        klass, ref.typeArgs.map {
-          t => typeRef2JavaType(t.asInstanceOf[TypeRefType], factory, classLoader)
-        }: _*
-      )
+      if (ref.symbol.path == "scala.Array") {
+        val elementType = typeRef2JavaType(ref.typeArgs.head.asInstanceOf[TypeRefType], factory, classLoader)
+        val realElementType = elementType.getRawClass.getName match {
+          case "java.lang.Boolean" => classOf[Boolean]
+          case "java.lang.Byte" => classOf[Byte]
+          case "java.lang.Character" => classOf[Char]
+          case "java.lang.Double" => classOf[Double]
+          case "java.lang.Float" => classOf[Float]
+          case "java.lang.Integer" => classOf[Int]
+          case "java.lang.Long" => classOf[Long]
+          case "java.lang.Short" => classOf[Short]
+          case _ => elementType.getRawClass
+        }
+
+        val array = java.lang.reflect.Array.newInstance(realElementType, 0)
+        factory.constructType(array.getClass)
+      } else {
+        val klass = loadClass(ref.symbol.path, classLoader)
+        factory.constructParametricType(
+          klass, ref.typeArgs.map {
+            t => typeRef2JavaType(t.asInstanceOf[TypeRefType], factory, classLoader)
+          }: _*
+        )
+      }
     } catch {
       case e: Throwable => {
         e.printStackTrace()

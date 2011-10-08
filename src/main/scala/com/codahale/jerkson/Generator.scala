@@ -34,6 +34,11 @@ trait Generator extends Factory {
     generate(obj, factory.createJsonGenerator(output, JsonEncoding.UTF8))
   }
 
+  /**
+   * Returns true if the given class is serializable.
+   */
+  def canSerialize[A](implicit mf: Manifest[A]) = mapper.canSerialize(mf.erasure)
+
   private def generate[A](obj: A, generator: JsonGenerator) {
     generator.writeObject(obj)
     generator.close()

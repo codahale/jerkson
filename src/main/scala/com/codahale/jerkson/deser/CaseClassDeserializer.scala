@@ -17,9 +17,9 @@ class CaseClassDeserializer(config: DeserializationConfig,
                             provider: DeserializerProvider,
                             classLoader: ClassLoader) extends JsonDeserializer[Object] {
   private val isSnakeCase = javaType.getRawClass.isAnnotationPresent(classOf[JsonSnakeCase])
-  private val params = CaseClassSigParser.parse(javaType.getRawClass, config.getTypeFactory, classLoader).map { case (name, jt) =>
-    (if (isSnakeCase) snakeCase(name) else name, jt)
-  }
+  private val params = CaseClassSigParser.parse(javaType.getRawClass, config.getTypeFactory, classLoader).map {
+    case (name, jt) => (if (isSnakeCase) snakeCase(name) else name, jt)
+  }.toArray
   private val paramTypes = params.map { _._2.getRawClass }.toList
   private val constructor = javaType.getRawClass.getConstructors.find { c =>
     val constructorTypes = c.getParameterTypes.toList.map { t =>

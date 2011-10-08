@@ -10,8 +10,8 @@ brings Scala's ease-of-use to Jackson's features.
 Requirements
 ------------
 
-* Scala 2.8.1 or 2.9.0-1 or 2.9.1
-* Jackson 1.8.x
+* Scala 2.8.2 or 2.9.1
+* Jackson 1.9.x
 
 
 Setting Up Your Project
@@ -31,7 +31,7 @@ Go ahead and add Jerkson as a dependency:
   <dependency>
     <groupId>com.codahale</groupId>
     <artifactId>jerkson_${scala.version}</artifactId>
-    <version>0.4.2</version>
+    <version>0.5.0</version>
   </dependency>
 </dependencies>
 ```
