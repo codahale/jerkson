@@ -2,15 +2,15 @@ package com.codahale.jerkson
 
 object AST {
   sealed trait JValue {
-    def value : Any
+    def value: Any
     
-    def valueAs[A] : A = value.asInstanceOf[A]
+    def valueAs[A]: A = value.asInstanceOf[A]
     
-    def \(fieldName : String) : JValue = JNull
+    def \(fieldName: String): JValue = JNull
     
-    def apply(idx : Int) : JValue = JNull
+    def apply(idx: Int): JValue = JNull
     
-    def \\(fieldName : String) : Seq[JValue] = Nil
+    def \\(fieldName: String): Seq[JValue] = Nil
   }
 
   case object JNull extends JValue {
@@ -28,7 +28,7 @@ object AST {
   case class JArray(elements: List[JValue]) extends JValue {
     def value = null
     
-    override def apply(index : Int) : JValue = {
+    override def apply(index: Int): JValue = {
       try {
         elements(index)
       } catch {
@@ -42,7 +42,7 @@ object AST {
   case class JObject(fields: List[JField]) extends JValue {
     def value = null
     
-    override def \(fieldName : String) : JValue = {
+    override def \(fieldName: String): JValue = {
       fields.find { case JField(name, _) =>
         name == fieldName
       }.map { case JField(_, value) =>
@@ -50,7 +50,7 @@ object AST {
       }.getOrElse(JNull)
     }
     
-    override def \\(fieldName : String) : Seq[JValue] = {
+    override def \\(fieldName: String): Seq[JValue] = {
       fields.flatMap { 
         case JField(name, value) if name == fieldName => Seq(value) ++ (value \\ fieldName)
         case JField(_, value) => value \\ fieldName
