@@ -27,6 +27,13 @@ class CaseClassSupportSpec extends Spec {
     }
   }
 
+  class `A case class with a default field` {
+    @Test def `is parsable from an incomplete JSON object` = {
+      parse[CaseClassWithDefaultString]("""{"id":1}""").must(be(CaseClassWithDefaultString(1, "Coda")))
+      parse[CaseClassWithDefaultInt]("""{"id":1}""").must(be(CaseClassWithDefaultInt(1, 42)))
+    }
+  }
+
   class `A case class with lazy fields` {
     @Test def `generates a JSON object with those fields evaluated` = {
       generate(CaseClassWithLazyVal(1)).must(be("""{"id":1,"woo":"yeah"}"""))

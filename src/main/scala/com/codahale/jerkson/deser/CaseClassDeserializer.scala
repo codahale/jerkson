@@ -18,7 +18,7 @@ class CaseClassDeserializer(config: DeserializationConfig,
                             classLoader: ClassLoader) extends JsonDeserializer[Object] {
   private val isSnakeCase = javaType.getRawClass.isAnnotationPresent(classOf[JsonSnakeCase])
   private val params = CaseClassSigParser.parse(javaType.getRawClass, config.getTypeFactory, classLoader).map {
-    case (name, jt) => (if (isSnakeCase) snakeCase(name) else name, jt)
+    case (name, jt, defaultValue) => (if (isSnakeCase) snakeCase(name) else name, jt, defaultValue)
   }.toArray
   private val paramTypes = params.map { _._2.getRawClass }.toList
   private val constructor = javaType.getRawClass.getConstructors.find { c =>
@@ -51,7 +51,7 @@ class CaseClassDeserializer(config: DeserializationConfig,
     val node = jp.readValueAsTree
 
     val values = new ArrayBuffer[AnyRef]
-    for ((paramName, paramType) <- params) {
+    for ((paramName, paramType, paramDefault) <- params) {
       val field = node.get(paramName)
       val tp = new TreeTraversingParser(if (field == null) NullNode.getInstance else field, jp.getCodec)
       val value = if (paramType.getRawClass == classOf[Option[_]]) {
@@ -63,8 +63,13 @@ class CaseClassDeserializer(config: DeserializationConfig,
 
       if (field != null || value != null) {
         values += value
+      } else {
+        // see if a default value was supplied
+        paramDefault match {
+          case Some(v) => values += v
+          case None =>
+        }
       }
-
 
       if (values.size == params.size) {
         return constructor.newInstance(values.toArray: _*).asInstanceOf[Object]
