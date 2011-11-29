@@ -51,6 +51,18 @@ object CaseClassSigParser {
   protected def simpleName(klass: Class[_]) =
     klass.getName.split("\\$").last
 
+  implicit def class2companion(clazz: Class[_]) = new {
+    def companionClass(classLoader: ClassLoader): Class[_] = {
+      val path = if (clazz.getName.endsWith("$")) clazz.getName else "%s$".format(clazz.getName)
+      Some(Class.forName(path, true, classLoader)).getOrElse {
+        throw new Error("Could not resolve clazz='%s'".
+          format(path))
+      }
+    }
+
+    def companionObject(classLoader: ClassLoader) = companionClass(classLoader).getField("MODULE$").get(null)
+  }
+
   protected def findSym[A](clazz: Class[A], classLoader: ClassLoader) = {
     val name = simpleName(clazz)
     val pss = parseScalaSig(clazz, classLoader)
@@ -81,12 +93,26 @@ object CaseClassSigParser {
 
   def parse[A](clazz: Class[A], factory: TypeFactory, classLoader: ClassLoader) = {
     findSym(clazz, classLoader).children.filter(c => c.isCaseAccessor && !c.isPrivate)
-      .flatMap { ms =>
+      .zipWithIndex.map { case (ms,idx) => {
         ms.asInstanceOf[MethodSymbol].infoType match {
-          case NullaryMethodType(t: TypeRefType) => ms.name -> typeRef2JavaType(t, factory, classLoader) :: Nil
+          case NullaryMethodType(t: TypeRefType) => {
+
+            // try and find the field's default
+            val companionClass = clazz.companionClass(classLoader)
+            val companionObject = clazz.companionObject(classLoader)
+            val defaultMethod = try {
+              Some(companionClass.getMethod("apply$default$%d".format(idx + 1)))
+            }
+            catch {
+              case _ => None // indicates no default value was supplied
+            }
+            val defaultValue = defaultMethod.map(m => Some(m.invoke(companionObject))).getOrElse(None)
+
+            Tuple3(ms.name, typeRef2JavaType(t, factory, classLoader), defaultValue) :: Nil
+          }
           case _ => Nil
         }
-      }
+      }}.flatten
   }
 
   protected def typeRef2JavaType(ref: TypeRefType, factory: TypeFactory, classLoader: ClassLoader): JavaType = {
