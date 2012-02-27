@@ -124,6 +124,8 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
     val deserializer = provider.findTypedValueDeserializer(config, valueType, property)
     if (keyType.getRawClass == classOf[String]) {
       new ImmutableMapDeserializer[CC](companion, valueType, deserializer)
+    } else if (keyType.getRawClass == classOf[Symbol]) {
+      new SymbolMapDeserializer(valueType, deserializer)
     } else if (keyType.getRawClass == classOf[Int] || keyType.getRawClass == classOf[java.lang.Integer]) {
       new IntMapDeserializer(valueType, deserializer)
     } else if (keyType.getRawClass == classOf[Long] || keyType.getRawClass == classOf[java.lang.Long]) {

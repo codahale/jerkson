@@ -9,7 +9,13 @@ class MapSerializer extends JsonSerializer[collection.Map[_ ,_]] {
   def serialize(map: collection.Map[_,_], json: JsonGenerator, provider: SerializerProvider) {
     json.writeStartObject()
     for ((key, value) <- map) {
-      provider.defaultSerializeField(key.toString, value, json)
+      // TODO: Generalize to avoid special-casing
+      val field = key match {
+        case Symbol(name) => name
+        case _ => key.toString
+      }
+
+      provider.defaultSerializeField(field, value, json)
     }
     json.writeEndObject()
   }
