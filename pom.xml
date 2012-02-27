@@ -126,6 +126,8 @@
                         <arg>-optimise</arg>
                         <arg>-unchecked</arg>
                         <arg>-deprecation</arg>
+                        <arg>-Xmax-classfile-name</arg>
+                        <arg>130</arg>
                     </args>
                     <compilerPlugins>
                         <compilerPlugin>

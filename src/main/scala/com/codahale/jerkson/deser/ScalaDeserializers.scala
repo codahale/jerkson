@@ -15,6 +15,8 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
       new RangeDeserializer
     } else if (klass == classOf[StringBuilder]) {
       new StringBuilderDeserializer
+    } else if (klass == classOf[Symbol]) {
+      new SymbolDeserializer
     } else if (klass == classOf[List[_]] || klass == classOf[immutable.List[_]]) {
       createSeqDeserializer(config, javaType, List, provider, property)
     } else if (klass == classOf[Seq[_]] || klass == classOf[immutable.Seq[_]] ||
@@ -70,6 +72,9 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
       if (javaType.containedType(0).getRawClass == classOf[String]) {
         val valueType = javaType.containedType(1)
         new MutableMapDeserializer(valueType, provider.findTypedValueDeserializer(config, valueType, property))
+      } else if (javaType.containedType(0).getRawClass == classOf[Symbol]) {
+        val valueType = javaType.containedType(1)
+        new MutableSymbolMapDeserializer(valueType, provider.findTypedValueDeserializer(config, valueType, property))
       } else {
         null
       }
@@ -77,6 +82,9 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
       if (javaType.containedType(0).getRawClass == classOf[String]) {
         val valueType = javaType.containedType(1)
         new MutableLinkedHashMapDeserializer(valueType, provider.findTypedValueDeserializer(config, valueType, property))
+      } else if (javaType.containedType(0).getRawClass == classOf[Symbol]) {
+        val valueType = javaType.containedType(1)
+        new MutableSymbolLinkedHashMapDeserializer(valueType, provider.findTypedValueDeserializer(config, valueType, property))
       } else {
         null
       }
@@ -122,6 +130,8 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
     val deserializer = provider.findTypedValueDeserializer(config, valueType, property)
     if (keyType.getRawClass == classOf[String]) {
       new ImmutableMapDeserializer[CC](companion, valueType, deserializer)
+    } else if (keyType.getRawClass == classOf[Symbol]) {
+      new ImmutableSymbolMapDeserializer(valueType, deserializer)
     } else if (keyType.getRawClass == classOf[Int] || keyType.getRawClass == classOf[java.lang.Integer]) {
       new IntMapDeserializer(valueType, deserializer)
     } else if (keyType.getRawClass == classOf[Long] || keyType.getRawClass == classOf[java.lang.Long]) {

@@ -186,4 +186,55 @@ class MutableCollectionSupportSpec extends Spec {
       parse[LinkedHashMap[String, Int]]("{}").must(be(LinkedHashMap.empty[String, Int]))
     }
   }
+
+  class `A mutable.Map[Symbol, Int]` {
+    @Test def `generates a JSON object` = {
+      generate(Map('one -> 1)).must(be("""{"one":1}"""))
+    }
+
+    @Test def `is parsable from a JSON object with int field values` = {
+      parse[Map[Symbol, Int]]("""{"one":1}""").must(be(Map('one -> 1)))
+    }
+
+    @Test def `is parsable from an empty JSON object` = {
+      parse[Map[Symbol, Int]]("{}").must(be(Map.empty[Symbol, Int]))
+    }
+  }
+
+  class `A mutable.Map[Symbol, Any]` {
+    @Test def `is not parsable from an empty JSON object in a JSON array` = {
+      evaluating {
+        parse[Map[Symbol, Any]]("[{}]")
+      }.must(throwA[ParsingException])
+    }
+  }
+
+  class `A mutable.HashMap[Symbol, Int]` {
+    @Test def `generates a JSON object` = {
+      generate(HashMap('one -> 1)).must(be("""{"one":1}"""))
+    }
+
+    @Test def `is parsable from a JSON object with int field values` = {
+      parse[HashMap[Symbol, Int]]("""{"one":1}""").must(be(HashMap('one -> 1)))
+    }
+
+    @Test def `is parsable from an empty JSON object` = {
+      parse[HashMap[Symbol, Int]]("{}").must(be(HashMap.empty[Symbol, Int]))
+    }
+  }
+
+  class `A mutable.LinkedHashMap[Symbol, Int]` {
+    @Test def `generates a JSON object` = {
+      generate(LinkedHashMap('one -> 1)).must(be("""{"one":1}"""))
+    }
+
+    @Test def `is parsable from a JSON object with int field values` = {
+      println(parse[LinkedHashMap[Symbol, Int]]("""{"one":1}"""))
+      parse[LinkedHashMap[Symbol, Int]]("""{"one":1}""").must(be(LinkedHashMap('one -> 1)))
+    }
+
+    @Test def `is parsable from an empty JSON object` = {
+      parse[LinkedHashMap[Symbol, Int]]("{}").must(be(LinkedHashMap.empty[Symbol, Int]))
+    }
+  }
 }

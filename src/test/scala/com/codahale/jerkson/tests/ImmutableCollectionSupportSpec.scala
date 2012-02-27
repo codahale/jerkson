@@ -156,6 +156,26 @@ class ImmutableCollectionSupportSpec extends Spec {
       }.must(throwA[ParsingException])
     }
   }
+  
+  class `An immutable.HashMap[Symbol, Any]` {
+    @Test def `generates a JSON object` = {
+      generate(HashMap[Symbol, Any]('one -> 1)).must(be("""{"one":1}"""))
+    }
+    
+    @Test def `is parsable from a JSON object with int field values` = {
+      parse[HashMap[Symbol, Any]]("""{"one":1}""").must(be(HashMap('one -> 1)))
+    }
+    
+    @Test def `is parsable from an empty JSON object` = {
+      parse[HashMap[Symbol, Any]]("{}").must(be(HashMap.empty[Symbol, Any]))
+    }
+    
+    @Test def `is not parsable from an empty JSON object in a JSON array` = {
+      evaluating {
+        parse[HashMap[Symbol, Any]]("[{}]")
+      }.must(throwA[ParsingException])
+    }
+  }
 
   class `An immutable.Map[Int, String]` {
     @Test def `generates a JSON object` = {

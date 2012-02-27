@@ -114,6 +114,16 @@ class BasicTypeSupportSpec extends Spec {
       parse[StringBuilder]("\"foo\"").toString().must(be("foo"))
     }
   }
+  
+  class `A Symbol` {
+    @Test def `generates a JSON string` = {
+      generate(Symbol("foo")).must(be("\"foo\""))
+    }
+    
+    @Test def `is parsable from a JsonNode string` = {
+      parse[Symbol]("\"foo\"").name.must(be("foo"))
+    }
+  }
 
   class `A null Object` {
     @Test def `generates a JSON null` = {
