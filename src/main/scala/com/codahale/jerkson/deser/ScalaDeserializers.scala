@@ -72,6 +72,9 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
       if (javaType.containedType(0).getRawClass == classOf[String]) {
         val valueType = javaType.containedType(1)
         new MutableMapDeserializer(valueType, provider.findTypedValueDeserializer(config, valueType, property))
+      } else if (javaType.containedType(0).getRawClass == classOf[Symbol]) {
+        val valueType = javaType.containedType(1)
+        new MutableSymbolMapDeserializer(valueType, provider.findTypedValueDeserializer(config, valueType, property))
       } else {
         null
       }
@@ -79,6 +82,9 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
       if (javaType.containedType(0).getRawClass == classOf[String]) {
         val valueType = javaType.containedType(1)
         new MutableLinkedHashMapDeserializer(valueType, provider.findTypedValueDeserializer(config, valueType, property))
+      } else if (javaType.containedType(0).getRawClass == classOf[Symbol]) {
+        val valueType = javaType.containedType(1)
+        new MutableSymbolLinkedHashMapDeserializer(valueType, provider.findTypedValueDeserializer(config, valueType, property))
       } else {
         null
       }
@@ -125,7 +131,7 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
     if (keyType.getRawClass == classOf[String]) {
       new ImmutableMapDeserializer[CC](companion, valueType, deserializer)
     } else if (keyType.getRawClass == classOf[Symbol]) {
-      new SymbolMapDeserializer(valueType, deserializer)
+      new ImmutableSymbolMapDeserializer(valueType, deserializer)
     } else if (keyType.getRawClass == classOf[Int] || keyType.getRawClass == classOf[java.lang.Integer]) {
       new IntMapDeserializer(valueType, deserializer)
     } else if (keyType.getRawClass == classOf[Long] || keyType.getRawClass == classOf[java.lang.Long]) {

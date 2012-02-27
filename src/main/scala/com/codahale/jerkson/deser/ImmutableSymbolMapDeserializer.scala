@@ -7,7 +7,7 @@ import org.codehaus.jackson.map.annotate.JsonCachable
 
 /** Deserializes a Map indexed by a Scala Symbol */
 @JsonCachable
-class SymbolMapDeserializer (valueType: JavaType,
+class ImmutableSymbolMapDeserializer (valueType: JavaType,
                              valueDeserializer: JsonDeserializer[Object]) extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
     var map = Map.empty[Symbol, Object]
