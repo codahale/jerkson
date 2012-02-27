@@ -10,6 +10,8 @@ class ScalaSerializers extends Serializers.Base {
         new OptionSerializer
     } else if (classOf[StringBuilder].isAssignableFrom(beanDesc.getBeanClass)) {
       new StringBuilderSerializer
+    } else if (classOf[Symbol].isAssignableFrom(beanDesc.getBeanClass)) {
+      new SymbolSerializer
     } else if (classOf[collection.Map[_,_]].isAssignableFrom(beanDesc.getBeanClass)) {
       new MapSerializer
     } else if (classOf[Range].isAssignableFrom(beanDesc.getBeanClass)) {

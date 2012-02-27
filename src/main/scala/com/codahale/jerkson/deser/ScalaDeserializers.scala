@@ -15,6 +15,8 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
       new RangeDeserializer
     } else if (klass == classOf[StringBuilder]) {
       new StringBuilderDeserializer
+    } else if (klass == classOf[Symbol]) {
+      new SymbolDeserializer
     } else if (klass == classOf[List[_]] || klass == classOf[immutable.List[_]]) {
       createSeqDeserializer(config, javaType, List, provider, property)
     } else if (klass == classOf[Seq[_]] || klass == classOf[immutable.Seq[_]] ||
