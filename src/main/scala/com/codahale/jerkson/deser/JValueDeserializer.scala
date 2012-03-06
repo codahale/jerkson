@@ -16,6 +16,7 @@ class JValueDeserializer(factory: TypeFactory, klass: Class[_]) extends JsonDese
     }
 
     val value = jp.getCurrentToken match {
+      case JsonToken.VALUE_NULL => JNull
       case JsonToken.VALUE_NUMBER_INT => JInt(BigInt(jp.getText))
       case JsonToken.VALUE_NUMBER_FLOAT => JFloat(jp.getDoubleValue)
       case JsonToken.VALUE_STRING => JString(jp.getText)
