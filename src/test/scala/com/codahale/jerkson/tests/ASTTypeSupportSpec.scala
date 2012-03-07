@@ -61,6 +61,10 @@ class ASTTypeSupportSpec extends Spec {
     @Test def `is parsable from a JSON null as a JValue` = {
       parse[JValue]("null").must(be(JNull))
     }
+
+    @Test def `is parsable from an embedded JSON null as a JValue` = {
+      parse[JValue]("[null]").must(be(JArray(List(JNull))))
+    }
   }
 
   class `An AST.JBoolean` {
