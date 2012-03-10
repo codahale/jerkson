@@ -65,10 +65,10 @@ class CaseClassDeserializer(config: DeserializationConfig,
         values += value
       }
 
+    }
 
-      if (values.size == params.size) {
-        return constructor.newInstance(values.toArray: _*).asInstanceOf[Object]
-      }
+    if (values.size == params.size) {
+      return constructor.newInstance(values.toArray: _*).asInstanceOf[Object]
     }
 
     throw new JsonMappingException(errorMessage(node))

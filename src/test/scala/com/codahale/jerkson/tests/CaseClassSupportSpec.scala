@@ -236,4 +236,26 @@ class CaseClassSupportSpec extends Spec {
       ))
     }
   }
+
+  class `A case class with JsonTypeInfo annotation` {
+    @Test def `serializes the type info to json` = {
+      generate(CaseClassWithTypeInfo1(1, "Coda")) must be("""{"@c":".CaseClassWithTypeInfo1","id":1,"name":"Coda"}""")
+      generate(CaseClassWithTypeInfo2(2, "Hale")) must be("""{"@c":".CaseClassWithTypeInfo2","id":2,"name":"Hale"}""")
+    }
+    @Test def `is parsable from a JSON object` = {
+      parse[WithTypeInfo]("""{"@c":".CaseClassWithTypeInfo1","id":1,"name":"Coda"}""") must be(CaseClassWithTypeInfo1(1, "Coda"))
+      parse[WithTypeInfo]("""{"@c":".CaseClassWithTypeInfo2","id":2,"name":"Hale"}""") must be(CaseClassWithTypeInfo2(2, "Hale"))
+    }
+  }
+
+  class `A case class without values` {
+    @Test def `is parsable from an empty JSON object` = {
+      parse[CaseClassWithoutValues]("""{}""") must be(CaseClassWithoutValues())
+    }
+
+    @Test def `generates an empty JSON object` = {
+      generate(CaseClassWithoutValues()) must be("""{}""")
+    }
+  }
+
 }
