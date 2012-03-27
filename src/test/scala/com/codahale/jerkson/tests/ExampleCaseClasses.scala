@@ -1,10 +1,17 @@
 package com.codahale.jerkson.tests
 
 import org.codehaus.jackson.JsonNode
-import org.codehaus.jackson.annotate.{JsonIgnoreProperties, JsonIgnore}
+import org.codehaus.jackson.annotate.{JsonIgnoreProperties, JsonIgnore, JsonTypeInfo}
 import com.codahale.jerkson.JsonSnakeCase
 
 case class CaseClass(id: Long, name: String)
+
+case class CaseClassWithoutValues()
+
+@JsonTypeInfo(use=JsonTypeInfo.Id.MINIMAL_CLASS)
+trait WithTypeInfo
+case class CaseClassWithTypeInfo1(id: Long, name: String) extends WithTypeInfo
+case class CaseClassWithTypeInfo2(id: Long, name: String) extends WithTypeInfo
 
 case class CaseClassWithLazyVal(id: Long) {
   lazy val woo = "yeah"
