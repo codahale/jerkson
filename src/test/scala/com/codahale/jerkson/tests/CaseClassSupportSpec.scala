@@ -236,4 +236,34 @@ class CaseClassSupportSpec extends Spec {
       ))
     }
   }
+
+  class `A parameterized case class` {
+    @Test def `is parsable from a JSON object` = {
+      val c = parse[CaseClassWithParameter[Int]]("""{"id":"1","list":[2,3]}""")
+
+      c.id.must(be(1))
+      c.list.must(be(List(2,3)))
+    }
+
+    @Test def `generates a JSON object` = {
+      generate(CaseClassWithParameter[Int](1, List(2, 3))).must(be(
+        """{"id":1,"list":[2,3]}"""
+      ))
+    }
+  }
+
+  class `A multi-level parameterized case class` {
+    @Test def `is parsable from a JSON object` = {
+      val c = parse[CaseClassWithParameter[List[CaseClassWithParameter[Int]]]]("""{"id":"1","list":[[{"id":"2","list":[3]}]]}""")
+
+      c.id.must(be(1))
+      c.list.must(be(List(List(CaseClassWithParameter[Int](2,List(3))))))
+    }
+
+    @Test def `generates a JSON object` = {
+      generate(CaseClassWithParameter[List[CaseClassWithParameter[Int]]](1,List(List(CaseClassWithParameter[Int](2,List(3)))))).must(be(
+        """{"id":1,"list":[[{"id":2,"list":[3]}]]}"""
+      ))
+    }
+  }
 }

@@ -72,3 +72,5 @@ case class CaseClassWithTwoConstructors(id: Long,  name: String) {
 case class CaseClassWithSnakeCase(oneThing: String, twoThing: String)
 
 case class CaseClassWithArrays(one: String, two: Array[String], three: Array[Int])
+
+case class CaseClassWithParameter[T](id: Long, list: List[T])

@@ -79,20 +79,23 @@ object CaseClassSigParser {
     }
   }
 
-  def parse[A](clazz: Class[A], factory: TypeFactory, classLoader: ClassLoader) = {
+  def parse[A](javaType: JavaType, factory: TypeFactory, classLoader: ClassLoader) = {
+    val clazz = javaType.getRawClass
+    val containedTypes: Map[String, JavaType] = ((0 until javaType.containedTypeCount).map { i => javaType.containedTypeName(i) -> javaType.containedType(i) }).toMap
+
     findSym(clazz, classLoader).children.filter(c => c.isCaseAccessor && !c.isPrivate)
       .flatMap { ms =>
         ms.asInstanceOf[MethodSymbol].infoType match {
-          case NullaryMethodType(t: TypeRefType) => ms.name -> typeRef2JavaType(t, factory, classLoader) :: Nil
+          case NullaryMethodType(t: TypeRefType) => ms.name -> typeRef2JavaType(t, factory, classLoader, containedTypes) :: Nil
           case _ => Nil
         }
       }
   }
 
-  protected def typeRef2JavaType(ref: TypeRefType, factory: TypeFactory, classLoader: ClassLoader): JavaType = {
+  protected def typeRef2JavaType(ref: TypeRefType, factory: TypeFactory, classLoader: ClassLoader, containedTypes: Map[String, JavaType]): JavaType = {
     try {
       if (ref.symbol.path == "scala.Array") {
-        val elementType = typeRef2JavaType(ref.typeArgs.head.asInstanceOf[TypeRefType], factory, classLoader)
+        val elementType = typeRef2JavaType(ref.typeArgs.head.asInstanceOf[TypeRefType], factory, classLoader, containedTypes)
         val realElementType = elementType.getRawClass.getName match {
           case "java.lang.Boolean" => classOf[Boolean]
           case "java.lang.Byte" => classOf[Byte]
@@ -108,12 +111,16 @@ object CaseClassSigParser {
         val array = java.lang.reflect.Array.newInstance(realElementType, 0)
         factory.constructType(array.getClass)
       } else {
-        val klass = loadClass(ref.symbol.path, classLoader)
-        factory.constructParametricType(
-          klass, ref.typeArgs.map {
-            t => typeRef2JavaType(t.asInstanceOf[TypeRefType], factory, classLoader)
-          }: _*
-        )
+        if(containedTypes.contains(ref.symbol.path)) {
+          containedTypes(ref.symbol.path)
+        } else {
+          val klass = loadClass(ref.symbol.path, classLoader)
+          factory.constructParametricType(
+            klass, ref.typeArgs.map {
+              t => typeRef2JavaType(t.asInstanceOf[TypeRefType], factory, classLoader, containedTypes)
+            }: _*
+          )
+        }
       }
     } catch {
       case e: Throwable => {
