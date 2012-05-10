@@ -5,13 +5,11 @@ import scala.collection.mutable.ArrayBuffer
 import com.codahale.jerkson.JsonSnakeCase
 import com.codahale.jerkson.util._
 import com.codahale.jerkson.Util._
-import org.codehaus.jackson.{JsonNode, JsonToken, JsonParser}
-import org.codehaus.jackson.map._
-import org.codehaus.jackson.map.annotate.JsonCachable
-import org.codehaus.jackson.node.{ObjectNode, NullNode, TreeTraversingParser}
-import org.codehaus.jackson.`type`.JavaType
+import com.fasterxml.jackson.core.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind._
+import com.fasterxml.jackson.databind.node.{ObjectNode, NullNode, TreeTraversingParser}
+import com.fasterxml.jackson.databind.JavaType
 
-@JsonCachable
 class CaseClassDeserializer(config: DeserializationConfig,
                             javaType: JavaType,
                             provider: DeserializerProvider,
@@ -77,7 +75,7 @@ class CaseClassDeserializer(config: DeserializationConfig,
   private def errorMessage(node: JsonNode) = {
     val names = params.map { _._1 }.mkString("[", ", ", "]")
     val existing = node match {
-      case obj: ObjectNode => obj.getFieldNames.mkString("[", ", ", "]")
+      case obj: ObjectNode => obj.fieldNames.mkString("[", ", ", "]")
       case _: NullNode => "[]" // this is what Jackson deserializes the inside of an empty object to
       case unknown => "a non-object"
     }

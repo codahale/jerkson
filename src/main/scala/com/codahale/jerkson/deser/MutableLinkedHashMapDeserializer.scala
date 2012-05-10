@@ -1,12 +1,10 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.map.annotate.JsonCachable
-import org.codehaus.jackson.`type`.JavaType
-import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer}
+import com.fasterxml.jackson.databind.JavaType
+import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
 import scala.collection.mutable
-import org.codehaus.jackson.{JsonToken, JsonParser}
+import com.fasterxml.jackson.core.{JsonToken, JsonParser}
 
-@JsonCachable
 class MutableLinkedHashMapDeserializer(valueType: JavaType,
                                        valueDeserializer: JsonDeserializer[Object]) extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {

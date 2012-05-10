@@ -1,13 +1,11 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.`type`.JavaType
-import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer}
-import org.codehaus.jackson.{JsonToken, JsonParser}
-import org.codehaus.jackson.map.annotate.JsonCachable
+import com.fasterxml.jackson.databind.JavaType
+import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
+import com.fasterxml.jackson.core.{JsonToken, JsonParser}
 import collection.generic.MapFactory
 import collection.MapLike
 
-@JsonCachable
 class ImmutableMapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]]](companion: MapFactory[CC],
                                                                           valueType: JavaType,
                                                                           valueDeserializer: JsonDeserializer[Object])

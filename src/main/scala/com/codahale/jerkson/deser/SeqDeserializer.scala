@@ -1,12 +1,10 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.{JsonToken, JsonParser}
-import org.codehaus.jackson.`type`.JavaType
-import org.codehaus.jackson.map.{JsonDeserializer, DeserializationContext}
-import org.codehaus.jackson.map.annotate.JsonCachable
+import com.fasterxml.jackson.core.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind.JavaType
+import com.fasterxml.jackson.databind.{JsonDeserializer, DeserializationContext}
 import collection.generic.GenericCompanion
 
-@JsonCachable
 class SeqDeserializer[+CC[X] <: Traversable[X]](companion: GenericCompanion[CC],
                                                 elementType: JavaType,
                                                 elementDeserializer: JsonDeserializer[Object])

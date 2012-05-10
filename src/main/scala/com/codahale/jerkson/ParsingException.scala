@@ -1,8 +1,8 @@
 package com.codahale.jerkson
 
 import java.io.IOException
-import org.codehaus.jackson.map.JsonMappingException
-import org.codehaus.jackson.{JsonParseException, JsonProcessingException}
+import com.fasterxml.jackson.databind.JsonMappingException
+import com.fasterxml.jackson.core.{JsonParseException, JsonProcessingException}
 
 object ParsingException {
   def apply(cause: JsonProcessingException): ParsingException = {

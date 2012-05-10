@@ -1,10 +1,10 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.`type`.JavaType
-import org.codehaus.jackson.map._
+import com.fasterxml.jackson.databind._
 import scala.collection.{Traversable, MapLike, immutable, mutable}
 import com.codahale.jerkson.AST.{JNull, JValue}
 import scala.collection.generic.{MapFactory, GenericCompanion}
+import com.fasterxml.jackson.databind.deser.Deserializers
 
 class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,

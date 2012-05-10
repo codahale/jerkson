@@ -6,12 +6,12 @@
 
     <groupId>com.codahale</groupId>
     <artifactId>jerkson_2.9.1</artifactId>
-    <version>0.5.1-SNAPSHOT</version>
+    <version>0.6-SNAPSHOT</version>
     <name>Jerkson for Scala ${scala.version}</name>
 
     <properties>
         <scala.version>2.9.1</scala.version>
-        <jackson.version>[1.9.0,2.0.0)</jackson.version>
+        <jackson.version>[2.0.0,3.0.0)</jackson.version>
     </properties>
 
     <developers>
@@ -66,13 +66,18 @@
             <version>${scala.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-core-asl</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
         <dependency>

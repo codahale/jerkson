@@ -1,9 +1,8 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.map.annotate.JsonCachable
-import org.codehaus.jackson.`type`.JavaType
-import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer}
-import org.codehaus.jackson.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind.JavaType
+import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
+import com.fasterxml.jackson.core.{JsonToken, JsonParser}
 import scala.collection.mutable.Queue
 
 // TODO: 6/2/11 <coda> -- replace QueueDeserializer with a SeqDeserializer when we drop 2.8.1
@@ -11,7 +10,6 @@ import scala.collection.mutable.Queue
 /**
  * We only need this because Queue has no generic companion in 2.8.1.
  */
-@JsonCachable
 class QueueDeserializer(elementType: JavaType,
                         elementDeserializer: JsonDeserializer[Object]) extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {

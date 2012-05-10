@@ -1,12 +1,10 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.JsonParser
-import org.codehaus.jackson.`type`.JavaType
-import org.codehaus.jackson.map.{DeserializerProvider, DeserializationConfig, DeserializationContext, JsonDeserializer}
-import org.codehaus.jackson.map.annotate.JsonCachable
-import org.codehaus.jackson.node.TreeTraversingParser
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.JavaType
+import com.fasterxml.jackson.databind.{DeserializationConfig, DeserializationContext, JsonDeserializer}
+import com.fasterxml.jackson.databind.node.TreeTraversingParser
 
-@JsonCachable
 class EitherDeserializer(config: DeserializationConfig,
                          javaType: JavaType,
                          provider: DeserializerProvider) extends JsonDeserializer[Object] {

@@ -1,17 +1,15 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.`type`.JavaType
-import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer}
+import com.fasterxml.jackson.databind.JavaType
+import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
 import scala.collection.mutable.MutableList
-import org.codehaus.jackson.{JsonToken, JsonParser}
-import org.codehaus.jackson.map.annotate.JsonCachable
+import com.fasterxml.jackson.core.{JsonToken, JsonParser}
 
 // TODO: 6/2/11 <coda> -- replace MutableListDeserializer with a SeqDeserializer when we drop 2.8.1
 
 /**
  * We only need this because MutableList has no generic companion in 2.8.1.
  */
-@JsonCachable
 class MutableListDeserializer(elementType: JavaType,
                               elementDeserializer: JsonDeserializer[Object]) extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {

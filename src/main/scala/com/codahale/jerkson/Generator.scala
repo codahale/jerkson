@@ -1,7 +1,7 @@
 package com.codahale.jerkson
 
 import java.io.{File, OutputStream, Writer, StringWriter}
-import org.codehaus.jackson.{JsonGenerator, JsonEncoding}
+import com.fasterxml.jackson.core.{JsonGenerator, JsonEncoding}
 
 trait Generator extends Factory {
   /**
