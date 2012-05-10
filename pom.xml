@@ -11,7 +11,7 @@
 
     <properties>
         <scala.version>2.9.1</scala.version>
-        <jackson.version>[1.9.0,2.0.0)</jackson.version>
+        <jackson.version>1.9.7</jackson.version>
     </properties>
 
     <developers>
@@ -78,7 +78,7 @@
         <dependency>
             <groupId>com.codahale</groupId>
             <artifactId>simplespec_${scala.version}</artifactId>
-            <version>[0.5.0,0.6.0)</version>
+            <version>0.5.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
