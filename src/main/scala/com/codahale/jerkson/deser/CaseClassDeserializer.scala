@@ -5,14 +5,13 @@ import scala.collection.mutable.ArrayBuffer
 import com.codahale.jerkson.JsonSnakeCase
 import com.codahale.jerkson.util._
 import com.codahale.jerkson.Util._
-import com.fasterxml.jackson.core.{JsonToken, JsonParser}
 import com.fasterxml.jackson.databind._
 import com.fasterxml.jackson.databind.node.{ObjectNode, NullNode, TreeTraversingParser}
 import com.fasterxml.jackson.databind.JavaType
+import com.fasterxml.jackson.core.{TreeNode, JsonToken, JsonParser}
 
 class CaseClassDeserializer(config: DeserializationConfig,
                             javaType: JavaType,
-                            provider: DeserializerProvider,
                             classLoader: ClassLoader) extends JsonDeserializer[Object] {
   private val isSnakeCase = javaType.getRawClass.isAnnotationPresent(classOf[JsonSnakeCase])
   private val params = CaseClassSigParser.parse(javaType.getRawClass, config.getTypeFactory, classLoader).map {
@@ -46,7 +45,7 @@ class CaseClassDeserializer(config: DeserializationConfig,
       throw ctxt.mappingException(javaType.getRawClass)
     }
 
-    val node = jp.readValueAsTree
+    val node = jp.readValueAsTree[TreeNode]
 
     val values = new ArrayBuffer[AnyRef]
     for ((paramName, paramType) <- params) {

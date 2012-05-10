@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.deser.Deserializers
 
 class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
-                            provider: DeserializerProvider, beanDesc: BeanDescription,
+                            beanDesc: BeanDescription,
                             property: BeanProperty) = {
     val klass = javaType.getRawClass
     if (klass == classOf[Range] || klass == classOf[immutable.Range]) {
@@ -16,23 +16,23 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
     } else if (klass == classOf[StringBuilder]) {
       new StringBuilderDeserializer
     } else if (klass == classOf[List[_]] || klass == classOf[immutable.List[_]]) {
-      createSeqDeserializer(config, javaType, List, provider, property)
+      createSeqDeserializer(config, javaType, List, property)
     } else if (klass == classOf[Seq[_]] || klass == classOf[immutable.Seq[_]] ||
                klass == classOf[Iterable[_]] || klass == classOf[Traversable[_]] ||
                klass == classOf[immutable.Traversable[_]]) {
-      createSeqDeserializer(config, javaType, Seq, provider, property)
+      createSeqDeserializer(config, javaType, Seq, property)
     } else if (klass == classOf[Stream[_]] || klass == classOf[immutable.Stream[_]]) {
-      createSeqDeserializer(config, javaType, Stream, provider, property)
+      createSeqDeserializer(config, javaType, Stream, property)
     } else if (klass == classOf[immutable.Queue[_]]) {
-      createSeqDeserializer(config, javaType, immutable.Queue, provider, property)
+      createSeqDeserializer(config, javaType, immutable.Queue, property)
     } else if (klass == classOf[Vector[_]]) {
-      createSeqDeserializer(config, javaType, Vector, provider, property)
+      createSeqDeserializer(config, javaType, Vector, property)
     } else if (klass == classOf[IndexedSeq[_]] || klass == classOf[immutable.IndexedSeq[_]]) {
-      createSeqDeserializer(config, javaType, IndexedSeq, provider, property)
+      createSeqDeserializer(config, javaType, IndexedSeq, property)
     } else if (klass == classOf[mutable.ResizableArray[_]]) {
-      createSeqDeserializer(config, javaType, mutable.ResizableArray, provider, property)
+      createSeqDeserializer(config, javaType, mutable.ResizableArray, property)
     } else if (klass == classOf[mutable.ArraySeq[_]]) {
-      createSeqDeserializer(config, javaType, mutable.ArraySeq, provider, property)
+      createSeqDeserializer(config, javaType, mutable.ArraySeq, property)
     } else if (klass == classOf[mutable.MutableList[_]]) {
       val elementType = javaType.containedType(0)
       new MutableListDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
@@ -40,26 +40,26 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
       val elementType = javaType.containedType(0)
       new QueueDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
     } else if (klass == classOf[mutable.ListBuffer[_]]) {
-      createSeqDeserializer(config, javaType, mutable.ListBuffer, provider, property)
+      createSeqDeserializer(config, javaType, mutable.ListBuffer, property)
     } else if (klass == classOf[mutable.ArrayBuffer[_]] || klass == classOf[mutable.Traversable[_]]) {
-      createSeqDeserializer(config, javaType, mutable.ArrayBuffer, provider, property)
+      createSeqDeserializer(config, javaType, mutable.ArrayBuffer, property)
     } else if (klass == classOf[collection.BitSet] || klass == classOf[immutable.BitSet]) {
       new BitSetDeserializer(immutable.BitSet)
     } else if (klass == classOf[mutable.BitSet]) {
       new BitSetDeserializer(mutable.BitSet)
     } else if (klass == classOf[immutable.HashSet[_]]) {
-      createSeqDeserializer(config, javaType, immutable.HashSet, provider, property)
+      createSeqDeserializer(config, javaType, immutable.HashSet, property)
     } else if (klass == classOf[Set[_]] || klass == classOf[immutable.Set[_]] || klass == classOf[collection.Set[_]]) {
-      createSeqDeserializer(config, javaType, Set, provider, property)
+      createSeqDeserializer(config, javaType, Set, property)
     } else if (klass == classOf[mutable.HashSet[_]]) {
-      createSeqDeserializer(config, javaType, mutable.HashSet, provider, property)
+      createSeqDeserializer(config, javaType, mutable.HashSet, property)
     } else if (klass == classOf[mutable.LinkedHashSet[_]]) {
-      createSeqDeserializer(config, javaType, mutable.LinkedHashSet, provider, property)
+      createSeqDeserializer(config, javaType, mutable.LinkedHashSet, property)
     } else if (klass == classOf[Iterator[_]] || klass == classOf[BufferedIterator[_]]) {
       val elementType = javaType.containedType(0)
       new IteratorDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
     } else if (klass == classOf[immutable.HashMap[_, _]] || klass == classOf[Map[_, _]] || klass == classOf[collection.Map[_, _]]) {
-      createImmutableMapDeserializer(config, javaType, immutable.HashMap, provider, property)
+      createImmutableMapDeserializer(config, javaType, immutable.HashMap, property)
     } else if (klass == classOf[immutable.IntMap[_]]) {
       val valueType = javaType.containedType(0)
       new IntMapDeserializer(valueType, provider.findTypedValueDeserializer(config, valueType, property))
@@ -81,7 +81,7 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
         null
       }
     } else if (klass == classOf[Option[_]]) {
-      createOptionDeserializer(config, javaType, provider, property)
+      createOptionDeserializer(config, javaType, property)
     } else if (classOf[JValue].isAssignableFrom(klass) || klass == JNull.getClass) {
       new JValueDeserializer(config.getTypeFactory, klass)
     } else if (klass == classOf[BigInt]) {
@@ -89,16 +89,15 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
     } else if (klass == classOf[BigDecimal]) {
       new BigDecimalDeserializer
     } else if (klass == classOf[Either[_,_]]) {
-      new EitherDeserializer(config, javaType, provider)
+      new EitherDeserializer(config, javaType)
     } else if (classOf[Product].isAssignableFrom(klass)) {
-      new CaseClassDeserializer(config, javaType, provider, classLoader)
+      new CaseClassDeserializer(config, javaType, classLoader)
     } else null
   }
 
   private def createSeqDeserializer[CC[X] <: Traversable[X]](config: DeserializationConfig,
                                                              javaType: JavaType,
                                                              companion: GenericCompanion[CC],
-                                                             provider: DeserializerProvider,
                                                              property: BeanProperty) = {
     val elementType = javaType.containedType(0)
     new SeqDeserializer[CC](companion, elementType, provider.findTypedValueDeserializer(config, elementType, property))
@@ -106,7 +105,6 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
 
   private def createOptionDeserializer(config: DeserializationConfig,
                                        javaType: JavaType,
-                                       provider: DeserializerProvider,
                                        property: BeanProperty) = {
     val elementType = javaType.containedType(0)
     new OptionDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
@@ -115,7 +113,6 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
   private def createImmutableMapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]]](config: DeserializationConfig,
                                                                                         javaType: JavaType,
                                                                                         companion: MapFactory[CC],
-                                                                                        provider: DeserializerProvider,
                                                                                         property: BeanProperty) = {
     val keyType = javaType.containedType(0)
     val valueType = javaType.containedType(1)

@@ -6,8 +6,7 @@ import com.fasterxml.jackson.databind.{DeserializationConfig, DeserializationCon
 import com.fasterxml.jackson.databind.node.TreeTraversingParser
 
 class EitherDeserializer(config: DeserializationConfig,
-                         javaType: JavaType,
-                         provider: DeserializerProvider) extends JsonDeserializer[Object] {
+                         javaType: JavaType) extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
     val node = jp.readValueAsTree
     val tp = new TreeTraversingParser(node, jp.getCodec)
