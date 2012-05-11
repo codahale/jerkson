@@ -8,7 +8,7 @@ import com.codahale.jerkson.Util._
 import com.fasterxml.jackson.databind._
 import com.fasterxml.jackson.databind.node.{ObjectNode, NullNode, TreeTraversingParser}
 import com.fasterxml.jackson.databind.JavaType
-import com.fasterxml.jackson.core.{TreeNode, JsonToken, JsonParser}
+import com.fasterxml.jackson.core.{JsonToken, JsonParser}
 
 class CaseClassDeserializer(config: DeserializationConfig,
                             javaType: JavaType,
@@ -45,7 +45,7 @@ class CaseClassDeserializer(config: DeserializationConfig,
       throw ctxt.mappingException(javaType.getRawClass)
     }
 
-    val node = jp.readValueAsTree[TreeNode]
+    val node = jp.readValueAsTree[JsonNode]
 
     val values = new ArrayBuffer[AnyRef]
     for ((paramName, paramType) <- params) {

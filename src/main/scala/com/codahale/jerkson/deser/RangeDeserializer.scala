@@ -17,7 +17,7 @@ class RangeDeserializer extends JsonDeserializer[Object] {
       throw ctxt.mappingException(classOf[Range])
     }
 
-    val node = jp.readValueAsTree
+    val node = jp.readValueAsTree[JsonNode]
     val inclusiveNode  = node.get("inclusive")
     val stepNode = node.get("step")
     val startNode = node.get("start")
@@ -31,11 +31,11 @@ class RangeDeserializer extends JsonDeserializer[Object] {
     val step = if (stepNode == null || !classOf[IntNode].isAssignableFrom(stepNode.getClass)) {
       1
     } else {
-      stepNode.getIntValue
+      stepNode.intValue
     }
 
-    val start = startNode.asInstanceOf[IntNode].getIntValue
-    val end = endNode.asInstanceOf[IntNode].getIntValue
+    val start = startNode.asInstanceOf[IntNode].intValue
+    val end = endNode.asInstanceOf[IntNode].intValue
 
     if (inclusiveNode == null || inclusiveNode == BooleanNode.FALSE) {
       Range(start, end, step)
