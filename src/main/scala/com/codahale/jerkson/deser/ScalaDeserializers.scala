@@ -34,11 +34,9 @@ class ScalaDeserializers(classLoader: ClassLoader) extends Deserializers.Base {
     } else if (klass == classOf[mutable.ArraySeq[_]]) {
       createSeqDeserializer(config, javaType, mutable.ArraySeq, property)
     } else if (klass == classOf[mutable.MutableList[_]]) {
-      val elementType = javaType.containedType(0)
-      new MutableListDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
+      createSeqDeserializer(config, javaType, mutable.MutableList, property)
     } else if (klass == classOf[mutable.Queue[_]]) {
-      val elementType = javaType.containedType(0)
-      new QueueDeserializer(elementType, provider.findTypedValueDeserializer(config, elementType, property))
+      createSeqDeserializer(config, javaType, mutable.Queue, property)
     } else if (klass == classOf[mutable.ListBuffer[_]]) {
       createSeqDeserializer(config, javaType, mutable.ListBuffer, property)
     } else if (klass == classOf[mutable.ArrayBuffer[_]] || klass == classOf[mutable.Traversable[_]]) {
