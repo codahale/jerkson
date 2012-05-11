@@ -5,13 +5,15 @@ import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
 import com.fasterxml.jackson.core.{JsonToken, JsonParser}
 import collection.generic.MapFactory
 import collection.MapLike
+import com.fasterxml.jackson.databind.deser.ResolvableDeserializer
 
 class ImmutableMapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]]](companion: MapFactory[CC],
-                                                                          valueType: JavaType,
-                                                                          valueDeserializer: JsonDeserializer[Object])
-  extends JsonDeserializer[Object] {
+                                                                          valueType: JavaType)
+  extends JsonDeserializer[Object] with ResolvableDeserializer {
 
-  def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
+  var valueDeserializer: JsonDeserializer[Object] = _
+
+  def deserialize(jp: JsonParser, ctxt: DeserializationContext): CC[String, Object] = {
     val builder = companion.newBuilder[String, Object]
 
     if (jp.getCurrentToken == JsonToken.START_OBJECT) {
@@ -31,5 +33,9 @@ class ImmutableMapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]
     }
 
     builder.result()
+  }
+
+  def resolve(ctxt: DeserializationContext) {
+    valueDeserializer = ctxt.findRootValueDeserializer(valueType)
   }
 }

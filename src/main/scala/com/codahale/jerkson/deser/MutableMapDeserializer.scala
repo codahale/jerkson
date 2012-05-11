@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
 import com.fasterxml.jackson.core.{JsonToken, JsonParser}
 import scala.collection.mutable
+import com.fasterxml.jackson.databind.deser.ResolvableDeserializer
 
-class MutableMapDeserializer(valueType: JavaType,
-                             valueDeserializer: JsonDeserializer[Object]) extends JsonDeserializer[Object] {
+class MutableMapDeserializer(valueType: JavaType) extends JsonDeserializer[Object] with ResolvableDeserializer {
+  var valueDeserializer: JsonDeserializer[Object] = _
+
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
     val builder = mutable.HashMap.newBuilder[String, Object]
 
@@ -27,5 +29,9 @@ class MutableMapDeserializer(valueType: JavaType,
     }
 
     builder.result()
+  }
+
+  def resolve(ctxt: DeserializationContext) {
+    valueDeserializer = ctxt.findRootValueDeserializer(valueType)
   }
 }

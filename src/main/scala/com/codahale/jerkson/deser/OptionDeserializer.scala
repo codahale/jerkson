@@ -3,10 +3,12 @@ package com.codahale.jerkson.deser
 import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
 import com.fasterxml.jackson.core.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind.deser.ResolvableDeserializer
 
-class OptionDeserializer(elementType: JavaType,
-                              elementDeserializer: JsonDeserializer[Object])
-  extends JsonDeserializer[Object] {
+class OptionDeserializer(elementType: JavaType)
+  extends JsonDeserializer[Object] with ResolvableDeserializer {
+
+  var elementDeserializer: JsonDeserializer[Object] = _
 
   override def getEmptyValue = None
 
@@ -18,5 +20,9 @@ class OptionDeserializer(elementType: JavaType,
     } else {
       Some(elementDeserializer.deserialize(jp, ctxt))
     }
+  }
+
+  def resolve(ctxt: DeserializationContext) {
+    elementDeserializer = ctxt.findRootValueDeserializer(elementType)
   }
 }

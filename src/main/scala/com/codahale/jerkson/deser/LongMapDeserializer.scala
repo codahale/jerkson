@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
 import com.fasterxml.jackson.core.{JsonToken, JsonParser}
 import com.fasterxml.jackson.databind.JavaType
 import scala.collection.immutable.LongMap
+import com.fasterxml.jackson.databind.deser.ResolvableDeserializer
 
-class LongMapDeserializer(valueType: JavaType,
-                          valueDeserializer: JsonDeserializer[Object]) extends JsonDeserializer[Object] {
+class LongMapDeserializer(valueType: JavaType) extends JsonDeserializer[Object] with ResolvableDeserializer {
+  var valueDeserializer: JsonDeserializer[Object] = _
+
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
     var map = LongMap.empty[Object]
 
@@ -30,5 +32,9 @@ class LongMapDeserializer(valueType: JavaType,
       }
     }
     map
+  }
+
+  def resolve(ctxt: DeserializationContext) {
+    valueDeserializer = ctxt.findRootValueDeserializer(valueType)
   }
 }
