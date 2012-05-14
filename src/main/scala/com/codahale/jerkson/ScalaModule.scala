@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.Module
 import ser.ScalaSerializers
 
 class ScalaModule(classLoader: ClassLoader) extends Module {
-  def version = new Version(0, 2, 0, "")
+  def version = new Version(0, 6, 0, "SNAPSHOT", "com.codahale", "jerkson")
   def getModuleName = "jerkson"
 
   def setupModule(context: SetupContext) {
