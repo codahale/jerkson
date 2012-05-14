@@ -37,4 +37,6 @@ class LongMapDeserializer(valueType: JavaType) extends JsonDeserializer[Object] 
   def resolve(ctxt: DeserializationContext) {
     valueDeserializer = ctxt.findRootValueDeserializer(valueType)
   }
+
+  override def isCachable = true
 }

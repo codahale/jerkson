@@ -34,4 +34,6 @@ class MutableMapDeserializer(valueType: JavaType) extends JsonDeserializer[Objec
   def resolve(ctxt: DeserializationContext) {
     valueDeserializer = ctxt.findRootValueDeserializer(valueType)
   }
+
+  override def isCachable = true
 }

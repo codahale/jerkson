@@ -16,4 +16,6 @@ class BigIntDeserializer extends JsonDeserializer[Object] {
         throw ctxt.mappingException(classOf[BigInt])
     }
   }
+
+  override def isCachable = true
 }

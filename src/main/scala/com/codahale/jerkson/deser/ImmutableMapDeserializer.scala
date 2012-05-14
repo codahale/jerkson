@@ -38,4 +38,6 @@ class ImmutableMapDeserializer[CC[A, B] <: Map[A, B] with MapLike[A, B, CC[A, B]
   def resolve(ctxt: DeserializationContext) {
     valueDeserializer = ctxt.findRootValueDeserializer(valueType)
   }
+
+  override def isCachable = true
 }

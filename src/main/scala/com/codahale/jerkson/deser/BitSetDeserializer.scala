@@ -21,4 +21,6 @@ class BitSetDeserializer[Coll <: BitSet with BitSetLike[Coll]](factory: BitSetFa
 
     builder.result()
   }
+
+  override def isCachable = true
 }

@@ -52,4 +52,6 @@ class RangeDeserializer extends JsonDeserializer[Object] {
     }
     "Invalid JSON. Needed [start, end, <step>, <inclusive>], but found %s.".format(existing)
   }
+
+  override def isCachable = true
 }

@@ -25,4 +25,6 @@ class OptionDeserializer(elementType: JavaType)
   def resolve(ctxt: DeserializationContext) {
     elementDeserializer = ctxt.findRootValueDeserializer(elementType)
   }
+
+  override def isCachable = true
 }

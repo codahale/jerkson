@@ -16,4 +16,6 @@ class EitherDeserializer(config: DeserializationConfig,
       case _ => Right(tp.getCodec.readValue[Object](tp, javaType.containedType(1)))
     }
   }
+
+  override def isCachable = true
 }

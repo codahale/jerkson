@@ -11,4 +11,6 @@ class StringBuilderDeserializer extends JsonDeserializer[Object] {
 
     new StringBuilder(jp.getText)
   }
+
+  override def isCachable = true
 }

@@ -25,4 +25,6 @@ class IteratorDeserializer(elementType: JavaType) extends JsonDeserializer[Objec
   def resolve(ctxt: DeserializationContext) {
     elementDeserializer = ctxt.findRootValueDeserializer(elementType)
   }
+
+  override def isCachable = true
 }

@@ -29,4 +29,6 @@ class MutableLinkedHashMapDeserializer(valueType: JavaType) extends JsonDeserial
   def resolve(ctxt: DeserializationContext) {
     valueDeserializer = ctxt.findRootValueDeserializer(valueType)
   }
+
+  override def isCachable = true
 }

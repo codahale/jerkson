@@ -45,4 +45,6 @@ class JValueDeserializer(factory: TypeFactory, klass: Class[_]) extends JsonDese
 
     value
   }
+
+  override def isCachable = true
 }

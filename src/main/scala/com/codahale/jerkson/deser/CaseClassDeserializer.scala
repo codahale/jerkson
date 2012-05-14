@@ -80,4 +80,6 @@ class CaseClassDeserializer(config: DeserializationConfig,
     }
     "Invalid JSON. Needed %s, but found %s.".format(names, existing)
   }
+
+  override def isCachable = true
 }

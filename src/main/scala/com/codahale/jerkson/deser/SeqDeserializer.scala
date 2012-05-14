@@ -29,4 +29,6 @@ class SeqDeserializer[+CC[X] <: Traversable[X]](companion: GenericCompanion[CC],
   def resolve(ctxt: DeserializationContext) {
     elementDeserializer = ctxt.findRootValueDeserializer(elementType)
   }
+
+  override def isCachable = true
 }

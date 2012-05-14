@@ -38,4 +38,6 @@ class IntMapDeserializer(valueType: JavaType) extends JsonDeserializer[Object] w
   def resolve(ctxt: DeserializationContext) {
     valueDeserializer = ctxt.findRootValueDeserializer(valueType)
   }
+
+  override def isCachable = true
 }
