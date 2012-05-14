@@ -1,11 +1,11 @@
 package com.codahale.jerkson.ser
 
-import org.codehaus.jackson.`type`.JavaType
 import com.codahale.jerkson.AST.JValue
-import org.codehaus.jackson.map._
+import com.fasterxml.jackson.databind._
+import com.fasterxml.jackson.databind.ser.Serializers
 
 class ScalaSerializers extends Serializers.Base {
-  override def findSerializer(config: SerializationConfig, javaType: JavaType, beanDesc: BeanDescription, beanProp: BeanProperty) = {
+  override def findSerializer(config: SerializationConfig, javaType: JavaType, beanDesc: BeanDescription) = {
     val ser: Object = if (classOf[Option[_]].isAssignableFrom(beanDesc.getBeanClass)) {
         new OptionSerializer
     } else if (classOf[StringBuilder].isAssignableFrom(beanDesc.getBeanClass)) {

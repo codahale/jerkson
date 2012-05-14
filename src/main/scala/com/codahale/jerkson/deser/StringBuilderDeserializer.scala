@@ -1,10 +1,8 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.map.annotate.JsonCachable
-import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer}
-import org.codehaus.jackson.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
+import com.fasterxml.jackson.core.{JsonToken, JsonParser}
 
-@JsonCachable
 class StringBuilderDeserializer extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
     if (jp.getCurrentToken != JsonToken.VALUE_STRING) {
@@ -13,4 +11,6 @@ class StringBuilderDeserializer extends JsonDeserializer[Object] {
 
     new StringBuilder(jp.getText)
   }
+
+  override def isCachable = true
 }

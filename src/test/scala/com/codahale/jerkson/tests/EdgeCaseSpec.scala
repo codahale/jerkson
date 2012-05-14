@@ -63,7 +63,7 @@ class EdgeCaseSpec extends Spec {
       val input = new ByteArrayInputStream(Array.empty)
       evaluating {
         parse[CaseClass](input)
-      }.must(throwA[ParsingException]("JSON document ended unexpectedly."))
+      }.must(throwA[ParsingException]("""No content to map due to end\-of\-input""".r))
     }
   }
 }

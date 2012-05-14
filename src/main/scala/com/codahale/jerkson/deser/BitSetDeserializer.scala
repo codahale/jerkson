@@ -2,11 +2,9 @@ package com.codahale.jerkson.deser
 
 import scala.collection.generic.BitSetFactory
 import scala.collection.{BitSetLike, BitSet}
-import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer}
-import org.codehaus.jackson.{JsonToken, JsonParser}
-import org.codehaus.jackson.map.annotate.JsonCachable
+import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
+import com.fasterxml.jackson.core.{JsonToken, JsonParser}
 
-@JsonCachable
 class BitSetDeserializer[Coll <: BitSet with BitSetLike[Coll]](factory: BitSetFactory[Coll])
   extends JsonDeserializer[Coll] {
 
@@ -23,4 +21,6 @@ class BitSetDeserializer[Coll <: BitSet with BitSetLike[Coll]](factory: BitSetFa
 
     builder.result()
   }
+
+  override def isCachable = true
 }
