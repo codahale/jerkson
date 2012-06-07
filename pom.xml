@@ -11,7 +11,7 @@
     <groupId>com.codahale</groupId>
     <artifactId>jerkson_2.9.1</artifactId>
     <version>0.6.0-SNAPSHOT</version>
-    <name>Jerkson for Scala ${scala.version}</name>
+    <name>Jerkson for Scala</name>
 
     <properties>
         <scala.version>2.9.1</scala.version>
@@ -198,7 +198,7 @@
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh</artifactId>
-                <version>1.0-beta-7</version>
+                <version>2.2</version>
             </extension>
         </extensions>
     </build>
