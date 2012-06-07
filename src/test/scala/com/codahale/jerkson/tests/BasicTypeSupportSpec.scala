@@ -2,8 +2,8 @@ package com.codahale.jerkson.tests
 
 import com.codahale.simplespec.Spec
 import com.codahale.jerkson.Json._
-import org.codehaus.jackson.node.IntNode
-import org.codehaus.jackson.JsonNode
+import com.fasterxml.jackson.databind.node.IntNode
+import com.fasterxml.jackson.databind.JsonNode
 import org.junit.Test
 
 class BasicTypeSupportSpec extends Spec {

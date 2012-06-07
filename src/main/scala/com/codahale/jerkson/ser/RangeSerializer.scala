@@ -1,10 +1,8 @@
 package com.codahale.jerkson.ser
 
-import org.codehaus.jackson.JsonGenerator
-import org.codehaus.jackson.map.{SerializerProvider, JsonSerializer}
-import org.codehaus.jackson.map.annotate.JsonCachable
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.databind.{SerializerProvider, JsonSerializer}
 
-@JsonCachable
 class RangeSerializer extends JsonSerializer[Range] {
   def serialize(value: Range, json: JsonGenerator, provider: SerializerProvider) {
     json.writeStartObject()

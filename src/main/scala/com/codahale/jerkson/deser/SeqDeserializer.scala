@@ -1,18 +1,18 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.{JsonToken, JsonParser}
-import org.codehaus.jackson.`type`.JavaType
-import org.codehaus.jackson.map.{JsonDeserializer, DeserializationContext}
-import org.codehaus.jackson.map.annotate.JsonCachable
+import com.fasterxml.jackson.core.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind.JavaType
+import com.fasterxml.jackson.databind.{JsonDeserializer, DeserializationContext}
 import collection.generic.GenericCompanion
+import com.fasterxml.jackson.databind.deser.ResolvableDeserializer
 
-@JsonCachable
 class SeqDeserializer[+CC[X] <: Traversable[X]](companion: GenericCompanion[CC],
-                                                elementType: JavaType,
-                                                elementDeserializer: JsonDeserializer[Object])
-  extends JsonDeserializer[Object] {
+                                                elementType: JavaType)
+  extends JsonDeserializer[Object] with ResolvableDeserializer {
 
-  def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
+  var elementDeserializer: JsonDeserializer[Object] = _
+
+  def deserialize(jp: JsonParser, ctxt: DeserializationContext): CC[Object] = {
     val builder = companion.newBuilder[Object]
 
     if (jp.getCurrentToken != JsonToken.START_ARRAY) {
@@ -20,9 +20,15 @@ class SeqDeserializer[+CC[X] <: Traversable[X]](companion: GenericCompanion[CC],
     }
 
     while (jp.nextToken() != JsonToken.END_ARRAY) {
-      builder += elementDeserializer.deserialize(jp, ctxt).asInstanceOf[Object]
+      builder += elementDeserializer.deserialize(jp, ctxt)
     }
 
     builder.result()
   }
+
+  def resolve(ctxt: DeserializationContext) {
+    elementDeserializer = ctxt.findRootValueDeserializer(elementType)
+  }
+
+  override def isCachable = true
 }

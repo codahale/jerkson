@@ -1,7 +1,7 @@
 package com.codahale.jerkson
 
-import org.codehaus.jackson.map.{MappingJsonFactory, ObjectMapper}
-import org.codehaus.jackson.{JsonGenerator, JsonParser => JacksonParser}
+import com.fasterxml.jackson.databind.{MappingJsonFactory, ObjectMapper}
+import com.fasterxml.jackson.core.{JsonGenerator, JsonParser => JacksonParser}
 
 object Json extends Json
 

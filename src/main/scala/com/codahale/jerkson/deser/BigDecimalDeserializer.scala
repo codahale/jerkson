@@ -1,10 +1,8 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.map.annotate.JsonCachable
-import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer}
-import org.codehaus.jackson.JsonParser
+import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
+import com.fasterxml.jackson.core.JsonParser
 
-@JsonCachable
 class BigDecimalDeserializer extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
     if (jp.getCurrentToken == null) {
@@ -18,4 +16,6 @@ class BigDecimalDeserializer extends JsonDeserializer[Object] {
         throw ctxt.mappingException(classOf[BigDecimal])
     }
   }
+
+  override def isCachable = true
 }

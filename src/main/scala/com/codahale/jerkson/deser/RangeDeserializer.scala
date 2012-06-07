@@ -1,12 +1,11 @@
 package com.codahale.jerkson.deser
 
 import collection.JavaConversions._
-import org.codehaus.jackson.{JsonNode, JsonToken, JsonParser}
-import org.codehaus.jackson.map.{JsonMappingException, DeserializationContext, JsonDeserializer}
-import org.codehaus.jackson.map.annotate.JsonCachable
-import org.codehaus.jackson.node.{IntNode, BooleanNode, NullNode, ObjectNode}
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.core.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind.{JsonMappingException, DeserializationContext, JsonDeserializer}
+import com.fasterxml.jackson.databind.node.{IntNode, BooleanNode, NullNode, ObjectNode}
 
-@JsonCachable
 class RangeDeserializer extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
     if (jp.getCurrentToken == JsonToken.START_OBJECT) {
@@ -18,7 +17,7 @@ class RangeDeserializer extends JsonDeserializer[Object] {
       throw ctxt.mappingException(classOf[Range])
     }
 
-    val node = jp.readValueAsTree
+    val node = jp.readValueAsTree[JsonNode]
     val inclusiveNode  = node.get("inclusive")
     val stepNode = node.get("step")
     val startNode = node.get("start")
@@ -32,11 +31,11 @@ class RangeDeserializer extends JsonDeserializer[Object] {
     val step = if (stepNode == null || !classOf[IntNode].isAssignableFrom(stepNode.getClass)) {
       1
     } else {
-      stepNode.getIntValue
+      stepNode.intValue
     }
 
-    val start = startNode.asInstanceOf[IntNode].getIntValue
-    val end = endNode.asInstanceOf[IntNode].getIntValue
+    val start = startNode.asInstanceOf[IntNode].intValue
+    val end = endNode.asInstanceOf[IntNode].intValue
 
     if (inclusiveNode == null || inclusiveNode == BooleanNode.FALSE) {
       Range(start, end, step)
@@ -47,10 +46,12 @@ class RangeDeserializer extends JsonDeserializer[Object] {
 
   private def errorMessage(node: JsonNode) = {
     val existing = node match {
-      case obj: ObjectNode => obj.getFieldNames.mkString("[", ", ", "]")
+      case obj: ObjectNode => obj.fieldNames.mkString("[", ", ", "]")
       case _: NullNode => "[]" // this is what Jackson deserializes the inside of an empty object to
       case unknown => "a non-object"
     }
     "Invalid JSON. Needed [start, end, <step>, <inclusive>], but found %s.".format(existing)
   }
+
+  override def isCachable = true
 }

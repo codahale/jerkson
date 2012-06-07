@@ -1,14 +1,12 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer}
-import org.codehaus.jackson.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
+import com.fasterxml.jackson.core.{JsonToken, JsonParser}
 import com.codahale.jerkson.AST._
 import collection.mutable.ArrayBuffer
-import org.codehaus.jackson.map.annotate.JsonCachable
-import org.codehaus.jackson.map.`type`.TypeFactory
+import com.fasterxml.jackson.databind.`type`.TypeFactory
 import com.codahale.jerkson.Types
 
-@JsonCachable
 class JValueDeserializer(factory: TypeFactory, klass: Class[_]) extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext): Object = {
     if (jp.getCurrentToken == null) {
@@ -47,4 +45,6 @@ class JValueDeserializer(factory: TypeFactory, klass: Class[_]) extends JsonDese
 
     value
   }
+
+  override def isCachable = true
 }

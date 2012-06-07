@@ -1,13 +1,13 @@
 package com.codahale.jerkson.deser
 
-import org.codehaus.jackson.`type`.JavaType
-import org.codehaus.jackson.map.{DeserializationContext, JsonDeserializer}
-import org.codehaus.jackson.{JsonToken, JsonParser}
-import org.codehaus.jackson.map.annotate.JsonCachable
+import com.fasterxml.jackson.databind.JavaType
+import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
+import com.fasterxml.jackson.core.{JsonToken, JsonParser}
+import com.fasterxml.jackson.databind.deser.ResolvableDeserializer
 
-@JsonCachable
-class IteratorDeserializer(elementType: JavaType,
-                           elementDeserializer: JsonDeserializer[Object]) extends JsonDeserializer[Object] {
+class IteratorDeserializer(elementType: JavaType) extends JsonDeserializer[Object] with ResolvableDeserializer {
+  var elementDeserializer: JsonDeserializer[Object] = _
+
   def deserialize(jp: JsonParser, ctxt: DeserializationContext) = {
     val builder = Seq.newBuilder[Object]
 
@@ -16,9 +16,15 @@ class IteratorDeserializer(elementType: JavaType,
     }
 
     while (jp.nextToken() != JsonToken.END_ARRAY) {
-      builder += elementDeserializer.deserialize(jp, ctxt).asInstanceOf[Object]
+      builder += elementDeserializer.deserialize(jp, ctxt)
     }
 
     builder.result().iterator.buffered
   }
+
+  def resolve(ctxt: DeserializationContext) {
+    elementDeserializer = ctxt.findRootValueDeserializer(elementType)
+  }
+
+  override def isCachable = true
 }
