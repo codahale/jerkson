@@ -14,7 +14,7 @@ class TupleSerializer extends JsonSerializer[Product] {
 }
 
 object TupleSerializer {
-  val allTupleClasses: List[Class[_]] = List(
+  val allTupleClasses: List[Class[_ <: Product]] = List(
       classOf[Tuple1[_]],
       classOf[Tuple2[_,_]],
       classOf[Tuple3[_,_,_]],

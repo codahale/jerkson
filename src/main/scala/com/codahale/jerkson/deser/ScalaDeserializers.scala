@@ -6,6 +6,7 @@ import com.codahale.jerkson.AST.{JNull, JValue}
 import scala.collection.generic.{MapFactory, GenericCompanion}
 import com.fasterxml.jackson.databind.deser.Deserializers
 import com.fasterxml.jackson.databind.Module.SetupContext
+import com.codahale.jerkson.ser.TupleSerializer
 
 class ScalaDeserializers(classLoader: ClassLoader, context: SetupContext) extends Deserializers.Base {
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
@@ -88,6 +89,8 @@ class ScalaDeserializers(classLoader: ClassLoader, context: SetupContext) extend
       new BigDecimalDeserializer
     } else if (klass == classOf[Either[_,_]]) {
       new EitherDeserializer(config, javaType)
+    } else if (TupleSerializer.allTupleClasses.exists(_.isAssignableFrom(beanDesc.getBeanClass()))) {
+      new TupleDeserializer(javaType)
     } else if (classOf[Product].isAssignableFrom(klass)) {
       new CaseClassDeserializer(config, javaType, classLoader)
     } else null
