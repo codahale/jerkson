@@ -22,6 +22,8 @@ class ScalaSerializers extends Serializers.Base {
       new JValueSerializer
     } else if (classOf[Either[_,_]].isAssignableFrom(beanDesc.getBeanClass)) {
       new EitherSerializer
+    } else if (TupleSerializer.allTupleClasses.exists(_.isAssignableFrom(beanDesc.getBeanClass()))) {
+      new TupleSerializer
     } else if (classOf[Product].isAssignableFrom(beanDesc.getBeanClass)) {
       new CaseClassSerializer(beanDesc.getBeanClass)
     } else {
