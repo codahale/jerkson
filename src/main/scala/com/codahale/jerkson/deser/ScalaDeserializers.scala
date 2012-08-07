@@ -3,6 +3,7 @@ package com.codahale.jerkson.deser
 import com.fasterxml.jackson.databind._
 import scala.collection.{Traversable, MapLike, immutable, mutable}
 import com.codahale.jerkson.AST.{JNull, JValue}
+import com.codahale.jerkson.JsonNoJerkson
 import scala.collection.generic.{MapFactory, GenericCompanion}
 import com.fasterxml.jackson.databind.deser.Deserializers
 import com.fasterxml.jackson.databind.Module.SetupContext
@@ -11,7 +12,10 @@ class ScalaDeserializers(classLoader: ClassLoader, context: SetupContext) extend
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
                             beanDesc: BeanDescription) = {
     val klass = javaType.getRawClass
-    if (klass == classOf[Range] || klass == classOf[immutable.Range]) {
+    val noJerkson = klass.isAnnotationPresent(classOf[JsonNoJerkson])
+    if (noJerkson) {
+      null
+    } else if (klass == classOf[Range] || klass == classOf[immutable.Range]) {
       new RangeDeserializer
     } else if (klass == classOf[StringBuilder]) {
       new StringBuilderDeserializer
