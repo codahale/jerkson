@@ -3,6 +3,7 @@ package com.codahale.jerkson.tests
 import java.net.URI
 import com.codahale.simplespec.Spec
 import org.junit.Test
+import org.joda.time.DateTime
 import com.codahale.jerkson.Json._
 import java.util.UUID
 
@@ -26,6 +27,18 @@ class FancyTypeSupportSpec extends Spec {
 
     @Test def `is parsable from a JSON string` = {
       parse[UUID]("\"a62047e4-bfb5-4d71-aad7-1a6b338eee63\"").must(be(uuid))
+    }
+  }
+
+  class `A Joda DateTime` {
+    val ts = new DateTime("1883-07-03")
+
+    @Test def `Generates a JSON int` {
+      generate(ts).must(be("-2729606822000"))
+    }
+
+    @Test def `Is parsable from a JSON string` = {
+      parse[DateTime]("-2729606822000").compareTo(ts).must(be(0))
     }
   }
 }

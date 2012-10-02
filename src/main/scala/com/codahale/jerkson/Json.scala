@@ -2,6 +2,7 @@ package com.codahale.jerkson
 
 import com.fasterxml.jackson.databind.{MappingJsonFactory, ObjectMapper}
 import com.fasterxml.jackson.core.{JsonGenerator, JsonParser => JacksonParser}
+import com.fasterxml.jackson.datatype.joda.JodaModule
 
 object Json extends Json
 
@@ -10,6 +11,7 @@ trait Json extends Parser with Generator {
 
   protected val mapper = new ObjectMapper
   mapper.registerModule(new ScalaModule(classLoader))
+  mapper.registerModule(new JodaModule)
 
   protected val factory = new MappingJsonFactory(mapper)
   factory.enable(JsonGenerator.Feature.AUTO_CLOSE_JSON_CONTENT)
