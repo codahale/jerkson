@@ -47,9 +47,16 @@
 
     <distributionManagement>
         <repository>
-            <id>repo.codahale.com</id>
-            <url>scp://codahale.com/home/codahale/repo.codahale.com</url>
+            <id>releases</id>
+            <name>Simple Releases</name>
+            <url>http://nexus.banksimple.com/content/repositories/releases</url>
         </repository>
+        <!-- use the following if you ARE using a snapshot version. -->
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Simple Snapshots</name>
+            <url>http://nexus.banksimple.com/content/repositories/snapshots</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <dependencies>
