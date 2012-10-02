@@ -1,8 +1,8 @@
-package com.codahale.jerkson.ser
+package com.simple.jerkson.ser
 
 import java.lang.reflect.Modifier
-import com.codahale.jerkson.JsonSnakeCase
-import com.codahale.jerkson.Util._
+import com.simple.jerkson.JsonSnakeCase
+import com.simple.jerkson.Util._
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.annotation.{JsonIgnore, JsonIgnoreProperties}
 import com.fasterxml.jackson.databind.{SerializerProvider, JsonSerializer}

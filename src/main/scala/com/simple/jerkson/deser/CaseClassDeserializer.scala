@@ -1,10 +1,10 @@
-package com.codahale.jerkson.deser
+package com.simple.jerkson.deser
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ArrayBuffer
-import com.codahale.jerkson.JsonSnakeCase
-import com.codahale.jerkson.util._
-import com.codahale.jerkson.Util._
+import com.simple.jerkson.JsonSnakeCase
+import com.simple.jerkson.util._
+import com.simple.jerkson.Util._
 import com.fasterxml.jackson.databind._
 import com.fasterxml.jackson.databind.node.{ObjectNode, NullNode, TreeTraversingParser}
 import com.fasterxml.jackson.databind.JavaType

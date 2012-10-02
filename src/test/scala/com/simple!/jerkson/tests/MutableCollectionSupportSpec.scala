@@ -1,9 +1,9 @@
-package com.codahale.jerkson.tests
+package com.simple.jerkson.tests
 
 import com.codahale.simplespec.Spec
-import com.codahale.jerkson.Json._
+import com.simple.jerkson.Json._
 import scala.collection.mutable._
-import com.codahale.jerkson.ParsingException
+import com.simple.jerkson.ParsingException
 import org.junit.Test
 
 class MutableCollectionSupportSpec extends Spec {

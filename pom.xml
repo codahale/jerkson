@@ -10,7 +10,7 @@
 
     <groupId>com.simple</groupId>
     <artifactId>jerkson_2.9.1</artifactId>
-    <version>0.6.2</version>
+    <version>0.6.3</version>
     <name>Jerkson for Scala</name>
 
     <properties>
@@ -86,9 +86,9 @@
             <version>1.2</version>
         </dependency>
         <dependency>
-            <groupId>com.codahale</groupId>
+            <groupId>com.simple</groupId>
             <artifactId>simplespec_${scala.version}</artifactId>
-            <version>0.5.2</version>
+            <version>0.6.0-1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

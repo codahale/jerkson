@@ -1,6 +1,6 @@
-package com.codahale.jerkson.tests
+package com.simple.jerkson.tests
 
-import com.codahale.jerkson.Json._
+import com.simple.jerkson.Json._
 import java.io.ByteArrayInputStream
 import com.codahale.simplespec.Spec
 import org.junit.Test

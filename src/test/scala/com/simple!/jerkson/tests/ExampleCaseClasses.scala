@@ -1,8 +1,8 @@
-package com.codahale.jerkson.tests
+package com.simple.jerkson.tests
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.annotation.{JsonIgnoreProperties, JsonIgnore}
-import com.codahale.jerkson.JsonSnakeCase
+import com.simple.jerkson.JsonSnakeCase
 
 case class CaseClass(id: Long, name: String)
 

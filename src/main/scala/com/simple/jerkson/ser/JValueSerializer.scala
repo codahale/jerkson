@@ -1,8 +1,8 @@
-package com.codahale.jerkson.ser
+package com.simple.jerkson.ser
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.{SerializerProvider, JsonSerializer}
-import com.codahale.jerkson.AST._
+import com.simple.jerkson.AST._
 import java.math.BigInteger
 
 class JValueSerializer extends JsonSerializer[JValue] {

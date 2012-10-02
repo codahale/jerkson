@@ -1,8 +1,8 @@
-package com.codahale.jerkson
+package com.simple.jerkson
 
 import io.Source
 import java.net.URL
-import com.codahale.jerkson.AST.{JValue, JNull}
+import com.simple.jerkson.AST.{JValue, JNull}
 import com.fasterxml.jackson.core.{JsonParser, JsonProcessingException}
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.TreeTraversingParser

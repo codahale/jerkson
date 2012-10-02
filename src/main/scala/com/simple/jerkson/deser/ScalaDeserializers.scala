@@ -1,8 +1,8 @@
-package com.codahale.jerkson.deser
+package com.simple.jerkson.deser
 
 import com.fasterxml.jackson.databind._
 import scala.collection.{Traversable, MapLike, immutable, mutable}
-import com.codahale.jerkson.AST.{JNull, JValue}
+import com.simple.jerkson.AST.{JNull, JValue}
 import scala.collection.generic.{MapFactory, GenericCompanion}
 import com.fasterxml.jackson.databind.deser.Deserializers
 import com.fasterxml.jackson.databind.Module.SetupContext

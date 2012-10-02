@@ -1,6 +1,6 @@
-package com.codahale.jerkson.ser
+package com.simple.jerkson.ser
 
-import com.codahale.jerkson.AST.JValue
+import com.simple.jerkson.AST.JValue
 import com.fasterxml.jackson.databind._
 import com.fasterxml.jackson.databind.ser.Serializers
 

@@ -1,10 +1,10 @@
-package com.codahale.jerkson.tests
+package com.simple.jerkson.tests
 
 import java.net.URI
 import com.codahale.simplespec.Spec
 import org.junit.Test
 import org.joda.time.DateTime
-import com.codahale.jerkson.Json._
+import com.simple.jerkson.Json._
 import java.util.UUID
 
 case class LogEntry(when: DateTime, message: String)

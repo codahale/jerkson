@@ -1,6 +1,6 @@
-package com.codahale.jerkson.util
+package com.simple.jerkson.util
 
-import com.codahale.jerkson.util.scalax.rules.scalasig._
+import com.simple.jerkson.util.scalax.rules.scalasig._
 import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.`type`.TypeFactory
 import scala.reflect.ScalaSignature

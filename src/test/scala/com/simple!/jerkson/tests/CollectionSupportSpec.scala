@@ -1,7 +1,7 @@
-package com.codahale.jerkson.tests
+package com.simple.jerkson.tests
 
 import scala.collection._
-import com.codahale.jerkson.Json._
+import com.simple.jerkson.Json._
 import com.codahale.simplespec.Spec
 import org.junit.{Ignore, Test}
 

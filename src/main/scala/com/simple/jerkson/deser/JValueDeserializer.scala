@@ -1,11 +1,11 @@
-package com.codahale.jerkson.deser
+package com.simple.jerkson.deser
 
 import com.fasterxml.jackson.databind.{DeserializationContext, JsonDeserializer}
 import com.fasterxml.jackson.core.{JsonToken, JsonParser}
-import com.codahale.jerkson.AST._
+import com.simple.jerkson.AST._
 import collection.mutable.ArrayBuffer
 import com.fasterxml.jackson.databind.`type`.TypeFactory
-import com.codahale.jerkson.Types
+import com.simple.jerkson.Types
 
 class JValueDeserializer(factory: TypeFactory, klass: Class[_]) extends JsonDeserializer[Object] {
   def deserialize(jp: JsonParser, ctxt: DeserializationContext): Object = {
