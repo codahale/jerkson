@@ -10,7 +10,7 @@
 
     <groupId>com.simple</groupId>
     <artifactId>jerkson_2.9.1</artifactId>
-    <version>0.6.1</version>
+    <version>0.6.2</version>
     <name>Jerkson for Scala</name>
 
     <properties>
