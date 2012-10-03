@@ -1,4 +1,4 @@
-package com.codahale.jerkson
+package com.simple.jerkson
 
 import com.fasterxml.jackson.databind.JavaType
 import com.fasterxml.jackson.databind.`type`.{TypeFactory, ArrayType}

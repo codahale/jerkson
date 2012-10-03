@@ -1,4 +1,4 @@
-package com.codahale.jerkson.deser
+package com.simple.jerkson.deser
 
 import collection.JavaConversions._
 import com.fasterxml.jackson.databind.JsonNode

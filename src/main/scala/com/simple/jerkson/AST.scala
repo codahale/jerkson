@@ -1,4 +1,4 @@
-package com.codahale.jerkson
+package com.simple.jerkson
 
 object AST {
   sealed trait JValue {

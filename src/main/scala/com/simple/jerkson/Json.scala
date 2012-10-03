@@ -1,4 +1,4 @@
-package com.codahale.jerkson
+package com.simple.jerkson
 
 import com.fasterxml.jackson.databind.{MappingJsonFactory, ObjectMapper}
 import com.fasterxml.jackson.core.{JsonGenerator, JsonParser => JacksonParser}

@@ -1,4 +1,4 @@
-package com.codahale.jerkson
+package com.simple.jerkson
 
 import deser.ScalaDeserializers
 import com.fasterxml.jackson.databind.Module.SetupContext

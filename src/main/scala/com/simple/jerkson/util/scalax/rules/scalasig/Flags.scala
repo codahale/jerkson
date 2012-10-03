@@ -1,4 +1,4 @@
-package com.codahale.jerkson.util.scalax.rules.scalasig
+package com.simple.jerkson.util.scalax.rules.scalasig
 
 trait Flags {
   def hasFlag(flag: Long): Boolean

@@ -1,4 +1,4 @@
-package com.codahale.jerkson.deser
+package com.simple.jerkson.deser
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.node.TreeTraversingParser

@@ -1,4 +1,4 @@
-package com.codahale.jerkson
+package com.simple.jerkson
 
 import java.io.IOException
 import com.fasterxml.jackson.databind.JsonMappingException

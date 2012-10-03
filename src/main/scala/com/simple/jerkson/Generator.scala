@@ -1,4 +1,4 @@
-package com.codahale.jerkson
+package com.simple.jerkson
 
 import java.io.{File, OutputStream, Writer, StringWriter}
 import com.fasterxml.jackson.core.{JsonGenerator, JsonEncoding}

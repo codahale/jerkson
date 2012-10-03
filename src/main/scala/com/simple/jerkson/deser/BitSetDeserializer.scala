@@ -1,4 +1,4 @@
-package com.codahale.jerkson.deser
+package com.simple.jerkson.deser
 
 import scala.collection.generic.BitSetFactory
 import scala.collection.{BitSetLike, BitSet}

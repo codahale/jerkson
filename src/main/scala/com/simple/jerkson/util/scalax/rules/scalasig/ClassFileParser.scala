@@ -1,4 +1,4 @@
-package com.codahale.jerkson.util
+package com.simple.jerkson.util
 package scalax
 package rules
 package scalasig
