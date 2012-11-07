@@ -10,7 +10,7 @@
 
     <groupId>com.simple</groupId>
     <artifactId>jerkson_2.9.1</artifactId>
-    <version>0.6.3</version>
+    <version>0.6.4</version>
     <name>Jerkson for Scala</name>
 
     <properties>
@@ -84,6 +84,11 @@
             <groupId>org.joda</groupId>
             <artifactId>joda-convert</artifactId>
             <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codahale</groupId>
+            <artifactId>jerkson_${scala.version}</artifactId>
+            <version>0.5.0</version>
         </dependency>
         <dependency>
             <groupId>com.simple</groupId>

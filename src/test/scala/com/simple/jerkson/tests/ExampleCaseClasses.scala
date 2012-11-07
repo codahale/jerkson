@@ -3,6 +3,7 @@ package com.simple.jerkson.tests
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.annotation.{JsonIgnoreProperties, JsonIgnore}
 import com.simple.jerkson.JsonSnakeCase
+import com.codahale.jerkson.{JsonSnakeCase => CodaSnakeCase}
 
 case class CaseClass(id: Long, name: String)
 
@@ -70,5 +71,8 @@ case class CaseClassWithTwoConstructors(id: Long,  name: String) {
 
 @JsonSnakeCase
 case class CaseClassWithSnakeCase(oneThing: String, twoThing: String)
+
+@CodaSnakeCase
+case class CaseClassWithCodaSnakeCase(oneThing: String, twoThing: String)
 
 case class CaseClassWithArrays(one: String, two: Array[String], three: Array[Int])

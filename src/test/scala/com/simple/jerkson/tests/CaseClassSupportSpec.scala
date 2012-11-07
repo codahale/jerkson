@@ -221,6 +221,22 @@ class CaseClassSupportSpec extends Spec {
     }
   }
 
+  class `A case codahale.jerkson class with snake-cased fields` {
+    @Test def `is parsable from a snake-cased JSON object` = {
+      parse[CaseClassWithCodaSnakeCase]("""{"one_thing":"yes","two_thing":"good"}""").must(be(CaseClassWithCodaSnakeCase("yes", "good")))
+    }
+
+    @Test def `generates a snake-cased JSON object` = {
+      generate(CaseClassWithCodaSnakeCase("yes", "good")).must(be("""{"one_thing":"yes","two_thing":"good"}"""))
+    }
+
+    @Test def `throws errors with the snake-cased field names present` = {
+      evaluating {
+        parse[CaseClassWithCodaSnakeCase]("""{"one_thing":"yes"}""")
+      }.must(throwA[ParsingException]("Invalid JSON. Needed [one_thing, two_thing], but found [one_thing]."))
+    }
+  }
+
   class `A case class with array members` {
     @Test def `is parsable from a JSON object` = {
       val c = parse[CaseClassWithArrays]("""{"one":"1","two":["a","b","c"],"three":[1,2,3]}""")
