@@ -2,7 +2,7 @@ package com.simple.jerkson.tests
 
 import com.simple.jerkson.Json._
 import com.simple.jerkson.AST._
-import com.codahale.simplespec.Spec
+import com.simple.simplespec.Spec
 import org.junit.Test
 
 class JValueSpec extends Spec {

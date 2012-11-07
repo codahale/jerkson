@@ -1,7 +1,7 @@
 package com.simple.jerkson.tests
 
 import com.simple.jerkson.Json._
-import com.codahale.simplespec.Spec
+import com.simple.simplespec.Spec
 import com.simple.jerkson.ParsingException
 import com.fasterxml.jackson.databind.node.IntNode
 import org.junit.Test

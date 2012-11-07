@@ -1,6 +1,6 @@
 package com.simple.jerkson.tests
 
-import com.codahale.simplespec.Spec
+import com.simple.simplespec.Spec
 import com.simple.jerkson.Json._
 import scala.collection.immutable._
 import com.simple.jerkson.ParsingException

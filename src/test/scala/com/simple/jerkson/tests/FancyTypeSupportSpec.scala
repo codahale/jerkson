@@ -1,7 +1,7 @@
 package com.simple.jerkson.tests
 
 import java.net.URI
-import com.codahale.simplespec.Spec
+import com.simple.simplespec.Spec
 import org.junit.Test
 import org.joda.time.DateTime
 import com.simple.jerkson.Json._

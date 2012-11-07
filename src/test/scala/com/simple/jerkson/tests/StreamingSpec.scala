@@ -2,7 +2,7 @@ package com.simple.jerkson.tests
 
 import com.simple.jerkson.Json._
 import java.io.ByteArrayInputStream
-import com.codahale.simplespec.Spec
+import com.simple.simplespec.Spec
 import org.junit.Test
 
 class StreamingSpec extends Spec {
