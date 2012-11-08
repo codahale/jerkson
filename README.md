@@ -35,6 +35,13 @@ Go ahead and add Jerkson as a dependency:
   </dependency>
 </dependencies>
 ```
+or for sbt:
+
+```scala
+resolvers += "Codehale Repo" at "http://repo.codahale.com"
+
+libraryDependencies +=   "com.codahale" %% "jerkson" % "0.5.0"
+```
 
 
 Parsing JSON
