@@ -10,7 +10,7 @@
 
     <groupId>com.piotrga</groupId>
     <artifactId>codahale_jerkson_2.10</artifactId>
-    <version>0.7.0-SNAPSHOT</version>
+    <version>0.7.0</version>
     <name>Jerkson for Scala</name>
 
     <properties>

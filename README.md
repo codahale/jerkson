@@ -1,8 +1,12 @@
+Scala 2.10 Compatible
+---------------------
+
+This is a fork of [Jerkson](https://github.com/codahale/jerkson) library compatible with Scala 2.10.
+Upgrade has been done by [Piotr Gabryanczyk](mailto:piotrga@gmail.com).
+
+
 Jerkson
 -------
-
-This is a fork of [Jerkson](https://github.com/codahale/jerkson) compatible with Scala 2.10.
-Upgrade has been done by [Piotr Gabryanczyk](mailto:piotrga@gmail.com).
 
 *Because I think you should use JSON.*
 
