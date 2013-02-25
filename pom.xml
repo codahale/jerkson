@@ -8,8 +8,8 @@
         <maven>3.0.0</maven>
     </prerequisites>
 
-    <groupId>com.piotrga</groupId>
-    <artifactId>codahale_jerkson_2.10</artifactId>
+    <groupId>com.codahale</groupId>
+    <artifactId>jerkson_2.10</artifactId>
     <version>0.7.0</version>
     <name>Jerkson for Scala</name>
 
