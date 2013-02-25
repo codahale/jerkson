@@ -1,6 +1,9 @@
 Jerkson
 -------
 
+This is a fork of [Jerkson](https://github.com/codahale/jerkson) compatible with Scala 2.10.
+Upgrade has been done by [Piotr Gabryanczyk](mailto:piotrga@gmail.com).
+
 *Because I think you should use JSON.*
 
 Jerkson is a Scala wrapper for [Jackson](http://jackson.codehaus.org/) which
@@ -10,7 +13,7 @@ brings Scala's ease-of-use to Jackson's features.
 Requirements
 ------------
 
-* Scala 2.8.2 or 2.9.1
+* Scala 2.10
 * Jackson 1.9.x
 
 
@@ -22,16 +25,16 @@ Go ahead and add Jerkson as a dependency:
 ```xml
 <repositories>
   <repository>
-    <id>repo.codahale.com</id>
-    <url>http://repo.codahale.com</url>
+    <id>repo.piotrga.com</id>
+    <url>https://github.com/piotrga/piotrga.github.com/tree/master/maven-repo</url>
   </repository>
 </repositories>
 
 <dependencies>
   <dependency>
     <groupId>com.codahale</groupId>
-    <artifactId>jerkson_${scala.version}</artifactId>
-    <version>0.5.0</version>
+    <artifactId>jerkson_2.10</artifactId>
+    <version>0.7.0</version>
   </dependency>
 </dependencies>
 ```
