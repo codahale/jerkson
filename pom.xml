@@ -9,13 +9,15 @@
     </prerequisites>
 
     <groupId>com.codahale</groupId>
-    <artifactId>jerkson_2.9.1</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
+    <artifactId>jerkson_2.10</artifactId>
+    <version>0.7.0</version>
     <name>Jerkson for Scala</name>
 
     <properties>
-        <scala.version>2.9.1</scala.version>
+        <scala.version>2.10</scala.version>
+        <scala.sdk.version>2.10.0</scala.sdk.version>
         <jackson.version>2.0.2</jackson.version>
+        <inhouse.repository>file://${env.INHOUSE_REPOSITORY}</inhouse.repository>
     </properties>
 
     <developers>
@@ -23,6 +25,12 @@
             <name>Coda Hale</name>
             <email>coda.hale@gmail.com</email>
             <timezone>-8</timezone>
+        </developer>
+
+        <developer>
+            <name>Piotr Gabryanczyk</name>
+            <email>piotrga@gmail.com</email>
+            <timezone>0</timezone>
         </developer>
     </developers>
 
@@ -36,10 +44,6 @@
 
     <repositories>
         <repository>
-            <id>repo.codahale.com</id>
-            <url>http://repo.codahale.com</url>
-        </repository>
-        <repository>
             <id>nativelibs4java</id>
             <url>http://nativelibs4java.sourceforge.net/maven</url>
         </repository>
@@ -47,17 +51,30 @@
 
     <distributionManagement>
         <repository>
-            <id>repo.codahale.com</id>
-            <url>scp://codahale.com/home/codahale/repo.codahale.com</url>
+            <id>inhouse</id>
+            <name>inhouse</name>
+            <url>${inhouse.repository}</url>
         </repository>
-    </distributionManagement>
 
+        <snapshotRepository>
+            <id>inhouse</id>
+            <name>inhouse</name>
+            <url>${inhouse.repository}</url>
+        </snapshotRepository>
+    </distributionManagement>
     <dependencies>
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>${scala.version}</version>
+            <version>${scala.sdk.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-reflect</artifactId>
+            <version>${scala.sdk.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -68,12 +85,14 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>com.codahale</groupId>
-            <artifactId>simplespec_${scala.version}</artifactId>
-            <version>0.5.2</version>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_2.10</artifactId>
+            <version>1.9.1</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <profiles>
@@ -126,13 +145,6 @@
                         <arg>-unchecked</arg>
                         <arg>-deprecation</arg>
                     </args>
-                    <compilerPlugins>
-                        <compilerPlugin>
-                            <groupId>com.nativelibs4java</groupId>
-                            <artifactId>scalacl-compiler-plugin</artifactId>
-                            <version>0.2</version>
-                        </compilerPlugin>
-                    </compilerPlugins>
                     <charset>UTF-8</charset>
                 </configuration>
             </plugin>
