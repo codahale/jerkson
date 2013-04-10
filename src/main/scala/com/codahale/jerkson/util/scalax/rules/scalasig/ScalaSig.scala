@@ -4,7 +4,7 @@ package rules
 package scalasig
 
 import ClassFileParser.{ConstValueIndex, Annotation}
-import scala.reflect.generic.ByteCodecs
+import scala.reflect.internal.pickling.ByteCodecs
 
 object ScalaSigParser {
 

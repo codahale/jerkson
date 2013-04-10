@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.Module.SetupContext
 
 class ScalaDeserializers(classLoader: ClassLoader, context: SetupContext) extends Deserializers.Base {
   override def findBeanDeserializer(javaType: JavaType, config: DeserializationConfig,
-                            beanDesc: BeanDescription) = {
+                            beanDesc: BeanDescription): JsonDeserializer[_] = {
     val klass = javaType.getRawClass
     if (klass == classOf[Range] || klass == classOf[immutable.Range]) {
       new RangeDeserializer

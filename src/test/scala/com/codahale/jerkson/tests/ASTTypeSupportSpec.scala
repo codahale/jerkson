@@ -2,123 +2,123 @@ package com.codahale.jerkson.tests
 
 import com.codahale.jerkson.Json._
 import com.codahale.jerkson.AST._
-import com.codahale.simplespec.Spec
-import org.junit.Test
+import org.scalatest.FreeSpec
+import org.scalatest.matchers.MustMatchers
 
-class ASTTypeSupportSpec extends Spec {
-  class `An AST.JInt` {
-    @Test def `generates a JSON int` = {
+class ASTTypeSupportSpec extends FreeSpec with MustMatchers {
+  "An AST.JInt" - {
+     "generates a JSON int" in {
       generate(JInt(15)).must(be("15"))
     }
 
-    @Test def `is parsable from a JSON int` = {
+     "is parsable from a JSON int" in {
       parse[JInt]("15").must(be(JInt(15)))
     }
 
-    @Test def `is parsable from a JSON int as a JValue` = {
+     "is parsable from a JSON int as a JValue" in {
       parse[JValue]("15").must(be(JInt(15)))
     }
   }
 
-  class `An AST.JFloat` {
-    @Test def `generates a JSON int` = {
+  "An AST.JFloat" - {
+     "generates a JSON int" in {
       generate(JFloat(15.1)).must(be("15.1"))
     }
 
-    @Test def `is parsable from a JSON float` = {
+     "is parsable from a JSON float" in {
       parse[JFloat]("15.1").must(be(JFloat(15.1)))
     }
 
-    @Test def `is parsable from a JSON float as a JValue` = {
+     "is parsable from a JSON float as a JValue" in {
       parse[JValue]("15.1").must(be(JFloat(15.1)))
     }
   }
 
 
-  class `An AST.JString` {
-    @Test def `generates a JSON string` = {
+  "An AST.JString" - {
+     "generates a JSON string" in {
       generate(JString("woo")).must(be("\"woo\""))
     }
 
-    @Test def `is parsable from a JSON string` = {
+     "is parsable from a JSON string" in {
       parse[JString]("\"woo\"").must(be(JString("woo")))
     }
 
-    @Test def `is parsable from a JSON string as a JValue` = {
+     "is parsable from a JSON string as a JValue" in {
       parse[JValue]("\"woo\"").must(be(JString("woo")))
     }
   }
 
-  class `An AST.JNull` {
-    @Test def `generates a JSON null` = {
+  "An AST.JNull" - {
+     "generates a JSON null" in {
       generate(JNull).must(be("null"))
     }
 
-    @Test def `is parsable from a JSON null` = {
+     "is parsable from a JSON null" in {
       parse[JNull.type]("null").must(be(JNull))
     }
 
-    @Test def `is parsable from a JSON null as a JValue` = {
+     "is parsable from a JSON null as a JValue" in {
       parse[JValue]("null").must(be(JNull))
     }
   }
 
-  class `An AST.JBoolean` {
-    @Test def `generates a JSON true` = {
+  "An AST.JBoolean" - {
+     "generates a JSON true" in {
       generate(JBoolean(true)).must(be("true"))
     }
 
-    @Test def `generates a JSON false` = {
+     "generates a JSON false" in {
       generate(JBoolean(false)).must(be("false"))
     }
 
-    @Test def `is parsable from a JSON true` = {
+     "is parsable from a JSON true" in {
       parse[JBoolean]("true").must(be(JBoolean(true)))
     }
 
-    @Test def `is parsable from a JSON false` = {
+     "is parsable from a JSON false" in {
       parse[JBoolean]("false").must(be(JBoolean(false)))
     }
 
-    @Test def `is parsable from a JSON true as a JValue` = {
+     "is parsable from a JSON true as a JValue" in {
       parse[JValue]("true").must(be(JBoolean(true)))
     }
 
-    @Test def `is parsable from a JSON false as a JValue` = {
+     "is parsable from a JSON false as a JValue" in {
       parse[JValue]("false").must(be(JBoolean(false)))
     }
   }
 
-  class `An AST.JArray of JInts` {
-    @Test def `generates a JSON array of ints` = {
+  "An AST.JArray of JInts" - {
+     "generates a JSON array of ints" in {
       generate(JArray(List(JInt(1), JInt(2), JInt(3)))).must(be("[1,2,3]"))
     }
 
-    @Test def `is parsable from a JSON array of ints` = {
+     "is parsable from a JSON array of ints" in {
       parse[JArray]("[1,2,3]").must(be(JArray(List(JInt(1), JInt(2), JInt(3)))))
     }
 
-    @Test def `is parsable from a JSON array of ints as a JValue` = {
+     "is parsable from a JSON array of ints as a JValue" in {
       parse[JValue]("[1,2,3]").must(be(JArray(List(JInt(1), JInt(2), JInt(3)))))
     }
   }
 
-  class `An AST.JObject` {
+  "An AST.JObject" - {
     val obj = JObject(List(JField("id", JInt(1)), JField("name", JString("Coda"))))
 
-    @Test def `generates a JSON object with matching field values` = {
+     "generates a JSON object with matching field values" in {
       generate(obj).must(be("""{"id":1,"name":"Coda"}"""))
     }
 
-    @Test def `is parsable from a JSON object` = {
+     "is parsable from a JSON object" in {
       parse[JObject]("""{"id":1,"name":"Coda"}""").must(be(obj))
     }
 
-    @Test def `is parsable from a JSON object as a JValue` = {
+     "is parsable from a JSON object as a JValue" in {
       parse[JValue]("""{"id":1,"name":"Coda"}""").must(be(obj))
     }
 
-    @Test def `is parsable from an empty JSON object` = {
+     "is parsable from an empty JSON object" in {
       parse[JObject]("""{}""").must(be(JObject(Nil)))
     }
   }
