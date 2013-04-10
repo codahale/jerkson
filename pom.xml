@@ -15,7 +15,7 @@
 
     <properties>
         <scala.version>2.10.1</scala.version>
-        <jackson.version>2.0.2</jackson.version>
+        <jackson.version>2.1.4</jackson.version>
     </properties>
 
     <developers>
@@ -38,10 +38,6 @@
         <repository>
             <id>repo.codahale.com</id>
             <url>http://repo.codahale.com</url>
-        </repository>
-        <repository>
-            <id>nativelibs4java</id>
-            <url>http://nativelibs4java.sourceforge.net/maven</url>
         </repository>
     </repositories>
 
@@ -112,6 +108,18 @@
     </profiles>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <executions>
+                        <execution><id>default-compile</id><phase>none</phase></execution>
+                        <execution><id>default-testCompile</id><phase>none</phase></execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
