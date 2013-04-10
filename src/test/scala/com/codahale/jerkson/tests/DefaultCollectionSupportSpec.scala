@@ -1,75 +1,75 @@
 package com.codahale.jerkson.tests
 
 import com.codahale.jerkson.Json._
-import com.codahale.simplespec.Spec
 import com.codahale.jerkson.ParsingException
-import org.junit.{Ignore, Test}
+import org.scalatest.FreeSpec
+import org.scalatest.matchers.MustMatchers
 
-class DefaultCollectionSupportSpec extends Spec {
-  class `A Range` {
-    @Test def `generates a JSON object` = {
+class DefaultCollectionSupportSpec extends FreeSpec with MustMatchers {
+  "A Range" - {
+     "generates a JSON object" in {
       generate(Range.inclusive(1, 4, 3)).must(be("""{"start":1,"end":4,"step":3,"inclusive":true}"""))
     }
 
-    @Test def `generates a JSON object without the inclusive field if it's exclusive` = {
+     "generates a JSON object without the inclusive field if it's exclusive" in {
       generate(Range(1, 4, 3)).must(be("""{"start":1,"end":4,"step":3}"""))
     }
 
-    @Test def `generates a JSON object without the step field if it's 1` = {
+     "generates a JSON object without the step field if it's 1" in {
       generate(Range(1, 4)).must(be("""{"start":1,"end":4}"""))
     }
 
-    @Test def `is parsable from a JSON object` = {
+     "is parsable from a JSON object" in {
       parse[Range]("""{"start":1,"end":4,"step":3,"inclusive":true}""").must(be(Range.inclusive(1, 4, 3)))
     }
 
-    @Test def `is parsable from a JSON object without the inclusive field` = {
+     "is parsable from a JSON object without the inclusive field" in {
       parse[Range]("""{"start":1,"end":4,"step":3}""").must(be(Range(1, 4, 3)))
     }
 
-    @Test def `is parsable from a JSON object without the step field` = {
+     "is parsable from a JSON object without the step field" in {
       parse[Range]("""{"start":1,"end":4}""").must(be(Range(1, 4)))
     }
 
-    @Test def `is not parsable from a JSON object without the required fields` = {
+     "is not parsable from a JSON object without the required fields" in {
       evaluating {
         parse[Range]("""{"start":1}""")
-      }.must(throwA[ParsingException]("""Invalid JSON. Needed [start, end, <step>, <inclusive>], but found [start]."""))
+      }.must(produce[ParsingException])
     }
 
   }
 
-  class `A Pair[Int]` {
-    @Ignore @Test def `generates a two-element JSON array of ints` = {
+  "A Pair[Int]" - {
+    "generates a two-element JSON array of ints" ignore {
       // TODO: 5/31/11 <coda> -- fix Pair serialization
       generate(Pair(1, 2)).must(be("[1,2]"))
     }
 
-    @Ignore @Test def `is parsable from a two-element JSON array of ints` = {
+    "is parsable from a two-element JSON array of ints" ignore {
       // TODO: 5/31/11 <coda> -- fix Pair deserialization
       parse[Pair[Int, Int]]("[1,2]").must(be(Pair(1, 2)))
     }
   }
 
-  class `A Triple[Int]` {
-    @Ignore @Test def `generates a three-element JSON array of ints` = {
+  "A Triple[Int]" - {
+    "generates a three-element JSON array of ints" ignore {
       // TODO: 5/31/11 <coda> -- fix Triple serialization
       generate(Triple(1, 2, 3)).must(be("[1,2,3]"))
     }
 
-    @Ignore @Test def `is parsable from a three-element JSON array of ints` = {
+    "is parsable from a three-element JSON array of ints" ignore {
       // TODO: 5/31/11 <coda> -- fix Triple deserialization
       parse[Triple[Int, Int, Int]]("[1,2,3]").must(be(Triple(1, 2, 3)))
     }
   }
 
-  class `A four-tuple` {
-    @Ignore @Test def `generates a four-element JSON array` = {
+  "A four-tuple" - {
+    "generates a four-element JSON array" ignore {
       // TODO: 5/31/11 <coda> -- fix Tuple4 serialization
       generate((1, "2", 3, "4")).must(be("[1,\"2\",3,\"4\"]"))
     }
 
-    @Ignore @Test def `is parsable from a three-element JSON array of ints` = {
+    "is parsable from a three-element JSON array of ints" ignore {
       // TODO: 5/31/11 <coda> -- fix Tuple4 deserialization
       parse[(Int, String, Int, String)]("[1,\"2\",3,\"4\"]").must(be((1, "2", 3, "4")))
     }
@@ -77,170 +77,170 @@ class DefaultCollectionSupportSpec extends Spec {
 
   // TODO: 6/1/11 <coda> -- add support for all Tuple1->TupleBillionty types
 
-  class `A Seq[Int]` {
-    @Test def `generates a JSON array of ints` = {
+  "A Seq[Int]" - {
+     "generates a JSON array of ints" in {
       generate(Seq(1, 2, 3)).must(be("[1,2,3]"))
     }
 
-    @Test def `is parsable from a JSON array of ints` = {
+     "is parsable from a JSON array of ints" in {
       parse[Seq[Int]]("[1,2,3]").must(be(Seq(1, 2, 3)))
     }
 
-    @Test def `is parsable from an empty JSON array` = {
+     "is parsable from an empty JSON array" in {
       parse[Seq[Int]]("[]").must(be(Seq.empty[Int]))
     }
   }
 
-  class `A List[Int]` {
-    @Test def `generates a JSON array of ints` = {
+  "A List[Int]" - {
+     "generates a JSON array of ints" in {
       generate(List(1, 2, 3)).must(be("[1,2,3]"))
     }
 
-    @Test def `is parsable from a JSON array of ints` = {
+     "is parsable from a JSON array of ints" in {
       parse[List[Int]]("[1,2,3]").must(be(List(1, 2, 3)))
     }
 
-    @Test def `is parsable from an empty JSON array` = {
+     "is parsable from an empty JSON array" in {
       parse[List[Int]]("[]").must(be(List.empty[Int]))
     }
   }
 
-  class `An IndexedSeq[Int]` {
-    @Test def `generates a JSON array of ints` = {
+  "An IndexedSeq[Int]" - {
+     "generates a JSON array of ints" in {
       generate(IndexedSeq(1, 2, 3)).must(be("[1,2,3]"))
     }
 
-    @Test def `is parsable from a JSON array of ints` = {
+     "is parsable from a JSON array of ints" in {
       parse[IndexedSeq[Int]]("[1,2,3]").must(be(IndexedSeq(1, 2, 3)))
     }
 
-    @Test def `is parsable from an empty JSON array` = {
+     "is parsable from an empty JSON array" in {
       parse[IndexedSeq[Int]]("[]").must(be(IndexedSeq.empty[Int]))
     }
   }
 
-  class `A Vector[Int]` {
-    @Test def `generates a JSON array of ints` = {
+  "A Vector[Int]" - {
+     "generates a JSON array of ints" in {
       generate(Vector(1, 2, 3)).must(be("[1,2,3]"))
     }
 
-    @Test def `is parsable from a JSON array of ints` = {
+     "is parsable from a JSON array of ints" in {
       parse[Vector[Int]]("[1,2,3]").must(be(Vector(1, 2, 3)))
     }
 
-    @Test def `is parsable from an empty JSON array` = {
+     "is parsable from an empty JSON array" in {
       parse[Vector[Int]]("[]").must(be(Vector.empty[Int]))
     }
   }
 
-  class `A Set[Int]` {
-    @Test def `generates a JSON array of ints` = {
+  "A Set[Int]" - {
+     "generates a JSON array of ints" in {
       generate(Set(1, 2, 3)).must(be("[1,2,3]"))
     }
 
-    @Test def `is parsable from a JSON array of ints` = {
+     "is parsable from a JSON array of ints" in {
       parse[Set[Int]]("[1,2,3]").must(be(Set(1, 2, 3)))
     }
 
-    @Test def `is parsable from an empty JSON array` = {
+     "is parsable from an empty JSON array" in {
       parse[Set[Int]]("[]").must(be(Set.empty[Int]))
     }
   }
 
-  class `A Map[String, Int]` {
-    @Test def `generates a JSON object with int field values` = {
+  "A Map[String, Int]" - {
+     "generates a JSON object with int field values" in {
       generate(Map("one" -> 1, "two" -> 2)).must(be("""{"one":1,"two":2}"""))
     }
 
-    @Test def `is parsable from a JSON object with int field values` = {
+     "is parsable from a JSON object with int field values" in {
       parse[Map[String, Int]]("""{"one":1,"two":2}""").must(be(Map("one" -> 1, "two" -> 2)))
     }
 
-    @Test def `is parsable from an empty JSON object` = {
+     "is parsable from an empty JSON object" in {
       parse[Map[String, Int]]("{}").must(be(Map.empty[String, Int]))
     }
   }
 
-  class `A Map[String, Any]` {
-    @Test def `generates a JSON object with mixed field values` = {
+  "A Map[String, Any]" - {
+     "generates a JSON object with mixed field values" in {
       generate(Map("one" -> 1, "two" -> "2")).must(be("""{"one":1,"two":"2"}"""))
     }
 
-    @Test def `is parsable from a JSON object with mixed field values` = {
+     "is parsable from a JSON object with mixed field values" in {
       parse[Map[String, Any]]("""{"one":1,"two":"2"}""").must(be(Map[String, Any]("one" -> 1, "two" -> "2")))
     }
 
-    @Test def `is parsable from an empty JSON object` = {
+     "is parsable from an empty JSON object" in {
       parse[Map[String, Any]]("{}").must(be(Map.empty[String, Any]))
     }
   }
 
-  class `A Stream[Int]` {
-    @Test def `generates a JSON array` = {
+  "A Stream[Int]" - {
+     "generates a JSON array" in {
       generate(Stream(1, 2, 3)).must(be("[1,2,3]"))
     }
 
-    @Test def `is parsable from a JSON array of ints` = {
+     "is parsable from a JSON array of ints" in {
       parse[Stream[Int]]("[1,2,3]").must(be(Stream(1, 2, 3)))
     }
 
-    @Test def `is parsable from an empty JSON array` = {
+     "is parsable from an empty JSON array" in {
       parse[Stream[Int]]("[]").must(be(Stream.empty[Int]))
     }
   }
 
-  class `An Iterator[Int]` {
-    @Test def `generates a JSON array of ints` = {
+  "An Iterator[Int]" - {
+     "generates a JSON array of ints" in {
       generate(Seq(1, 2, 3).iterator).must(be("[1,2,3]"))
     }
 
-    @Test def `is parsable from a JSON array of ints` = {
+     "is parsable from a JSON array of ints" in {
       parse[Iterator[Int]]("[1,2,3]").toList.must(be(List(1, 2, 3)))
     }
 
-    @Test def `is parsable from an empty JSON array` = {
+     "is parsable from an empty JSON array" in {
       parse[Iterator[Int]]("[]").toList.must(be(List.empty[Int]))
     }
   }
 
-  class `A Traversable[Int]` {
-    @Test def `generates a JSON array of ints` = {
+  "A Traversable[Int]" - {
+     "generates a JSON array of ints" in {
       generate(Seq(1, 2, 3).toTraversable).must(be("[1,2,3]"))
     }
 
-    @Test def `is parsable from a JSON array of ints` = {
+     "is parsable from a JSON array of ints" in {
       parse[Traversable[Int]]("[1,2,3]").toList.must(be(List(1, 2, 3)))
     }
 
-    @Test def `is parsable from an empty JSON array` = {
+     "is parsable from an empty JSON array" in {
       parse[Traversable[Int]]("[]").toList.must(be(List.empty[Int]))
     }
   }
 
-  class `A BufferedIterator[Int]` {
-    @Test def `generates a JSON array of ints` = {
+  "A BufferedIterator[Int]" - {
+     "generates a JSON array of ints" in {
       generate(Seq(1, 2, 3).iterator.buffered).must(be("[1,2,3]"))
     }
 
-    @Test def `is parsable from a JSON array of ints` = {
+     "is parsable from a JSON array of ints" in {
       parse[BufferedIterator[Int]]("[1,2,3]").toList.must(be(List(1, 2, 3)))
     }
 
-    @Test def `is parsable from an empty JSON array` = {
+     "is parsable from an empty JSON array" in {
       parse[BufferedIterator[Int]]("[]").toList.must(be(List.empty[Int]))
     }
   }
 
-  class `An Iterable[Int]` {
-    @Test def `generates a JSON array of ints` = {
+  "An Iterable[Int]" - {
+     "generates a JSON array of ints" in {
       generate(Seq(1, 2, 3).toIterable).must(be("[1,2,3]"))
     }
 
-    @Test def `is parsable from a JSON array of ints` = {
+     "is parsable from a JSON array of ints" in {
       parse[Iterable[Int]]("[1,2,3]").toList.must(be(List(1, 2, 3)))
     }
 
-    @Test def `is parsable from an empty JSON array` = {
+     "is parsable from an empty JSON array" in {
       parse[Iterable[Int]]("[]").toList.must(be(List.empty[Int]))
     }
   }

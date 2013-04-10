@@ -1,216 +1,216 @@
 package com.codahale.jerkson.tests
 
-import com.codahale.simplespec.Spec
 import com.codahale.jerkson.Json._
 import com.fasterxml.jackson.databind.node.IntNode
 import com.fasterxml.jackson.databind.JsonNode
-import org.junit.Test
+import org.scalatest.FreeSpec
+import org.scalatest.matchers.MustMatchers
 
-class BasicTypeSupportSpec extends Spec {
-  class `A Byte` {
-    @Test def `generates a JSON int` = {
+class BasicTypeSupportSpec extends FreeSpec with MustMatchers {
+  "A Byte" - {
+     "generates a JSON int" in {
       generate(15.toByte).must(be("15"))
     }
 
-    @Test def `is parsable from a JSON int` = {
+     "is parsable from a JSON int" in {
       parse[Byte]("15").must(be(15))
     }
   }
 
-  class `A Short` {
-    @Test def `generates a JSON int` = {
+  "A Short" - {
+     "generates a JSON int" in {
       generate(15.toShort).must(be("15"))
     }
 
-    @Test def `is parsable from a JSON int` = {
+     "is parsable from a JSON int" in {
       parse[Short]("15").must(be(15))
     }
   }
 
-  class `An Int` {
-    @Test def `generates a JSON int` = {
+  "An Int" - {
+     "generates a JSON int" in {
       generate(15).must(be("15"))
     }
 
-    @Test def `is parsable from a JSON int` = {
+     "is parsable from a JSON int" in {
       parse[Int]("15").must(be(15))
     }
   }
 
-  class `A Long` {
-    @Test def `generates a JSON int` = {
+  "A Long" - {
+     "generates a JSON int" in {
       generate(15L).must(be("15"))
     }
 
-    @Test def `is parsable from a JSON int` = {
+     "is parsable from a JSON int" in {
       parse[Long]("15").must(be(15L))
     }
   }
 
-  class `A BigInt` {
-    @Test def `generates a JSON int` = {
+  "A BigInt" - {
+     "generates a JSON int" in {
       generate(BigInt(15)).must(be("15"))
     }
 
-    @Test def `is parsable from a JSON int` = {
+     "is parsable from a JSON int" in {
       parse[BigInt]("15").must(be(BigInt(15)))
     }
 
-    @Test def `is parsable from a JSON string` = {
+     "is parsable from a JSON string" in {
       parse[BigInt]("\"15\"").must(be(BigInt(15)))
     }
   }
 
-  class `A Float` {
-    @Test def `generates a JSON float` = {
+  "A Float" - {
+     "generates a JSON float" in {
       generate(15.1F).must(be("15.1"))
     }
 
-    @Test def `is parsable from a JSON float` = {
+     "is parsable from a JSON float" in {
       parse[Float]("15.1").must(be(15.1F))
     }
   }
 
-  class `A Double` {
-    @Test def `generates a JSON float` = {
+  "A Double" - {
+     "generates a JSON float" in {
       generate(15.1).must(be("15.1"))
     }
 
-    @Test def `is parsable from a JSON float` = {
+     "is parsable from a JSON float" in {
       parse[Double]("15.1").must(be(15.1D))
     }
   }
 
-  class `A BigDecimal` {
-    @Test def `generates a JSON float` = {
+  "A BigDecimal" - {
+     "generates a JSON float" in {
       generate(BigDecimal(15.5)).must(be("15.5"))
     }
 
-    @Test def `is parsable from a JSON float` = {
+     "is parsable from a JSON float" in {
       parse[BigDecimal]("15.5").must(be(BigDecimal(15.5)))
     }
 
-    @Test def `is parsable from a JSON int` = {
+     "is parsable from a JSON int" in {
       parse[BigDecimal]("15").must(be(BigDecimal(15.0)))
     }
   }
 
-  class `A String` {
-    @Test def `generates a JSON string` = {
+  "A String" - {
+     "generates a JSON string" in {
       generate("woo").must(be("\"woo\""))
     }
 
-    @Test def `is parsable from a JSON string` = {
+     "is parsable from a JSON string" in {
       parse[String]("\"woo\"").must(be("woo"))
     }
   }
 
-  class `A StringBuilder` {
-    @Test def `generates a JSON string` = {
+  "A StringBuilder" - {
+     "generates a JSON string" in {
       generate(new StringBuilder("foo")).must(be("\"foo\""))
     }
 
-    @Test def `is parsable from a JSON string` = {
+     "is parsable from a JSON string" in {
       parse[StringBuilder]("\"foo\"").toString().must(be("foo"))
     }
   }
 
-  class `A null Object` {
-    @Test def `generates a JSON null` = {
+  "A null Object" - {
+     "generates a JSON null" in {
       generate[Object](null).must(be("null"))
     }
 
-    @Test def `is parsable from a JSON null` = {
-      parse[Object]("null").must(be(not(notNull)))
+     "is parsable from a JSON null" in {
+      parse[Object]("null").must(be(null))
     }
   }
 
-  class `A Boolean` {
-    @Test def `generates a JSON true` = {
+  "A Boolean" - {
+     "generates a JSON true" in {
       generate(true).must(be("true"))
     }
 
-    @Test def `generates a JSON false` = {
+     "generates a JSON false" in {
       generate(false).must(be("false"))
     }
 
-    @Test def `is parsable from a JSON true` = {
+     "is parsable from a JSON true" in {
       parse[Boolean]("true").must(be(true))
     }
 
-    @Test def `is parsable from a JSON false` = {
+     "is parsable from a JSON false" in {
       parse[Boolean]("false").must(be(false))
     }
   }
 
-  class `A Some[Int]` {
-    @Test def `generates a JSON int` = {
+  "A Some[Int]" - {
+     "generates a JSON int" in {
       generate(Some(12)).must(be("12"))
     }
 
-    @Test def `is parsable from a JSON int as an Option[Int]` = {
+     "is parsable from a JSON int as an Option[Int]" in {
       parse[Option[Int]]("12").must(be(Some(12)))
     }
   }
 
-  class `A None` {
-    @Test def `generates a JSON null` = {
+  "A None" - {
+     "generates a JSON null" in {
       generate(None).must(be("null"))
     }
 
-    @Test def `is parsable from a JSON null as an Option[Int]` = {
+     "is parsable from a JSON null as an Option[Int]" in {
       parse[Option[Int]]("null").must(be(None))
     }
   }
 
-  class `A Left[String]` {
-    @Test def `generates a JSON string` = {
+  "A Left[String]" - {
+     "generates a JSON string" in {
       generate(Left("woo")).must(be("\"woo\""))
     }
 
-    @Test def `is parsable from a JSON string as an Either[String, Int]` = {
+     "is parsable from a JSON string as an Either[String, Int]" in {
       parse[Either[String, Int]]("\"woo\"").must(be(Left("woo")))
     }
   }
 
-  class `A Right[String]` {
-    @Test def `generates a JSON string` = {
+  "A Right[String]" - {
+     "generates a JSON string" in {
       generate(Right("woo")).must(be("\"woo\""))
     }
 
-    @Test def `is parsable from a JSON string as an Either[Int, String]` = {
+     "is parsable from a JSON string as an Either[Int, String]" in {
       parse[Either[Int, String]]("\"woo\"").must(be(Right("woo")))
     }
   }
 
-  class `A JsonNode` {
-    @Test def `generates whatever the JsonNode is` = {
+  "A JsonNode" - {
+     "generates whatever the JsonNode is" in {
       generate(new IntNode(2)).must(be("2"))
     }
 
-    @Test def `is parsable from a JSON AST node` = {
+     "is parsable from a JSON AST node" in {
       parse[JsonNode]("2").must(be(new IntNode(2)))
     }
 
-    @Test def `is parsable from a JSON AST node as a specific type` = {
+     "is parsable from a JSON AST node as a specific type" in {
       parse[IntNode]("2").must(be(new IntNode(2)))
     }
 
-    @Test def `is itself parsable` = {
+     "is itself parsable" in {
       parse[Int](new IntNode(2)).must(be(2))
     }
   }
 
-  class `An Array[Int]` {
-    @Test def `generates a JSON array of ints` = {
+  "An Array[Int]" - {
+     "generates a JSON array of ints" in {
       generate(Array(1, 2, 3)).must(be("[1,2,3]"))
     }
 
-    @Test def `is parsable from a JSON array of ints` = {
+     "is parsable from a JSON array of ints" in {
       parse[Array[Int]]("[1,2,3]").toList.must(be(List(1, 2, 3)))
     }
 
-    @Test def `is parsable from an empty JSON array` = {
+     "is parsable from an empty JSON array" in {
       parse[Array[Int]]("[]").toList.must(be(List.empty))
     }
   }
