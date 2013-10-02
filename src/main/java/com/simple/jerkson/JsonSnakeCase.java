@@ -1,5 +1,4 @@
-// Included for backwards compatibility.
-package com.codahale.jerkson;
+package com.simple.jerkson;
 
 import com.fasterxml.jackson.annotation.JacksonAnnotation;
 

@@ -10,7 +10,7 @@ brings Scala's ease-of-use to Jackson's features.
 Requirements
 ------------
 
-* Scala 2.8.2 or 2.9.1
+* Scala 2.9.2
 * Jackson 1.9.x
 
 
@@ -20,18 +20,11 @@ Setting Up Your Project
 Go ahead and add Jerkson as a dependency:
 
 ```xml
-<repositories>
-  <repository>
-    <id>repo.codahale.com</id>
-    <url>http://repo.codahale.com</url>
-  </repository>
-</repositories>
-
 <dependencies>
   <dependency>
-    <groupId>com.codahale</groupId>
+    <groupId>com.simple</groupId>
     <artifactId>jerkson_${scala.version}</artifactId>
-    <version>0.5.0</version>
+    <version>0.7.0</version>
   </dependency>
 </dependencies>
 ```
@@ -95,5 +88,6 @@ License
 -------
 
 Copyright (c) 2010-2011 Coda Hale
+Copyright (c) 2012-2013 Simple Finance Technology Corp.
 
 Published under The MIT License, see LICENSE

@@ -8,20 +8,25 @@
         <maven>3.0.0</maven>
     </prerequisites>
 
-    <groupId>com.codahale</groupId>
-    <artifactId>jerkson_2.9.1</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
+    <groupId>com.simple</groupId>
+    <artifactId>jerkson_2.9.2</artifactId>
+    <version>0.7.1</version>
     <name>Jerkson for Scala</name>
 
     <properties>
-        <scala.version>2.9.1</scala.version>
-        <jackson.version>2.0.2</jackson.version>
+        <scala.version>2.9.2</scala.version>
+        <jackson.version>2.1.1</jackson.version>
     </properties>
 
     <developers>
         <developer>
             <name>Coda Hale</name>
             <email>coda.hale@gmail.com</email>
+            <timezone>-8</timezone>
+        </developer>
+        <developer>
+            <name>Simple</name>
+            <email>support@simple.com</email>
             <timezone>-8</timezone>
         </developer>
     </developers>
@@ -47,9 +52,16 @@
 
     <distributionManagement>
         <repository>
-            <id>repo.codahale.com</id>
-            <url>scp://codahale.com/home/codahale/repo.codahale.com</url>
+            <id>releases</id>
+            <name>Simple Releases</name>
+            <url>http://nexus.banksimple.com/content/repositories/releases</url>
         </repository>
+        <!-- use the following if you ARE using a snapshot version. -->
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Simple Snapshots</name>
+            <url>http://nexus.banksimple.com/content/repositories/snapshots</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <dependencies>
@@ -69,9 +81,19 @@
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.codahale</groupId>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-joda</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.joda</groupId>
+            <artifactId>joda-convert</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.simple</groupId>
             <artifactId>simplespec_${scala.version}</artifactId>
-            <version>0.5.2</version>
+            <version>0.7.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

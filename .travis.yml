@@ -1,0 +1,6 @@
+language: scala
+scala:
+  - 2.9.2
+install: true
+script:
+  - "mvn test"
