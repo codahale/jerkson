@@ -45,8 +45,9 @@ object AST {
     override def \(fieldName: String): JValue = {
       fields.find { case JField(name, _) =>
         name == fieldName
-      }.map { case JField(_, value) =>
-        value
+      }.map {
+        case JField(_, null) => JNull
+        case JField(_, value) => value
       }.getOrElse(JNull)
     }
     
